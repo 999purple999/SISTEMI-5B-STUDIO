@@ -4,6 +4,8 @@ window.CHAPTERS = window.CHAPTERS || {};
 window.CHAPTERS.m2c6 = {
   title: "NAT, PAT, SNAT e Port Forwarding",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p><strong>NAT</strong>: pool di IP pubblici, sostituisce IP src privato → tabella NAT. Limite: cardinalità del pool. <strong>PAT</strong> (NAT Overload): UN solo IP pub, modifica anche la <strong>porta</strong> (perché 2 host potrebbero avere la stessa porta). <strong>SNAT</strong>: associazione permanente per server DMZ. <strong>Port Forwarding</strong>: una porta del router → un host privato.</p></div>
+
     <p>Tecniche di traduzione degli indirizzi che consentono a host con IP privati di comunicare con Internet.</p>
 
     <h2 id="nat">NAT (Network Address Translation)</h2>
@@ -194,6 +196,8 @@ window.CHAPTERS.m2c8 = {
 window.CHAPTERS.m2c9 = {
   title: "Demilitarized Zone (DMZ)",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p><strong>DMZ</strong> = sottorete intermedia tra LAN interna e Internet che ospita i <strong>server pubblici</strong> (web, mail, FTP). Se un server è violato, l'attaccante <strong>non</strong> raggiunge la LAN interna. Tre modi di assegnare IP: <strong>pubblico diretto</strong>, <strong>privato + SNAT</strong>, <strong>privato + Port Forwarding</strong>. Topologia migliore: <strong>dual firewall</strong>.</p></div>
+
     <p>La <span class="term">DMZ</span> è una <strong>sottorete intermedia</strong> tra LAN interna e Internet, dove vengono ospitati i <strong>server pubblici</strong> dell'azienda accessibili dall'esterno.</p>
 
     <h2 id="motivazione">Motivazione</h2>

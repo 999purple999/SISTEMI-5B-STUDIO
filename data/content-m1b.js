@@ -4,6 +4,8 @@ window.CHAPTERS = window.CHAPTERS || {};
 window.CHAPTERS.m1c4 = {
   title: "Algoritmo Diffie-Hellman (DH)",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Permette a due interlocutori di <strong>concordare una chiave segreta</strong> su un canale insicuro. Si basa su <code>(g<sup>x</sup> mod N)<sup>y</sup> = (g<sup>y</sup> mod N)<sup>x</sup></code>. Sicurezza: difficoltà del logaritmo discreto. Vulnerabile a <strong>MitM</strong> senza autenticazione → si combina con la firma digitale.</p></div>
+
     <p>Lo scopo dell'algoritmo è permettere a due interlocutori di scambiarsi <strong>in modo sicuro una chiave segreta</strong> attraverso un canale insicuro. La chiave servirà successivamente per cifrare/decifrare i messaggi con un cifrario simmetrico.</p>
 
     <h2 id="base-matematica">Base matematica</h2>
@@ -156,13 +158,19 @@ Cifrato:   0 1 1 0 0 1 0 0
 window.CHAPTERS.m1c6 = {
   title: "DES e 3-DES",
   body: `
+    <div class="info-box tip">
+      <h4>📌 TL;DR</h4>
+      <p><strong>DES</strong>: cifrario simmetrico a blocchi di IBM (1975), chiave 56 bit, blocchi 64 bit, 16 round Feistel. Rotto a forza bruta nel 2001. <strong>3-DES</strong>: applica DES tre volte (cifra-decifra-cifra) per estendere la chiave; oggi obsoleto, sostituito da <strong>AES</strong>.</p>
+    </div>
+
     <h2 id="des">DES (Data Encryption Standard)</h2>
     <p>Cifrario a chiave <strong>simmetrica</strong> realizzato da <strong>IBM</strong> e pubblicato nel <strong>1975</strong>. Diventa standard federale negli USA due anni dopo. Cifrario più usato al mondo fino al <strong>2001</strong>, quando divenne vulnerabile all'attacco a forza bruta.</p>
 
     <ul>
-      <li>Chiave segreta lunga <strong>56 bit</strong>.</li>
-      <li>Il messaggio è suddiviso in <strong>blocchi da 64 bit</strong>.</li>
-      <li>2<sup>56</sup> ≈ 7.2·10<sup>16</sup> chiavi possibili — tempi accettabili per i calcolatori dei primi anni 2000.</li>
+      <li>Chiave segreta effettiva: <strong>56 bit</strong>.</li>
+      <li>Messaggio suddiviso in <strong>blocchi da 64 bit</strong> (con padding sull'ultimo blocco se necessario).</li>
+      <li><code>2<sup>56</sup> ≈ 7.2·10<sup>16</sup></code> chiavi possibili — tempi accettabili per i calcolatori dei primi anni 2000.</li>
+      <li>Architettura: <strong>cifrario a blocchi di Feistel</strong> con 16 round.</li>
     </ul>
 
     <h3 id="elaborazione-chiave">Elaborazione della chiave</h3>
@@ -172,20 +180,60 @@ window.CHAPTERS.m1c6 = {
     <p>I 64 bit del blocco vengono <strong>permutati</strong> secondo una mappa prefissata <code>PI</code>. Permutare significa variare la posizione dei bit secondo un array di indici.</p>
     <p>Esempio: sequenza <code>10011001</code> con array <code>[3,0,1,4,2,7,5,6]</code> → <code>00111010</code>.</p>
 
+    <h2 id="round">I 16 round (Feistel)</h2>
+    <p>In ogni round la sequenza di 64 bit (output della permutazione iniziale) viene divisa in due metà:</p>
+    <ul>
+      <li><strong>L<sub>i-1</sub></strong> — i 32 bit di sinistra prima del round <code>i</code>.</li>
+      <li><strong>R<sub>i-1</sub></strong> — i 32 bit di destra.</li>
+    </ul>
+    <p>Ad ogni round si calcola:</p>
+    <code class="formula">L<sub>i</sub> = R<sub>i-1</sub>
+R<sub>i</sub> = L<sub>i-1</sub> XOR f(R<sub>i-1</sub>, K<sub>i</sub>)</code>
+    <p>dove <code>f</code> è la funzione di Feistel (espansione, XOR con sub-chiave, S-box, permutazione) e <code>K<sub>i</sub></code> è una sub-chiave di 48 bit derivata dalla chiave principale.</p>
+
+    <h2 id="permutazione-inversa">Permutazione inversa finale</h2>
+    <p>L'output del 16° round viene permutato con la mappa <strong>PI<sup>-1</sup></strong>, inversa della permutazione iniziale PI: si ottiene così il blocco cifrato <code>m'<sub>i</sub></code>.</p>
+    <p>Se l'array di permutazione PI all'indice <code>i</code> memorizza l'intero <code>p</code>, l'array PI<sup>-1</sup> all'indice <code>p</code> memorizza <code>i</code>.</p>
+
+    <h2 id="decifratura-des">Algoritmo di decifratura</h2>
+    <div class="info-box key">
+      <h4>🔑 Simmetria di DES</h4>
+      <p>Le caratteristiche di simmetria dell'algoritmo, comprese le permutazioni iniziale e inversa finale, fanno sì che <strong>l'algoritmo di decifratura sia identico a quello di cifratura</strong>, salvo l'applicazione delle sub-chiavi <strong>in ordine inverso</strong> (K<sub>16</sub>, K<sub>15</sub>, ..., K<sub>1</sub>).</p>
+    </div>
+
     <h2 id="3des">3-DES (Triple DES)</h2>
-    <p>Versione migliorata che applica DES <strong>tre volte</strong>:</p>
+    <p>Una volta dimostrato che DES con chiave effettiva di 56 bit non garantisce più la sicurezza (violabile a forza bruta), sono stati proposti altri algoritmi: <strong>3-DES a 2 chiavi</strong>, <strong>3-DES a 3 chiavi</strong>, <strong>IDEA</strong>, <strong>AES</strong>.</p>
 
     <h3 id="3des-2chiavi">3-DES a 2 chiavi</h3>
-    <ul>
-      <li>Cifratura: <code>cifra(K1) → decifra(K2) → cifra(K1)</code></li>
-      <li>Decifratura: <code>decifra(K1) → cifra(K2) → decifra(K1)</code></li>
-    </ul>
+    <p><strong>Cifratura</strong>:</p>
+    <ol>
+      <li><strong>Cifra</strong> il messaggio in chiaro usando DES con chiave <code>K<sub>1</sub></code>.</li>
+      <li><strong>Decifra</strong> il messaggio cifrato del passo precedente con DES e chiave <code>K<sub>2</sub></code>.</li>
+      <li><strong>Cifra</strong> il risultato con DES e nuovamente la chiave <code>K<sub>1</sub></code>.</li>
+    </ol>
+    <p>Sintetizzato come: <code>EK<sub>1</sub>(DK<sub>2</sub>(EK<sub>1</sub>(M)))</code>.</p>
+    <p><strong>Decifratura</strong>:</p>
+    <ol>
+      <li><strong>Decifra</strong> il messaggio cifrato con DES e chiave <code>K<sub>1</sub></code>.</li>
+      <li><strong>Cifra</strong> il risultato con DES e chiave <code>K<sub>2</sub></code>.</li>
+      <li><strong>Decifra</strong> il risultato con DES e chiave <code>K<sub>1</sub></code>.</li>
+    </ol>
+    <p>Risultato: <code>DK<sub>1</sub>(EK<sub>2</sub>(DK<sub>1</sub>(C)))</code>. Lunghezza chiave effettiva: 112 bit (2 × 56).</p>
 
     <h3 id="3des-3chiavi">3-DES a 3 chiavi</h3>
     <ul>
-      <li>Cifratura: <code>cifra(K1) → decifra(K2) → cifra(K3)</code></li>
-      <li>Decifratura: <code>decifra(K3) → cifra(K2) → decifra(K1)</code></li>
+      <li>Cifratura: <code>cifra(K<sub>1</sub>) → decifra(K<sub>2</sub>) → cifra(K<sub>3</sub>)</code></li>
+      <li>Decifratura: <code>decifra(K<sub>3</sub>) → cifra(K<sub>2</sub>) → decifra(K<sub>1</sub>)</code></li>
     </ul>
+    <p>Lunghezza chiave effettiva: 168 bit (3 × 56). Più sicuro ma ancora più lento.</p>
+
+    <pre class="mermaid">
+flowchart LR
+  M[Messaggio] --> E1["DES.cifra(K1)"]
+  E1 --> D1["DES.decifra(K2)"]
+  D1 --> E2["DES.cifra(K1)"]
+  E2 --> C[Cifrato 3-DES]
+    </pre>
 
     <h3 id="limiti-3des">Limiti</h3>
     <div class="info-box warn">

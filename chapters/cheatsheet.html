@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>📋 Cheatsheet — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.cs-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.cs-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; color: var(--text); display: flex; align-items: center; gap: 0.4rem; }
+.cs-card ul { padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.55; color: var(--text-dim); }
+.cs-card ul li { margin: 0.25rem 0; }
+.cs-card code { background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; }
+.cs-card.m1 { border-top: 3px solid #ff453a; }
+.cs-card.m2 { border-top: 3px solid #ff9f0a; }
+.cs-card.m3 { border-top: 3px solid #30d158; }
+.cs-card.m4 { border-top: 3px solid #0a84ff; }
+@media print {
+  .navbar, footer, .pom-fab, .st-fab, .breadcrumb { display: none !important; }
+  body, body::before { background: #fff !important; }
+  body, .cs-card, .cs-card h3, .cs-card ul { color: #000 !important; background: #fff !important; border-color: #ccc !important; }
+  .cs-card { break-inside: avoid; box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-logo">S</span><span>Sistemi 5B</span></a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">Modulo 1</a></li>
+      <li><a href="m2.html">Modulo 2</a></li>
+      <li><a href="m3.html">Modulo 3</a></li>
+      <li><a href="m4.html">Modulo 4</a></li>
+      <li><a href="exam.html">📝 Esame</a></li>
+      <li><a href="flashcards.html">🎴 Cards</a></li>
+      <li><a href="cheatsheet.html" class="active">📋 Cheatsheet</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Cheatsheet</div>
+      <h1 class="chapter-title">📋 Cheatsheet completo</h1>
+      <p class="chapter-sub">Riassunto-lampo di tutti i 4 moduli, perfetto per il ripasso prima dell'orale. Stampabile.</p>
+      <button class="btn btn-secondary mt-2" onclick="window.print()">🖨️ Stampa</button>
+    </div>
+
+    <h2 style="margin:2rem 0 1rem; color:#ff453a;">🔐 Modulo 1 — Crittografia e firma digitale</h2>
+    <div class="cs-grid">
+      <div class="cs-card m1">
+        <h3>🛡️ Sicurezza CIA</h3>
+        <ul>
+          <li><strong>Riservatezza</strong>: solo il destinatario capisce il messaggio</li>
+          <li><strong>Integrità</strong>: il messaggio non è stato alterato</li>
+          <li><strong>Autenticazione</strong>: l'autore è veramente chi dice di essere</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🔑 Kerckhoffs (1883)</h3>
+        <ul>
+          <li>Sicurezza non dipende dalla segretezza dell'algoritmo</li>
+          <li>Dipende dalla segretezza della <strong>chiave</strong></li>
+          <li>Algoritmi pubblici → community li perfeziona</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🔁 Simmetrica</h3>
+        <ul>
+          <li>Una chiave segreta condivisa</li>
+          <li>Veloce, ma serve canale sicuro</li>
+          <li>Chiavi totali: <code>N(N-1)/2</code></li>
+          <li>Es: DES, 3-DES, AES, Vernam</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🗝️ Asimmetrica</h3>
+        <ul>
+          <li>Chiave pubblica + privata correlate</li>
+          <li>Pubblica per cifrare, privata per decifrare</li>
+          <li>Chiavi totali: <code>2N</code>, no canale sicuro</li>
+          <li>Es: RSA, Diffie-Hellman, ECC</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🤝 Diffie-Hellman</h3>
+        <ul>
+          <li>Scambio chiave su canale insicuro</li>
+          <li>Alice: <code>g^x mod N</code> · Bob: <code>g^y mod N</code></li>
+          <li>K = <code>g^xy mod N</code></li>
+          <li>Vulnerabile MitM senza autenticazione</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>📜 Cifrari storici</h3>
+        <ul>
+          <li><strong>Cesare</strong>: sostituzione +X, vulnerabile statistica</li>
+          <li><strong>Vernam (OTP)</strong>: XOR, chiave casuale lunga quanto il messaggio. <strong>INVIOLABILE</strong></li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🧱 DES / 3-DES</h3>
+        <ul>
+          <li>DES: 56 bit, blocchi 64, 16 round Feistel (1975)</li>
+          <li>Rotto nel 2001 a forza bruta</li>
+          <li>3-DES 2 chiavi: <code>E(K1)→D(K2)→E(K1)</code></li>
+          <li>3-DES 3 chiavi: <code>E(K1)→D(K2)→E(K3)</code></li>
+          <li>Sostituito da <strong>AES</strong></li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🧮 RSA (1978)</h3>
+        <ul>
+          <li>p, q primi · N = p·q · b = (p-1)(q-1)</li>
+          <li>K_pub = [N, e] · K_priv = [N, d]</li>
+          <li>Cifra: <code>m^e mod N</code> · Decifra: <code>m'^d mod N</code></li>
+          <li>Sicurezza: difficoltà di fattorizzare N</li>
+          <li>Oggi: 2048 bit pubblica</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>#️⃣ Hash</h3>
+        <ul>
+          <li>Output a lunghezza fissa (digest, 128/160 bit)</li>
+          <li><strong>Irreversibile, non univoco</strong></li>
+          <li>Effetto valanga, pre-image resistance</li>
+          <li>MD4, MD5, SHA-1, RIPE-MD</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>✍️ Firma digitale</h3>
+        <ul>
+          <li>Cifra il <strong>digest</strong> con la chiave <strong>privata</strong></li>
+          <li>Verifica: hash documento + decifra firma con pub</li>
+          <li>Garantisce <strong>integrità + autenticazione</strong></li>
+          <li>NON garantisce riservatezza</li>
+        </ul>
+      </div>
+      <div class="cs-card m1">
+        <h3>🏛️ CA + X.509</h3>
+        <ul>
+          <li>CA emette certificati firmati</li>
+          <li>X.509 v3: dati + chiave pub + firma CA</li>
+          <li><strong>CRL</strong>: lista revocati</li>
+          <li><strong>OCSP</strong>: verifica online (RFC 6960)</li>
+          <li><strong>TSA</strong>: marca temporale</li>
+          <li>Busta crittografica: .p7m (pkcs#7)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin:2.5rem 0 1rem; color:#ff9f0a;">🛡️ Modulo 2 — Filtraggio e protezione</h2>
+    <div class="cs-grid">
+      <div class="cs-card m2">
+        <h3>🔥 Firewall</h3>
+        <ul>
+          <li><strong>Network</strong>: protegge l'intera LAN</li>
+          <li><strong>Personal</strong>: software sul singolo host</li>
+          <li>3 categorie: Packet Filter (L3-4), Stateful, Application Level (L7)</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>📋 ACL Cisco</h3>
+        <ul>
+          <li><strong>Standard</strong>: solo IP mittente, num 1-99, near destinazione</li>
+          <li><strong>Estese</strong>: IP src+dst, porte, protocollo, num 100-199, near sorgente</li>
+          <li>First-match wins · Default deny</li>
+          <li>Wildcard: 0.0.0.0 (host) · 0.0.0.255 (/24)</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🔄 Proxy</h3>
+        <ul>
+          <li>Si interpone client-server</li>
+          <li>Vantaggi: <strong>log, caching, filtraggio L7</strong></li>
+          <li>Topologie: Single, Horizontally (load-balancer), Vertically (cascata)</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🌐 IP privati (RFC 1918)</h3>
+        <ul>
+          <li><code>10.0.0.0/8</code></li>
+          <li><code>172.16.0.0/12</code></li>
+          <li><code>192.168.0.0/16</code></li>
+          <li>RIR: ARIN, RIPE, APNIC, LACNIC, AFRINIC</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🔀 NAT/PAT/SNAT</h3>
+        <ul>
+          <li><strong>NAT</strong>: pool IP pubblici, sostituisce src</li>
+          <li><strong>PAT</strong>: 1 solo IP pub, modifica anche porta</li>
+          <li><strong>SNAT</strong>: associazione permanente, per server DMZ</li>
+          <li><strong>Port Forwarding</strong>: una porta → un host privato</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🔒 IPSec</h3>
+        <ul>
+          <li>Sicurezza a livello 3 (IP)</li>
+          <li><strong>ESP</strong>: cifratura + integrità + auth</li>
+          <li><strong>AH</strong>: solo integrità + auth</li>
+          <li>Modalità: Transport (host-host) / Tunnel (gw-gw)</li>
+          <li>SA unidirezionale · SPD policy · SAD attive</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🛰️ VPN</h3>
+        <ul>
+          <li>Tunnel cifrato su Internet pubblico</li>
+          <li><strong>Site-to-Site</strong>: due reti via gateway</li>
+          <li><strong>Remote Access</strong>: client → LAN aziendale</li>
+          <li>OpenVPN, WireGuard, IPSec/IKEv2</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🏰 DMZ</h3>
+        <ul>
+          <li>Sottorete intermedia per server pubblici</li>
+          <li>Web, mail, FTP server</li>
+          <li>3 modi: IP pubblico · privato+SNAT · privato+PortFwd</li>
+          <li>Topologia sicura: dual firewall</li>
+        </ul>
+      </div>
+      <div class="cs-card m2">
+        <h3>🔐 TLS</h3>
+        <ul>
+          <li>Trasporto, sopra TCP. v1.3 standard moderno</li>
+          <li>HTTPS = HTTP + TLS, porta 443</li>
+          <li>Asimm per setup, simm per dati</li>
+          <li>Handshake: ClientHello → cert → key exchange → finished</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin:2.5rem 0 1rem; color:#30d158;">☁️ Modulo 3 — Datacenter e Cloud</h2>
+    <div class="cs-grid">
+      <div class="cs-card m3">
+        <h3>🏢 Datacenter</h3>
+        <ul>
+          <li>Server farm, rack, UPS, generatori, raffreddamento</li>
+          <li><strong>PUE</strong>: energia tot / energia IT (ideale 1.0)</li>
+          <li>Tier I-IV (99.671% → 99.995%)</li>
+        </ul>
+      </div>
+      <div class="cs-card m3">
+        <h3>⚖️ Interno vs Esterno</h3>
+        <ul>
+          <li><strong>On-prem</strong>: controllo, privacy, alto CapEx</li>
+          <li><strong>Esterno</strong>: OpEx, scalabile, vendor lock-in</li>
+          <li><strong>Colocation/Housing</strong>: spazio del fornitore, hardware del cliente</li>
+        </ul>
+      </div>
+      <div class="cs-card m3">
+        <h3>💻 Virtualizzazione</h3>
+        <ul>
+          <li>Più VM su un solo HW</li>
+          <li>Hypervisor <strong>tipo 1</strong> (bare-metal: ESXi, KVM)</li>
+          <li>Hypervisor <strong>tipo 2</strong> (hosted: VirtualBox)</li>
+          <li>Container (Docker): condividono il kernel host</li>
+        </ul>
+      </div>
+      <div class="cs-card m3">
+        <h3>☁️ Cloud paradigmi</h3>
+        <ul>
+          <li><strong>IaaS</strong>: infrastruttura (AWS EC2)</li>
+          <li><strong>PaaS</strong>: piattaforma (Heroku)</li>
+          <li><strong>SaaS</strong>: applicazione (Gmail)</li>
+          <li>Pubblico · Privato · Ibrido · Multi-cloud</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin:2.5rem 0 1rem; color:#0a84ff;">🎓 Modulo 4 — Esame di Stato</h2>
+    <div class="cs-grid">
+      <div class="cs-card m4">
+        <h3>🔌 Cablaggio strutturato</h3>
+        <ul>
+          <li>Standard EIA/TIA 568 · ISO/IEC 11801</li>
+          <li>Distributori: CD → BD → FD → TO</li>
+          <li>Cat 5e (1G), 6 (1G/10G), 6a/7/8 (10-40G)</li>
+          <li>UTP/FTP/STP · Fibra MMF (corte) / SMF (lunghe)</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>🆔 Indirizzi IPv4</h3>
+        <ul>
+          <li>32 bit, NET-ID + INTERFACE-ID</li>
+          <li>Classi A (/8) · B (/16) · C (/24) · D multicast · E riservata</li>
+          <li>CIDR: classless, /n liberamente</li>
+          <li>Speciali: 127/8 loop · 169.254/16 APIPA · 224/4 multicast · 0.0.0.0 default</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>📐 FLSM/VLSM</h3>
+        <ul>
+          <li><strong>FLSM</strong>: stessa maschera ovunque</li>
+          <li><strong>VLSM</strong>: maschere variabili (efficiente)</li>
+          <li>/24 → 254 host · /26 → 62 · /27 → 30 · /30 → 2 (link)</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>🛣️ Routing</h3>
+        <ul>
+          <li><strong>Statico</strong>: manuale, no overhead</li>
+          <li><strong>Dinamico</strong>: auto, scalabile</li>
+          <li>Distance Vector: RIP · Link State: OSPF · Path Vector: BGP</li>
+          <li>IGP (interno AS) vs EGP (BGP tra AS)</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>📶 IPv6</h3>
+        <ul>
+          <li>128 bit, 8 gruppi di 4 hex</li>
+          <li>:: comprime zeri (una sola volta)</li>
+          <li>Loopback ::1 · Link-local fe80::/10 · Multicast ff00::/8</li>
+          <li><strong>NO broadcast</strong>: usa multicast</li>
+          <li>SLAAC: autoconfig dal prefisso del router</li>
+          <li>Header 40 byte fissi</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>📡 Wi-Fi 802.11</h3>
+        <ul>
+          <li>BSS (1 AP) → ESS (più BSS via DS, roaming)</li>
+          <li>SSID = nome rete</li>
+          <li>CSMA/CA (vs CD di Ethernet)</li>
+          <li>Sicurezza: WEP (rotto) → WPA → <strong>WPA2 (AES-CCMP)</strong> → WPA3 (SAE)</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>🏷️ VLAN</h3>
+        <ul>
+          <li>LAN logiche su switch</li>
+          <li>Trunk 802.1Q: tag 4 byte, VID 12 bit (1-4094)</li>
+          <li>Access port: 1 VLAN, no tag · Trunk port: più VLAN, taggate</li>
+          <li>Inter-VLAN: <strong>Router on a Stick</strong> (sub-iface) o switch L3</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>🔢 DHCP</h3>
+        <ul>
+          <li>4 fasi <strong>DORA</strong>: Discover-Offer-Request-ACK</li>
+          <li>Server porta 67, client 68 (UDP)</li>
+          <li>Lease, renew a metà del lease</li>
+          <li>DHCP relay tra reti diverse</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>📖 DNS</h3>
+        <ul>
+          <li>Porta 53 (UDP/TCP)</li>
+          <li>Gerarchia: root → TLD → autoritativo</li>
+          <li>Risoluzione ricorsiva (resolver fa tutto) o iterativa</li>
+          <li>Record: A (v4), AAAA (v6), MX (mail), CNAME (alias), NS, PTR (reverse)</li>
+        </ul>
+      </div>
+      <div class="cs-card m4">
+        <h3>🌐 HTTP</h3>
+        <ul>
+          <li>Porta 80 (HTTPS 443) · TCP · stateless</li>
+          <li>Persistente (1.1+) vs non persistente (1.0)</li>
+          <li>Metodi: GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH</li>
+          <li>Codici: 2xx ok · 3xx redir · 4xx client · 5xx server</li>
+          <li>HTTP/3 su QUIC (UDP)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+<footer><p>Sistemi 5B — Study Hub</p></footer>
+<script src="../data/modules.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+</body>
+</html>

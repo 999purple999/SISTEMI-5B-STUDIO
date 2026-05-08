@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>🎴 Flashcards — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+.fc-card {
+  background: linear-gradient(180deg, #1c1c1e, #0a0a0c);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 2.5rem 1.5rem;
+  min-height: 320px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: transform 0.6s, box-shadow 0.3s;
+  transform-style: preserve-3d;
+}
+.fc-card.flip { transform: rotateY(180deg); }
+.fc-side { backface-visibility: hidden; -webkit-backface-visibility: hidden; position: absolute; inset: 2.5rem 1.5rem; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
+.fc-front { color: var(--text); }
+.fc-back { transform: rotateY(180deg); color: var(--success); }
+.fc-q { font-size: 1.3rem; font-weight: 600; line-height: 1.4; }
+.fc-a { font-size: 1.1rem; color: var(--text); line-height: 1.5; }
+.fc-topic { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.fc-hint { position:absolute; bottom: 1rem; font-size: 0.78rem; color: var(--text-muted); }
+.fc-rate { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1rem; }
+.fc-rate button { padding: 0.85rem 0.5rem; border-radius: 12px; border: 1px solid var(--border-strong); cursor: pointer; font-family: inherit; font-weight: 600; }
+.fc-again { background: rgba(255,69,58,0.15); color: #ff8a80; border-color: rgba(255,69,58,0.35); }
+.fc-hard { background: rgba(255,159,10,0.15); color: #ffb84a; border-color: rgba(255,159,10,0.35); }
+.fc-good { background: rgba(48,209,88,0.15); color: #6be397; border-color: rgba(48,209,88,0.35); }
+.fc-easy { background: rgba(10,132,255,0.15); color: #6cb8ff; border-color: rgba(10,132,255,0.35); }
+.fc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.fc-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem; text-align: center; }
+.fc-stat-num { font-size: 1.4rem; font-weight: 800; color: var(--text); }
+.fc-stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">S</span><span>Sistemi 5B</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">Modulo 1</a></li>
+      <li><a href="m2.html">Modulo 2</a></li>
+      <li><a href="m3.html">Modulo 3</a></li>
+      <li><a href="m4.html">Modulo 4</a></li>
+      <li><a href="exam.html">📝 Esame</a></li>
+      <li><a href="flashcards.html" class="active">🎴 Flashcards</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Flashcards</div>
+      <h1 class="chapter-title">🎴 Flashcards con Spaced Repetition</h1>
+      <p class="chapter-sub">Sistema in stile Anki (algoritmo SM-2): ti riproponiamo le carte poco prima che tu stia per dimenticarle. <strong>10× più veloce della rilettura</strong>.</p>
+    </div>
+
+    <div class="fc-stats mt-3">
+      <div class="fc-stat"><div class="fc-stat-num" id="stat-total">0</div><div class="fc-stat-lbl">Totali</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="stat-due" style="color:var(--warning)">0</div><div class="fc-stat-lbl">Da rivedere</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="stat-learn">0</div><div class="fc-stat-lbl">In apprendimento</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="stat-master" style="color:var(--success)">0</div><div class="fc-stat-lbl">Memorizzate</div></div>
+    </div>
+
+    <div id="fc-setup" class="quiz-card mt-3">
+      <h3 style="margin-bottom:0.75rem;">Filtra per modulo</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+        <button class="btn btn-secondary btn-sm fc-mod" data-mod="all">Tutte</button>
+        <button class="btn btn-secondary btn-sm fc-mod" data-mod="1">🔐 Mod 1</button>
+        <button class="btn btn-secondary btn-sm fc-mod" data-mod="2">🛡️ Mod 2</button>
+        <button class="btn btn-secondary btn-sm fc-mod" data-mod="3">☁️ Mod 3</button>
+        <button class="btn btn-secondary btn-sm fc-mod" data-mod="4">🎓 Mod 4</button>
+      </div>
+      <button class="btn btn-primary btn-lg mt-3" id="start-fc" style="width:100%;">▶ Inizia revisione</button>
+      <p class="text-center mt-2" style="font-size:0.78rem; color:var(--text-muted);">Spazio = mostra risposta · 1-4 = valutazione</p>
+    </div>
+
+    <div id="fc-session" style="display:none;">
+      <div class="quiz-progress mb-3">
+        <span class="quiz-counter" id="fc-counter">0/0</span>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="fc-prog" style="width:0%"></div></div>
+        <span class="quiz-counter" id="fc-mod">M1</span>
+      </div>
+      <div class="fc-card" id="fc-card">
+        <div class="fc-side fc-front">
+          <div class="fc-topic" id="fc-topic">Topic</div>
+          <div class="fc-q" id="fc-q">Domanda</div>
+          <div class="fc-hint">Tap o spazio per vedere la risposta</div>
+        </div>
+        <div class="fc-side fc-back">
+          <div class="fc-topic">Risposta</div>
+          <div class="fc-a" id="fc-a">Risposta</div>
+        </div>
+      </div>
+      <div class="fc-rate" id="fc-rate" style="display:none;">
+        <button class="fc-again">😣 Di nuovo<br><small>1</small></button>
+        <button class="fc-hard">🤔 Difficile<br><small>2</small></button>
+        <button class="fc-good">🙂 Buono<br><small>3</small></button>
+        <button class="fc-easy">😎 Facile<br><small>4</small></button>
+      </div>
+    </div>
+
+    <div id="fc-done" style="display:none;" class="quiz-card text-center">
+      <h2>🎉 Sessione completata!</h2>
+      <p class="mt-2" style="color:var(--text-dim);">Hai rivisto tutte le carte in scadenza. Torna domani per continuare il ripasso ottimale.</p>
+      <button class="btn btn-primary mt-3" onclick="location.reload()">Nuova sessione</button>
+      <a href="../index.html" class="btn btn-secondary mt-3">Home</a>
+    </div>
+  </div>
+</main>
+<footer><p>Sistemi 5B — Study Hub</p></footer>
+
+<script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/flashcards.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+let modFilter = 'all';
+let session = [];
+let idx = 0;
+let revealed = false;
+
+function refreshStats() {
+  const s = Flashcards.stats();
+  document.getElementById('stat-total').textContent = s.total;
+  document.getElementById('stat-due').textContent = s.due;
+  document.getElementById('stat-learn').textContent = s.learning;
+  document.getElementById('stat-master').textContent = s.mastered;
+}
+
+document.querySelectorAll('.fc-mod').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.fc-mod').forEach(x => x.classList.remove('btn-primary'));
+  document.querySelectorAll('.fc-mod').forEach(x => x.classList.add('btn-secondary'));
+  b.classList.add('btn-primary');
+  b.classList.remove('btn-secondary');
+  modFilter = b.dataset.mod;
+}));
+
+document.getElementById('start-fc').addEventListener('click', () => {
+  let cards = Flashcards.dueCards();
+  if (modFilter !== 'all') cards = cards.filter(c => c.mod === parseInt(modFilter));
+  if (cards.length === 0) {
+    alert('Nessuna carta da rivedere ora! Torna più tardi.');
+    return;
+  }
+  session = cards.sort(() => Math.random() - 0.5);
+  idx = 0;
+  document.getElementById('fc-setup').style.display = 'none';
+  document.getElementById('fc-session').style.display = 'block';
+  paint();
+});
+
+function paint() {
+  if (idx >= session.length) {
+    document.getElementById('fc-session').style.display = 'none';
+    document.getElementById('fc-done').style.display = 'block';
+    refreshStats();
+    return;
+  }
+  const c = session[idx];
+  revealed = false;
+  document.getElementById('fc-card').classList.remove('flip');
+  document.getElementById('fc-rate').style.display = 'none';
+  document.getElementById('fc-q').textContent = c.q;
+  document.getElementById('fc-a').textContent = c.a;
+  document.getElementById('fc-topic').textContent = c.topic || ('Modulo ' + c.mod);
+  document.getElementById('fc-mod').textContent = 'M' + c.mod;
+  document.getElementById('fc-counter').textContent = `${idx + 1}/${session.length}`;
+  document.getElementById('fc-prog').style.width = ((idx / session.length) * 100) + '%';
+}
+
+function reveal() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('fc-card').classList.add('flip');
+  document.getElementById('fc-rate').style.display = 'grid';
+}
+
+document.getElementById('fc-card').addEventListener('click', reveal);
+document.querySelectorAll('#fc-rate button').forEach((b, i) => {
+  b.addEventListener('click', () => {
+    if (!revealed) return;
+    const quality = [2, 3, 4, 5][i];
+    Flashcards.review(session[idx], quality);
+    if (window.Storage && Storage.set) {
+      Storage.set(s => { s.xp = (s.xp || 0) + (quality >= 3 ? 5 : 1); return s; });
+    }
+    idx++;
+    paint();
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('fc-session').style.display === 'none') return;
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); reveal(); }
+  else if (revealed && e.key >= '1' && e.key <= '4') {
+    const i = parseInt(e.key, 10) - 1;
+    document.querySelectorAll('#fc-rate button')[i].click();
+  }
+});
+
+refreshStats();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+</body>
+</html>

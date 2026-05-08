@@ -1002,3 +1002,26 @@ footer {
 @supports (padding: env(safe-area-inset-bottom)) {
   body { padding-bottom: env(safe-area-inset-bottom); }
 }
+
+/* ============ PRINT ============ */
+@media print {
+  body, body::before { background: #fff !important; }
+  body { color: #000 !important; }
+  .navbar, footer, .pom-fab, .st-fab, .breadcrumb, .toc, .quiz-section, .reset-zone, #prev-next, .hero-actions, .stats-grid, .search-bar, .nav-toggle, #pom-overlay, #gs-overlay, .pom-overlay { display: none !important; }
+  .container { max-width: 100% !important; padding: 0 !important; }
+  main { padding: 0 !important; }
+  h1, h2, h3, h4, h5, p, li, td, th { color: #000 !important; }
+  .chapter-content, .module-card, .info-box, .callout, table, .formula, .mermaid { background: #fff !important; border-color: #ccc !important; color: #000 !important; box-shadow: none !important; break-inside: avoid; }
+  .info-box.tip { border-left: 3px solid #2da14a !important; }
+  .info-box.warn { border-left: 3px solid #e08200 !important; }
+  .info-box.danger { border-left: 3px solid #c8392f !important; }
+  .info-box.key { border-left: 3px solid #8b3acf !important; }
+  .term { background: #f0f0f0 !important; color: #000 !important; }
+  .chapter-header { padding: 0 0 1rem 0 !important; border-bottom: 1px solid #ccc !important; }
+  a { color: #000 !important; text-decoration: underline; }
+  code { background: #f0f0f0 !important; color: #000 !important; }
+  /* hide flip cards backside in print */
+  .fc-card.flip { transform: none !important; }
+  .fc-card .fc-back { display: none !important; }
+}
+

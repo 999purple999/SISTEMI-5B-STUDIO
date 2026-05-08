@@ -1,5 +1,5 @@
 // Simple offline-first service worker
-const CACHE = 'sistemi5b-v1';
+const CACHE = 'sistemi5b-v2';
 const PRECACHE = [
   './',
   './index.html',
@@ -9,6 +9,9 @@ const PRECACHE = [
   './assets/js/quiz.js',
   './assets/js/chapter.js',
   './assets/js/exam.js',
+  './assets/js/flashcards.js',
+  './assets/js/study-tools.js',
+  './assets/js/pomodoro.js',
   './data/modules.js',
   './data/content-m1.js',
   './data/content-m1b.js',
@@ -23,6 +26,9 @@ const PRECACHE = [
   './chapters/m3.html',
   './chapters/m4.html',
   './chapters/exam.html',
+  './chapters/flashcards.html',
+  './chapters/cheatsheet.html',
+  './chapters/mistakes.html',
   './manifest.json'
 ];
 

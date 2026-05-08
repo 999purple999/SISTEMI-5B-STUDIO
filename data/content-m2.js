@@ -4,6 +4,8 @@ window.CHAPTERS = window.CHAPTERS || {};
 window.CHAPTERS.m2c1 = {
   title: "Firewall: Network e Personal",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p><strong>Network firewall</strong>: dispositivo (hardware o router con software) tra LAN e Internet, filtra inbound + outbound. <strong>Personal firewall</strong>: programma sul singolo host. Regole nella <strong>ACL</strong>: traffico non conforme → scartato. Più firewall = più sicurezza ma più lentezza.</p></div>
+
     <p>Un <span class="term">firewall</span> è un dispositivo che <strong>filtra il traffico</strong> che transita tra due o più reti, in base a regole prestabilite (<em>policy</em>) memorizzate in una <span class="term">Access Control List (ACL)</span>.</p>
 
     <p>Il traffico che <strong>non rispetta</strong> le regole viene <strong>scartato</strong>. Esistono due grandi categorie:</p>
@@ -51,6 +53,8 @@ window.CHAPTERS.m2c1 = {
 window.CHAPTERS.m2c2 = {
   title: "ACL standard ed estese (Cisco)",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p><strong>ACL standard</strong> (1-99): solo IP mittente, applicate <strong>vicino alla destinazione</strong>. <strong>ACL estese</strong> (100-199): IP src/dst, porte, protocollo, applicate <strong>vicino alla sorgente</strong>. Logica: <strong>first-match wins</strong>. Default: <strong>deny</strong>. Wildcard: <code>0.0.0.0</code> = singolo host, <code>0.0.0.255</code> = /24, <code>any</code> = tutti.</p></div>
+
     <p>Le <span class="term">Access Control List (ACL)</span> sono un elenco di regole che stabiliscono quale traffico può essere entrante o uscente da una determinata interfaccia di un router con funzionalità di firewall.</p>
 
     <h2 id="struttura">Struttura di una regola</h2>

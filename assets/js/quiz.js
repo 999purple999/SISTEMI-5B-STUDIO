@@ -82,6 +82,9 @@ window.Quiz = (function () {
           fb.innerHTML = `<strong>❌ Sbagliato.</strong> ${q.explain || ''}`;
         }
         state.answers.push({ q: q.q, correct: isCorrect });
+        if (!isCorrect && window.StudyTools) {
+          StudyTools.recordMistake(q.q, chapterId, document.title);
+        }
         next.disabled = false;
         next.focus();
       }

@@ -65,6 +65,8 @@ window.CHAPTERS.m1c7 = {
 window.CHAPTERS.m1c8 = {
   title: "Algoritmo RSA",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Cifrario asimmetrico (1978) basato sulla difficoltà di fattorizzare numeri grandi. Generazione: scegli p, q primi → <code>N = p·q</code>, <code>b = (p-1)(q-1)</code> → scegli e primo con b → calcola d tale che <code>(e·d) mod b = 1</code>. <strong>K_pub = [N, e]</strong>, <strong>K_priv = [N, d]</strong>. Cifra con <code>m^e mod N</code>, decifra con <code>m'^d mod N</code>. Oggi sicuro a 2048 bit.</p></div>
+
     <p>Il più conosciuto algoritmo a chiavi asimmetriche fu proposto da <strong>Rivest, Shamir, Adleman</strong> nel <strong>1978</strong>. Il nome è l'acronimo dei loro cognomi.</p>
 
     <p>Oggi è ritenuto sicuro se la chiave <strong>pubblica</strong> è di <strong>2048 bit</strong>; la chiave privata è circa il doppio.</p>
@@ -154,6 +156,8 @@ window.CHAPTERS.m1c9 = {
 window.CHAPTERS.m1c10 = {
   title: "Firma digitale",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Si firma <strong>cifrando il digest</strong> (output dell'hash) con la <strong>chiave privata</strong>. Verifica: hash del documento + decifra firma con la <strong>chiave pubblica</strong> + confronto. Garantisce <strong>integrità + autenticazione</strong> (NON riservatezza). Validità legale in Italia con D.Lgs. 82/2005.</p></div>
+
     <p>La <span class="term">firma digitale</span> consente di firmare un documento digitale con la stessa <strong>validità legale</strong> di una firma calligrafica su carta. È disciplinata in Italia dal <strong>D.Lgs. 7 marzo 2005, n. 82</strong>.</p>
 
     <h2 id="differenze">Differenze con la firma autografa</h2>
@@ -305,6 +309,8 @@ window.CHAPTERS.m1c11 = {
 window.CHAPTERS.m1c12 = {
   title: "Autorità di Certificazione e certificati X.509",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Una <strong>CA</strong> firma certificati che legano una chiave pubblica a una persona. Standard: <strong>X.509 v3</strong>. Estensione file: <strong>.p7m (pkcs#7)</strong> = busta crittografica. Smart card + PIN. Validità temporale, revoca via <strong>CRL</strong> (lista) o <strong>OCSP</strong> (online). Marca temporale via <strong>TSA</strong>.</p></div>
+
     <h2 id="problema-ca">Il problema</h2>
     <p>Come può un soggetto che vuole verificare una firma essere certo dell'<strong>identità della persona</strong> che dichiara di possedere una certa chiave pubblica?</p>
 

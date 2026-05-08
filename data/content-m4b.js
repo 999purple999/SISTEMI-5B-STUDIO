@@ -189,6 +189,8 @@ interface GigabitEthernet0/0.20
 window.CHAPTERS.m4c9 = {
   title: "DHCP - Dynamic Host Configuration Protocol",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Assegna automaticamente <strong>IP, mask, gateway, DNS</strong> agli host. Le 4 fasi sono <strong>DORA</strong>: <em>Discover</em> (broadcast 0.0.0.0 → 255.255.255.255) → <em>Offer</em> → <em>Request</em> → <em>Acknowledge</em>. Server porta 67, client 68 (UDP). Lease + renew. <strong>DHCP relay</strong> tra reti diverse.</p></div>
+
     <p><span class="term">DHCP</span> è il protocollo che assegna <strong>automaticamente</strong> agli host di una rete i parametri di configurazione IP: indirizzo IP, subnet mask, default gateway, server DNS.</p>
 
     <h2 id="motivazione">Statico vs dinamico</h2>
@@ -271,6 +273,8 @@ ip dhcp excluded-address 192.168.1.1 192.168.1.10</code>
 window.CHAPTERS.m4c10 = {
   title: "DNS - Domain Name System",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Traduce <strong>nomi simbolici → IP</strong>. Porta 53 (UDP/TCP). Gerarchia: root (13 cluster) → TLD (.com, .it) → autoritativo. Risoluzione <strong>ricorsiva</strong>: il resolver fa tutto. <strong>Iterativa</strong>: una richiesta alla volta. Record: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), NS, PTR (reverse).</p></div>
+
     <p><span class="term">DNS</span> è il protocollo che <strong>traduce nomi simbolici</strong> (es. <code>www.google.com</code>) in <strong>indirizzi IP</strong> (es. <code>142.250.184.196</code>).</p>
 
     <h2 id="motivazione">Perché esiste</h2>
@@ -374,6 +378,8 @@ sequenceDiagram
 window.CHAPTERS.m4c11 = {
   title: "HTTP - Hyper Text Transfer Protocol",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Protocollo client-server <strong>stateless</strong> sopra TCP. Porta 80 (HTTPS = HTTP+TLS, 443). Versioni: 1.0 non persistente · 1.1 persistente + pipelining · 2 multiplexing · 3 su QUIC/UDP. Metodi: GET, POST, PUT, DELETE. Codici: 2xx ok · 3xx redir · 4xx client · 5xx server.</p></div>
+
     <p><span class="term">HTTP</span> è il protocollo di livello applicativo che permette il <strong>web browsing</strong>: lo scambio di risorse (HTML, CSS, JS, immagini, video) tra client (browser) e server web.</p>
 
     <h2 id="caratteristiche">Caratteristiche</h2>

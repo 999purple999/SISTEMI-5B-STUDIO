@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>❌ I tuoi errori — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-logo">S</span><span>Sistemi 5B</span></a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">Modulo 1</a></li>
+      <li><a href="m2.html">Modulo 2</a></li>
+      <li><a href="m3.html">Modulo 3</a></li>
+      <li><a href="m4.html">Modulo 4</a></li>
+      <li><a href="exam.html">📝 Esame</a></li>
+      <li><a href="flashcards.html">🎴 Cards</a></li>
+      <li><a href="cheatsheet.html">📋 Cheat</a></li>
+      <li><a href="mistakes.html" class="active">❌ Errori</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / I tuoi errori</div>
+      <h1 class="chapter-title">❌ I tuoi errori</h1>
+      <p class="chapter-sub">Tutte le domande sbagliate nei quiz, raggruppate per capitolo. Studia <strong>solo</strong> ciò che ti serve davvero.</p>
+    </div>
+    <div id="mistakes-content"></div>
+  </div>
+</main>
+<footer><p>Sistemi 5B — Study Hub</p></footer>
+
+<script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+
+const root = document.getElementById('mistakes-content');
+const list = StudyTools.loadMistakes();
+
+if (list.length === 0) {
+  root.innerHTML = `
+    <div class="quiz-card text-center" style="padding:3rem 1.5rem;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🎉</div>
+      <h2>Nessun errore registrato!</h2>
+      <p class="mt-2" style="color:var(--text-dim);">Hai risposto correttamente a tutto, oppure non hai ancora fatto un quiz. Inizia a studiare!</p>
+      <a href="../index.html" class="btn btn-primary mt-3">Vai ai moduli</a>
+    </div>`;
+} else {
+  // Group by chapter
+  const byCh = {};
+  list.forEach(m => { (byCh[m.chapterId] = byCh[m.chapterId] || []).push(m); });
+
+  // Find correct answer + explain for each q
+  function findQuiz(question, chapterId) {
+    const ch = window.CHAPTERS && window.CHAPTERS[chapterId];
+    if (!ch || !ch.quiz) return null;
+    return ch.quiz.find(q => q.q === question);
+  }
+  function chapterMeta(id) {
+    if (!window.MODULES) return null;
+    for (const m of window.MODULES) {
+      const c = m.chapters.find(x => x.id === id);
+      if (c) return { mod: m, ch: c };
+    }
+    return null;
+  }
+
+  let html = `
+    <div class="quiz-card mb-3" style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between;">
+      <div>
+        <div style="font-size:2rem; font-weight:800; color:var(--error);">${list.length}</div>
+        <div style="color:var(--text-dim); font-size:0.9rem;">Errori totali su ${Object.keys(byCh).length} capitoli</div>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" id="clear-all">🗑️ Pulisci tutto</button>
+      </div>
+    </div>
+  `;
+
+  Object.entries(byCh).forEach(([chId, items]) => {
+    const meta = chapterMeta(chId);
+    const title = meta ? meta.ch.title : chId;
+    const modNum = meta ? meta.mod.num : '';
+    const slug = meta ? meta.ch.slug : null;
+    html += `
+      <div class="quiz-card mb-3">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+          <div>
+            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.06em;">${modNum}</div>
+            <h3 style="margin-top:0.2rem;">${title}</h3>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <span style="padding:4px 10px; background:rgba(255,69,58,0.18); color:#ff8a80; border-radius:99px; font-size:0.78rem; font-weight:600;">${items.length} ${items.length === 1 ? 'errore' : 'errori'}</span>
+            ${slug ? `<a href="${slug}.html" class="btn btn-secondary btn-sm">Rivedi capitolo</a>` : ''}
+          </div>
+        </div>
+    `;
+    // Unique questions
+    const seen = new Set();
+    items.forEach(it => {
+      if (seen.has(it.q)) return;
+      seen.add(it.q);
+      const quiz = findQuiz(it.q, chId);
+      html += `
+        <div style="padding:0.85rem 0; border-bottom:1px solid var(--border);">
+          <div style="font-weight:600; margin-bottom:0.3rem;">❌ ${it.q}</div>
+          ${quiz ? `<div style="font-size:0.9rem; color:var(--success); margin-top:0.3rem;">✅ <strong>Risposta corretta:</strong> ${quiz.a[quiz.correct]}</div>` : ''}
+          ${quiz && quiz.explain ? `<div style="font-size:0.85rem; color:var(--text-dim); margin-top:0.4rem;">💡 ${quiz.explain}</div>` : ''}
+        </div>
+      `;
+    });
+    html += `</div>`;
+  });
+
+  root.innerHTML = html;
+  document.getElementById('clear-all').addEventListener('click', () => {
+    if (confirm('Pulire la cronologia degli errori?')) {
+      StudyTools.clearMistakes();
+      location.reload();
+    }
+  });
+}
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+</body>
+</html>

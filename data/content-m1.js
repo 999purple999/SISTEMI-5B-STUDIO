@@ -4,6 +4,8 @@ window.CHAPTERS = window.CHAPTERS || {};
 window.CHAPTERS.m1c1 = {
   title: "Introduzione alla sicurezza in una trasmissione",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p>Una trasmissione sicura garantisce <strong>3 aspetti</strong>: <strong>riservatezza</strong> (l'attaccante non capisce), <strong>integrità</strong> (il messaggio non è alterato), <strong>autenticazione</strong> (l'autore è chi dice di essere). Si usa un <strong>sistema crittografico</strong> = algoritmo di cifratura + decifratura.</p></div>
+
     <p>La <strong>crittografia</strong> è la scienza che studia tecniche efficienti per rendere sicure l'archiviazione e la trasmissione dei dati attraverso un <em>canale insicuro</em>.</p>
 
     <h2 id="attori">Gli attori della comunicazione</h2>
@@ -113,6 +115,8 @@ window.CHAPTERS.m1c2 = {
 window.CHAPTERS.m1c3 = {
   title: "Crittografia a chiave simmetrica",
   body: `
+    <div class="info-box tip"><h4>📌 TL;DR</h4><p><strong>Una sola chiave segreta</strong> condivisa tra mittente e destinatario. Pro: <strong>veloce</strong>. Contro: serve un <strong>canale sicuro</strong> per scambiarla, e nelle reti grandi si ha <strong>proliferazione</strong> (<code>N(N-1)/2</code> chiavi totali). Diffie-Hellman risolve il problema dello scambio.</p></div>
+
     <p>Un cifrario a <span class="term">chiave simmetrica</span> richiede che i due interlocutori possiedano una <strong>chiave segreta comune</strong>, nota esclusivamente a loro due.</p>
 
     <h2 id="funzionamento">Come funziona</h2>
