@@ -21,6 +21,22 @@ window.CHAPTERS.m1c4 = {
     <h2 id="radice-primitiva">Radice primitiva</h2>
     <p>Una <strong>radice primitiva</strong> <code>a</code> di un numero primo <code>N</code> è un intero per cui, preso un qualsiasi <code>b</code> con <code>1 ≤ b ≤ N−1</code>, esiste un <code>i</code> tale per cui <code>b = a<sup>i</sup> mod N</code>.</p>
 
+    <h2 id="diagram-flow">Diagramma di scambio</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant A as 👩 Alice
+  participant B as 👨 Bob
+  Note over A: sceglie N primo, g radice primitiva
+  A->>B: N, g
+  Note over A: sceglie x segreto
+  Note over B: sceglie y segreto
+  A->>B: g^x mod N
+  B->>A: g^y mod N
+  Note over A: K = (g^y mod N)^x mod N
+  Note over B: K = (g^x mod N)^y mod N
+  Note over A,B: 🔑 Chiave segreta condivisa
+    </pre>
+
     <h2 id="passi">Passi dell'algoritmo</h2>
     <ol>
       <li><strong>Alice</strong> sceglie un numero <strong>primo grande</strong> <code>N</code> e una sua <strong>radice primitiva</strong> <code>g</code>.</li>
@@ -35,6 +51,22 @@ window.CHAPTERS.m1c4 = {
     <p>L'attaccante intercetta <code>N, g, g<sup>x</sup> mod N, g<sup>y</sup> mod N</code> ma <strong>non</strong> <code>x</code> e <code>y</code>. La sicurezza si basa sulla <strong>difficoltà computazionale</strong> di ricavare l'esponente dal logaritmo discreto.</p>
 
     <h2 id="mitm">Attacco Man-in-the-Middle</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant A as 👩 Alice
+  participant T as 🦹 Trudy
+  participant B as 👨 Bob
+  A->>T: N, g, g^x mod N
+  T->>A: g^z mod N (finge di essere Bob)
+  T->>B: N, g, g^z mod N (finge di essere Alice)
+  B->>T: g^y mod N
+  Note over A,T: K_AT condivisa con Trudy
+  Note over T,B: K_TB condivisa con Trudy
+  A->>T: msg cifrato con K_AT
+  Note over T: Decifra con K_AT, legge,<br/>ricifra con K_TB
+  T->>B: msg cifrato con K_TB
+    </pre>
+
     <div class="info-box danger">
       <h4>⚠️ Attacco attivo MitM</h4>
       <p>Se Trudy effettua un <strong>attacco attivo</strong>, intercetta i messaggi e si finge Bob con Alice e Alice con Bob. Risultato: due chiavi distinte (<code>K<sub>AT</sub></code> e <code>K<sub>TB</sub></code>) entrambe condivise con Trudy, che può decifrare e ricifrare ogni messaggio.</p>
@@ -78,6 +110,17 @@ window.CHAPTERS.m1c5 = {
 
     <h3 id="algoritmo">Algoritmo</h3>
     <p>Cifratura e decifratura effettuano lo <strong>XOR bit-a-bit</strong> tra messaggio e chiave.</p>
+
+    <pre class="mermaid">
+flowchart LR
+  M[Messaggio<br/>10100011] --> X((XOR))
+  K[Chiave<br/>11000111] --> X
+  X --> C[Cifrato<br/>01100100]
+  C --> X2((XOR))
+  K2[Stessa chiave<br/>11000111] --> X2
+  X2 --> M2[Chiaro<br/>10100011]
+    </pre>
+
 
     <p>Esempio:</p>
     <code class="formula">Chiaro:    1 0 1 0 0 0 1 1

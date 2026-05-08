@@ -177,6 +177,33 @@ window.CHAPTERS.m1c10 = {
       <p>Cifrare un intero documento con un cifrario asimmetrico è <strong>computazionalmente costoso</strong>, soprattutto per documenti grandi.</p>
     </div>
 
+    <h2 id="firma-flow">Diagramma firma + verifica</h2>
+    <pre class="mermaid">
+flowchart TB
+  subgraph FIRMA[👩 Alice firma]
+    D[Documento] --> H1[Algoritmo Hash]
+    H1 --> DG1[Digest]
+    DG1 --> CIF[Cifratura asimmetrica]
+    KP[🔑 Chiave privata Alice] --> CIF
+    CIF --> FD[Firma digitale]
+  end
+  subgraph TX[Trasmissione]
+    D2[Documento] -.- FD2[Firma]
+  end
+  D --> D2
+  FD --> FD2
+  subgraph VER[👨 Bob verifica]
+    D2 --> H2[Stesso Hash]
+    H2 --> DGA[Digest A]
+    FD2 --> DEC[Decifra con chiave PUBBLICA Alice]
+    DEC --> DGB[Digest B]
+    DGA --> CMP{A == B ?}
+    DGB --> CMP
+    CMP -->|sì| OK[✅ Firma valida]
+    CMP -->|no| KO[❌ Non valida]
+  end
+    </pre>
+
     <h2 id="hash-soluzione">Soluzione: usare un hash</h2>
     <p>Il firmatario:</p>
     <ol>
@@ -294,6 +321,23 @@ window.CHAPTERS.m1c12 = {
       <li>Verificare l'<strong>identità</strong> del soggetto che si vuole certificare.</li>
       <li><strong>Generare</strong> e <strong>firmare</strong> il certificato contenente chiave pubblica e dati personali.</li>
     </ul>
+
+    <h2 id="ca-flow">Verifica del certificato</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as 🧑 Utente
+  participant CA as 🏛️ Certification Authority
+  participant V as 🧐 Verificatore
+  Note over U,CA: Fase di emissione
+  U->>CA: identità + chiave pubblica
+  Note over CA: verifica identità
+  Note over CA: firma certificato con propria CK_priv
+  CA->>U: certificato X.509 firmato
+  Note over U,V: Fase di verifica firma
+  U->>V: documento + firma + certificato
+  Note over V: 1) calcola digest del certificato<br/>2) decifra firma CA con CK_pub<br/>3) confronta i digest
+  V-->>V: ✅ chiave pubblica autentica
+    </pre>
 
     <h2 id="x509">Standard X.509 v3</h2>
     <p>Lo standard internazionale che definisce il formato del file di certificato. La versione corrente è la <strong>v3</strong>.</p>

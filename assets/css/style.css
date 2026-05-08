@@ -951,6 +951,24 @@ footer {
   color: var(--text-dim);
 }
 
+/* Mermaid diagrams */
+.mermaid {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  overflow-x: auto;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Diagrams (CSS-based simple ones) */
 .diagram {
   background: var(--bg-card);

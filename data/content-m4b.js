@@ -126,7 +126,33 @@ window.CHAPTERS.m4c8 = {
       <li><strong>Trunk port</strong>: trasporta più VLAN; i frame sono <strong>taggati</strong> (eccetto la VLAN nativa).</li>
     </ul>
 
+    <h2 id="vlan-trunk">Trunk 802.1Q tra switch — diagramma</h2>
+    <pre class="mermaid">
+flowchart LR
+  subgraph S1[Switch 1]
+    A1[💻 PC A<br/>VLAN 10]
+    A2[💻 PC B<br/>VLAN 20]
+  end
+  subgraph S2[Switch 2]
+    B1[💻 PC C<br/>VLAN 10]
+    B2[💻 PC D<br/>VLAN 20]
+  end
+  S1 -- "Trunk 802.1Q<br/>VLAN 10 + 20 con tag" --- S2
+  A1 -. stessa VLAN .- B1
+  A2 -. stessa VLAN .- B2
+    </pre>
+
     <h2 id="vlan-routing">VLAN routing: Router on a Stick</h2>
+    <pre class="mermaid">
+flowchart LR
+  R[🌐 Router]
+  R -- sub-iface .10<br/>192.168.10.1 --> SW
+  R -- sub-iface .20<br/>192.168.20.1 --> SW
+  SW[Switch L2 — trunk]
+  SW --> V10[VLAN 10<br/>192.168.10.0/24]
+  SW --> V20[VLAN 20<br/>192.168.20.0/24]
+    </pre>
+
     <p>Per far comunicare host di VLAN diverse serve un <strong>router</strong>. La tecnica <strong>Router on a Stick</strong>:</p>
     <ol>
       <li>L'interfaccia fisica del router è collegata via trunk allo switch.</li>
@@ -182,6 +208,18 @@ window.CHAPTERS.m4c9 = {
       <li><strong>DHCP client</strong>: l'host che richiede la configurazione.</li>
       <li><strong>DHCP relay</strong>: nei casi in cui server e client sono in reti diverse, inoltra le richieste.</li>
     </ul>
+
+    <h2 id="dora-flow">Diagramma DORA</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant C as 💻 Client (0.0.0.0)
+  participant S as 🖥️ DHCP Server
+  C->>S: 1️⃣ DISCOVER (broadcast 255.255.255.255)
+  S->>C: 2️⃣ OFFER (proposta IP, mask, gateway, lease)
+  C->>S: 3️⃣ REQUEST (broadcast: scelgo questa offerta)
+  S->>C: 4️⃣ ACK (configurazione attiva)
+  Note over C,S: A metà del lease → RENEW
+    </pre>
 
     <h2 id="dora">Le 4 fasi DORA</h2>
 
@@ -273,6 +311,25 @@ window.CHAPTERS.m4c10 = {
 
     <h3 id="iterativa">Risoluzione iterativa</h3>
     <p>Il client (o resolver) fa <strong>una richiesta alla volta</strong> a ogni server e riceve un riferimento al server successivo.</p>
+
+    <h2 id="dns-flow">Risoluzione ricorsiva — diagramma</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant C as 💻 Client
+  participant R as 🧠 Resolver
+  participant Root as 🌐 Root server
+  participant TLD as 🏷️ TLD .com
+  participant Auth as 📚 Autoritativo google.com
+  C->>R: www.google.com ?
+  R->>Root: chi gestisce .com ?
+  Root->>R: TLD server di .com
+  R->>TLD: chi gestisce google.com ?
+  TLD->>R: server autoritativo google.com
+  R->>Auth: IP di www.google.com ?
+  Auth->>R: 142.250.184.196
+  R->>C: 142.250.184.196
+  Note over R: Cache della risposta
+    </pre>
 
     <h2 id="esempio">Esempio risoluzione di www.google.com</h2>
     <ol>

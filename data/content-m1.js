@@ -14,6 +14,18 @@ window.CHAPTERS.m1c1 = {
       <div class="callout"><div class="callout-icon">🦹</div><div class="callout-title">Trudy</div><div class="callout-text">L'<strong>attaccante</strong> che intercetta il canale.</div></div>
     </div>
 
+    <h2 id="modello">Il modello della comunicazione</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant A as 👩 Alice (mittente)
+  participant T as 🦹 Trudy (attaccante)
+  participant B as 👨 Bob (destinatario)
+  Note over A,B: Canale insicuro
+  A->>T: Messaggio in chiaro
+  T-->>B: Inoltra (forse modificato!)
+  Note over T: Trudy può: leggere<br/>e/o modificare
+    </pre>
+
     <h2 id="aspetti">I tre aspetti della sicurezza</h2>
     <div class="info-box key">
       <h4>🔑 Trinità della sicurezza (CIA)</h4>

@@ -29,6 +29,20 @@ window.CHAPTERS.m2c6 = {
       <li>Memorizza l'associazione (IP_priv:porta_orig → IP_pub:porta_nuova) nella <strong>PAT Table</strong>.</li>
     </ol>
 
+    <h3 id="pat-flow">Diagramma PAT</h3>
+    <pre class="mermaid">
+sequenceDiagram
+  participant H as 💻 Host A<br/>10.0.0.1:49530
+  participant R as 🔀 Router PAT<br/>138.76.29.7
+  participant S as 🌐 Server pubblico<br/>128.119.40.186:80
+  H->>R: src=10.0.0.1:49530 dst=128.119.40.186:80
+  Note over R: PAT Table:<br/>10.0.0.1:49530 → 138.76.29.7:65000
+  R->>S: src=138.76.29.7:65000 dst=128.119.40.186:80
+  S->>R: src=128.119.40.186:80 dst=138.76.29.7:65000
+  Note over R: Cerca 65000 in PAT Table<br/>→ 10.0.0.1:49530
+  R->>H: src=128.119.40.186:80 dst=10.0.0.1:49530
+    </pre>
+
     <h3 id="esempio-pat">Esempio</h3>
     <p>Host A (10.0.0.1) con browser su porta 49530 invia richiesta HTTP al server pubblico 128.119.40.186. Il router sostituisce:</p>
     <ul>
@@ -221,6 +235,15 @@ window.CHAPTERS.m2c9 = {
       <li><strong>Gestione</strong>: troubleshooting più facile, problemi confinati.</li>
     </ul>
 
+    <h2 id="topologia">Topologia con DMZ</h2>
+    <pre class="mermaid">
+flowchart LR
+  I((🌐 Internet)) --> R1[🔥 Firewall esterno]
+  R1 --> DMZ[🏢 DMZ<br/>Web/Mail/FTP server]
+  R1 --> R2[🔥 Firewall interno]
+  R2 --> LAN[🏠 LAN interna<br/>DB, NAS, host]
+    </pre>
+
     <h2 id="topologie">Topologie DMZ</h2>
 
     <h3 id="single-firewall">Single firewall (3-leg)</h3>
@@ -274,6 +297,22 @@ window.CHAPTERS.m2c10 = {
     </div>
 
     <h2 id="handshake">TLS Handshake (semplificato)</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant C as 💻 Client (browser)
+  participant S as 🌐 Server
+  C->>S: ClientHello (versioni TLS, suite, random)
+  S->>C: ServerHello (versione, suite scelta, random)
+  S->>C: Certificate (X.509 con chiave pubblica)
+  S->>C: ServerKeyExchange (parametri)
+  S->>C: ServerHelloDone
+  C->>S: ClientKeyExchange (premaster cifrato)
+  Note over C,S: Entrambi calcolano la chiave simmetrica
+  C->>S: Finished (cifrato)
+  S->>C: Finished (cifrato)
+  Note over C,S: 🔐 Comunicazione cifrata simmetricamente
+    </pre>
+
     <ol>
       <li><strong>ClientHello</strong>: il client invia versioni TLS supportate, suite di cifratura, random.</li>
       <li><strong>ServerHello</strong>: il server sceglie la versione TLS e la suite, invia il random.</li>

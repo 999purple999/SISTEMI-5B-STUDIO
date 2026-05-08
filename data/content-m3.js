@@ -191,6 +191,23 @@ window.CHAPTERS.m3c5 = {
     <h2 id="hypervisor">Hypervisor</h2>
     <p>L'<span class="term">hypervisor</span> (Virtual Machine Monitor) è il software che astrae le risorse hardware e le distribuisce alle VM.</p>
 
+    <h3 id="hypervisor-types">Tipo 1 vs Tipo 2 — schema</h3>
+    <pre class="mermaid">
+flowchart TB
+  subgraph T1[Tipo 1 — Bare-metal]
+    HW1[💾 Hardware] --> HV1[🛡️ Hypervisor]
+    HV1 --> VM1A[VM 1]
+    HV1 --> VM1B[VM 2]
+    HV1 --> VM1C[VM N]
+  end
+  subgraph T2[Tipo 2 — Hosted]
+    HW2[💾 Hardware] --> OS2[🖥️ Sistema operativo host]
+    OS2 --> HV2[🛡️ Hypervisor]
+    HV2 --> VM2A[VM 1]
+    HV2 --> VM2B[VM 2]
+  end
+    </pre>
+
     <h3 id="tipo1">Hypervisor di tipo 1 (bare-metal)</h3>
     <p>Eseguito <strong>direttamente sull'hardware</strong>, senza un sistema operativo sottostante. Massime prestazioni e sicurezza. Esempi:</p>
     <ul>
@@ -234,6 +251,41 @@ window.CHAPTERS.m3c6 = {
       <li><strong>Rapid elasticity</strong>: scalare velocemente su e giù.</li>
       <li><strong>Measured service</strong>: pagamento basato su uso effettivo.</li>
     </ul>
+
+    <h2 id="paradigmi-stack">Schema dei paradigmi cloud</h2>
+    <pre class="mermaid">
+flowchart LR
+  subgraph IaaS
+    direction TB
+    I1[Hardware]:::p
+    I2[Virtualizzazione]:::p
+    I3[OS]:::u
+    I4[Runtime]:::u
+    I5[App]:::u
+    I6[Dati]:::u
+  end
+  subgraph PaaS
+    direction TB
+    P1[Hardware]:::p
+    P2[Virtualizzazione]:::p
+    P3[OS]:::p
+    P4[Runtime]:::p
+    P5[App]:::u
+    P6[Dati]:::u
+  end
+  subgraph SaaS
+    direction TB
+    S1[Hardware]:::p
+    S2[Virtualizzazione]:::p
+    S3[OS]:::p
+    S4[Runtime]:::p
+    S5[App]:::p
+    S6[Dati]:::p
+  end
+  classDef p fill:#0a84ff,stroke:#0a84ff,color:#fff;
+  classDef u fill:#30d158,stroke:#30d158,color:#000;
+    </pre>
+    <p style="font-size:0.85rem; color:var(--text-muted);">🔵 gestito dal provider · 🟢 gestito dall'utente</p>
 
     <h2 id="paradigmi">I tre paradigmi di servizio</h2>
 

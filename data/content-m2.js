@@ -60,6 +60,22 @@ window.CHAPTERS.m2c2 = {
       <li><span class="term">deny</span>: il router scarta il pacchetto.</li>
     </ul>
 
+    <h2 id="acl-flow">Flow di valutazione ACL</h2>
+    <pre class="mermaid">
+flowchart TD
+  P[📦 Pacchetto in arrivo] --> R1{Match con regola 1?}
+  R1 -->|Sì| A1{Azione regola 1}
+  R1 -->|No| R2{Match con regola 2?}
+  R2 -->|Sì| A2{Azione regola 2}
+  R2 -->|No| RN{...}
+  RN -->|No match| DEF[🚫 Default: deny]
+  A1 -->|permit| OK[✅ Inoltra]
+  A1 -->|deny| KO[❌ Scarta]
+  A2 -->|permit| OK
+  A2 -->|deny| KO
+  DEF --> KO
+    </pre>
+
     <h2 id="match">Logica di match</h2>
     <div class="info-box key">
       <h4>🔑 Regole importanti (Cisco)</h4>
