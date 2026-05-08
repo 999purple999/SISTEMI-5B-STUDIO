@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Studio completo del programma di Sistemi e Reti — Classe 5B. Crittografia, firewall, datacenter, esame di Stato.">
+<title>Sistemi 5B — Study Hub</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ff453a'/><text x='50' y='68' font-family='Arial' font-size='56' font-weight='800' text-anchor='middle' fill='white'>S</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ff453a'/><text x='50' y='68' font-family='Arial' font-size='56' font-weight='800' text-anchor='middle' fill='white'>S</text></svg>">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-logo">S</span>
+      <span>Sistemi 5B</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#moduli" class="active">Moduli</a></li>
+      <li><a href="chapters/exam.html">📝 Esame</a></li>
+      <li><a href="#achievement">Trofei</a></li>
+      <li><a href="#progressi">Progressi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="hero container">
+    <span class="hero-badge">Anno scolastico 2025/2026</span>
+    <h1>Sistemi e Reti<br>per l'Esame di Stato</h1>
+    <p class="hero-sub">Tutto il programma di 5ª Informatica, organizzato in 4 moduli, con quiz interattivi, gamification e tracciamento dei progressi locale.</p>
+    <div class="hero-actions">
+      <a href="#moduli" class="btn btn-primary btn-lg">Inizia a studiare</a>
+      <a href="chapters/exam.html" class="btn btn-secondary btn-lg">📝 Esame finale</a>
+      <a href="#achievement" class="btn btn-ghost btn-lg">I tuoi trofei</a>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="xp-num">0</div><div class="stat-label">XP</div></div>
+      <div class="stat-card"><div class="stat-num" id="streak-num">0</div><div class="stat-label">Streak 🔥</div></div>
+      <div class="stat-card"><div class="stat-num" id="progress-num">0%</div><div class="stat-label">Progresso</div></div>
+      <div class="stat-card"><div class="stat-num" id="chapters-num">0/0</div><div class="stat-label">Capitoli</div></div>
+    </div>
+  </section>
+
+  <section class="container" id="moduli">
+    <div class="search-bar">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="search-input" id="search" type="search" placeholder="Cerca un argomento...">
+    </div>
+    <div class="modules-grid" id="modules"></div>
+  </section>
+
+  <section class="container mt-4" id="achievement">
+    <h2 class="text-center" style="margin-bottom:0.4rem;">🏆 Trofei sbloccati</h2>
+    <p class="text-center" style="color:var(--text-dim); margin-bottom:1.5rem;">
+      <span id="ach-counter">0/0</span> conquiste
+    </p>
+    <div class="achievements-grid" id="achievements"></div>
+  </section>
+
+  <section class="container mt-4" id="progressi">
+    <div class="reset-zone">
+      <p style="margin-bottom:0.75rem;">⚠️ Resetta i progressi salvati nel browser. Non potrai più recuperarli.</p>
+      <button class="btn btn-ghost btn-sm" id="reset-btn">Resetta progressi</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Sistemi 5B — Study Hub · Materiale del Prof. Marcolin Mattia · Sito non ufficiale realizzato a scopo didattico.</p>
+  <p style="margin-top:0.5rem;">I progressi sono salvati localmente nel tuo browser (localStorage).</p>
+</footer>
+
+<script src="data/modules.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(()=>{});
+    });
+  }
+</script>
+</body>
+</html>
