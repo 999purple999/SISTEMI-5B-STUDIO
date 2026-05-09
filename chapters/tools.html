@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>🛠️ Tools — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
+<style>
+  .tool-card { background: rgba(8,10,30,0.55); border: 1px solid rgba(0,240,255,0.18); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .tool-card h2 { font-family: var(--font-display, 'Chakra Petch', sans-serif); color: var(--neon-cyan, #00d9ff); margin-bottom: 1rem; letter-spacing: .03em; }
+  .tool-row { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; margin: .6rem 0; }
+  .tool-row label { min-width: 140px; color: var(--text-dim); font-size: .92rem; }
+  .tool-row input, .tool-row select, .tool-row textarea {
+    background: rgba(0,240,255,0.04); border: 1px solid rgba(0,240,255,0.18); border-radius: 8px;
+    padding: .5rem .75rem; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: .9rem;
+    flex: 1; min-width: 160px; outline: none;
+  }
+  .tool-row input:focus, .tool-row select:focus, .tool-row textarea:focus { border-color: var(--neon-cyan, #00d9ff); box-shadow: 0 0 12px rgba(0,240,255,0.3); }
+  .tool-out { background: rgba(0,240,255,0.05); border-left: 2px solid var(--neon-cyan,#00d9ff); padding: .8rem 1rem; margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: .85rem; line-height: 1.6; border-radius: 0 8px 8px 0; white-space: pre-wrap; word-break: break-all; }
+  .tool-tab { display:none; }
+  .tool-tab.on { display:block; }
+  .tool-tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid rgba(0,240,255,0.18); padding-bottom: .5rem; margin-bottom: 1rem; }
+  .tool-tabs button {
+    background: transparent; border: 1px solid rgba(0,240,255,0.20); color: var(--text-dim);
+    padding: .4rem .9rem; border-radius: 99px; cursor: pointer; font-family: inherit; font-size: .85rem;
+    transition: all 0.15s;
+  }
+  .tool-tabs button:hover { border-color: rgba(0,240,255,0.5); color: var(--text); }
+  .tool-tabs button.on { background: rgba(0,240,255,0.18); color: var(--neon-cyan,#00d9ff); border-color: var(--neon-cyan,#00d9ff); }
+  .tool-table { width: 100%; border-collapse: collapse; margin-top: .8rem; font-family: 'JetBrains Mono', monospace; font-size: .82rem; }
+  .tool-table th, .tool-table td { border: 1px solid rgba(0,240,255,0.15); padding: .4rem .6rem; text-align: left; }
+  .tool-table th { background: rgba(0,240,255,0.08); color: var(--neon-cyan,#00d9ff); }
+  .badge-ok { color: #00ff9c; }
+  .badge-err { color: #ff2a6d; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-logo">S</span><span>Sistemi 5B</span></a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">M1</a></li><li><a href="m2.html">M2</a></li><li><a href="m3.html">M3</a></li><li><a href="m4.html">M4</a></li>
+      <li><a href="m5.html">🧪</a></li>
+      <li><a href="exam.html">📝</a></li><li><a href="flashcards.html">🎴</a></li>
+      <li><a href="cheatsheet.html">📋</a></li><li><a href="mindmap.html">🧠</a></li>
+      <li><a href="tools.html" class="active">🛠️ Tools</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Tools</div>
+      <h1 class="chapter-title">🛠️ Calcolatori pratici da esame</h1>
+      <p class="chapter-sub">Strumenti che userai durante la prova: subnetting VLSM, conversioni di base, EUI-64, wildcard ACL.</p>
+    </div>
+
+    <div class="tool-tabs" id="tabs">
+      <button class="on" data-tab="vlsm">📐 VLSM / CIDR</button>
+      <button data-tab="base">🔢 Base converter</button>
+      <button data-tab="eui64">🔗 EUI-64</button>
+      <button data-tab="wildcard">🎯 Wildcard ACL</button>
+      <button data-tab="ip-info">🆔 IP info</button>
+    </div>
+
+    <!-- ============ VLSM ============ -->
+    <div class="tool-tab on" id="tab-vlsm">
+      <div class="tool-card">
+        <h2>📐 VLSM / Subnetting calculator</h2>
+        <p style="color:var(--text-dim); font-size:.9rem; margin-bottom:1rem;">Inserisci una rete CIDR e una lista di sottoreti richieste con il numero di host. Il tool calcola la subnet mask, l'intervallo di indirizzi, gateway suggerito e broadcast per ognuna.</p>
+        <div class="tool-row">
+          <label>Rete iniziale</label>
+          <input id="vlsm-net" type="text" value="192.168.1.0/24" placeholder="es. 10.0.0.0/16">
+        </div>
+        <div class="tool-row">
+          <label>Sottoreti (una per riga)<br><span style="color:var(--text-muted); font-size:.74rem;">nome,numero_host</span></label>
+          <textarea id="vlsm-list" rows="6" style="font-family:'JetBrains Mono',monospace;">Amministrazione,18
+Dirigenza,9
+Produzione,20
+Magazzino,30
+Link-WAN,2</textarea>
+        </div>
+        <button class="btn btn-primary" id="vlsm-calc">Calcola</button>
+        <div class="tool-out" id="vlsm-out">Premi "Calcola" per vedere i risultati.</div>
+      </div>
+    </div>
+
+    <!-- ============ BASE CONVERTER ============ -->
+    <div class="tool-tab" id="tab-base">
+      <div class="tool-card">
+        <h2>🔢 Convertitore decimale ↔ binario ↔ esadecimale</h2>
+        <p style="color:var(--text-dim); font-size:.9rem; margin-bottom:1rem;">Funziona con numeri singoli, indirizzi IPv4 (4 ottetti), MAC address (6 byte), o stringhe esadecimali libere. Il tool autodetect.</p>
+        <div class="tool-row">
+          <label>Input</label>
+          <input id="base-in" type="text" placeholder="es. 192.168.1.10  oppure  AA:BB:CC:DD:EE:FF  oppure  255">
+        </div>
+        <button class="btn btn-primary" id="base-conv">Converti</button>
+        <div class="tool-out" id="base-out">Inserisci un valore.</div>
+      </div>
+    </div>
+
+    <!-- ============ EUI-64 ============ -->
+    <div class="tool-tab" id="tab-eui64">
+      <div class="tool-card">
+        <h2>🔗 Generatore IPv6 Link-Local da MAC (EUI-64)</h2>
+        <p style="color:var(--text-dim); font-size:.9rem; margin-bottom:1rem;">Calcola l'indirizzo IPv6 Link-Local (<code>fe80::/64</code>) usando lo schema EUI-64: inserisce <code>FFFE</code> nel mezzo del MAC e inverte il 7° bit (Universal/Local).</p>
+        <div class="tool-row">
+          <label>MAC address</label>
+          <input id="eui-in" type="text" value="00:0D:BD:44:6E:2B" placeholder="AA:BB:CC:DD:EE:FF">
+        </div>
+        <div class="tool-row">
+          <label>Prefix (opzionale)</label>
+          <input id="eui-prefix" type="text" value="fe80::" placeholder="fe80::">
+        </div>
+        <button class="btn btn-primary" id="eui-calc">Calcola</button>
+        <div class="tool-out" id="eui-out">Inserisci un MAC valido.</div>
+      </div>
+    </div>
+
+    <!-- ============ WILDCARD ============ -->
+    <div class="tool-tab" id="tab-wildcard">
+      <div class="tool-card">
+        <h2>🎯 Calcolatore wildcard ACL Cisco</h2>
+        <p style="color:var(--text-dim); font-size:.9rem; margin-bottom:1rem;">Converte una subnet mask in wildcard (formato Cisco) e viceversa. La wildcard è l'inverso bit-a-bit della subnet mask.</p>
+        <div class="tool-row">
+          <label>Subnet mask</label>
+          <input id="wc-mask" type="text" value="255.255.255.224" placeholder="255.255.255.0">
+        </div>
+        <div class="tool-row">
+          <label>...oppure CIDR</label>
+          <input id="wc-cidr" type="number" min="0" max="32" placeholder="es. 27">
+        </div>
+        <div class="tool-row">
+          <label>Network address</label>
+          <input id="wc-net" type="text" value="192.168.1.0" placeholder="192.168.1.0">
+        </div>
+        <button class="btn btn-primary" id="wc-calc">Calcola</button>
+        <div class="tool-out" id="wc-out">Inserisci subnet mask o CIDR.</div>
+      </div>
+    </div>
+
+    <!-- ============ IP INFO ============ -->
+    <div class="tool-tab" id="tab-ip-info">
+      <div class="tool-card">
+        <h2>🆔 IP info — classifica e valida un IPv4</h2>
+        <p style="color:var(--text-dim); font-size:.9rem; margin-bottom:1rem;">Inserisci un IPv4 (con o senza CIDR) → classe, tipo (privato RFC 1918, pubblico, loopback, link-local, multicast, broadcast), notazione binaria, ottetti, primo/ultimo host se CIDR.</p>
+        <div class="tool-row">
+          <label>IP (con o senza CIDR)</label>
+          <input id="ipi-in" type="text" value="172.16.5.42/16" placeholder="10.0.0.5  o  192.168.1.0/24">
+        </div>
+        <button class="btn btn-primary" id="ipi-calc">Analizza</button>
+        <div class="tool-out" id="ipi-out">Inserisci un IPv4.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer><p>Sistemi 5B — Tools per l'esame di Stato</p></footer>
+
+<script src="../data/modules.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/cyberpunk-fx.js"></script>
+<script src="../assets/js/customize.js"></script>
+  <script src="../assets/js/polish.js"></script>
+  <script src="../assets/js/sw-updates.js"></script>
+
+<script>
+(function(){
+  // Helpers
+  function ipToInt(ip) {
+    const p = ip.split('.').map(Number);
+    if (p.length !== 4 || p.some(n => isNaN(n) || n < 0 || n > 255)) throw new Error('IP non valido: ' + ip);
+    return ((p[0]<<24)|(p[1]<<16)|(p[2]<<8)|p[3]) >>> 0;
+  }
+  function intToIp(n) {
+    return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
+  }
+  function maskFromCidr(c) { return c === 0 ? 0 : (0xFFFFFFFF << (32-c)) >>> 0; }
+  function cidrFromMask(m) {
+    let c = 0, x = m;
+    while (x & 0x80000000) { c++; x = (x << 1) >>> 0; }
+    return c;
+  }
+  function pad(s, n) { while (s.length < n) s = '0'+s; return s; }
+  function toBin8(n) { return pad(n.toString(2), 8); }
+  function ipToBin(ip) { return ip.split('.').map(o => toBin8(+o)).join('.'); }
+  function nextPow2(n) { let p = 1; while (p < n) p *= 2; return p; }
+  function hostBitsForN(n) { let b = 0; while ((1<<b) - 2 < n) b++; return Math.max(b, 2); }
+
+  // Tabs
+  document.querySelectorAll('#tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#tabs button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('on'));
+      document.getElementById('tab-' + b.dataset.tab).classList.add('on');
+    });
+  });
+
+  // ==== VLSM ====
+  document.getElementById('vlsm-calc').addEventListener('click', () => {
+    const out = document.getElementById('vlsm-out');
+    try {
+      const netStr = document.getElementById('vlsm-net').value.trim();
+      const m = netStr.match(/^([\d.]+)\/(\d+)$/);
+      if (!m) throw new Error('Rete deve essere in notazione CIDR (es. 192.168.1.0/24)');
+      let basePtr = ipToInt(m[1]) & maskFromCidr(+m[2]);
+      const baseEnd = basePtr + (1 << (32 - +m[2])) - 1;
+      const requests = document.getElementById('vlsm-list').value
+        .split('\n').map(l => l.trim()).filter(Boolean)
+        .map(l => { const p = l.split(','); return { name: (p[0]||'').trim(), hosts: +p[1] }; })
+        .filter(r => r.name && !isNaN(r.hosts))
+        .sort((a,b) => b.hosts - a.hosts);
+      if (requests.length === 0) throw new Error('Aggiungi almeno una sottorete (formato: nome,host)');
+
+      let html = '<table class="tool-table"><thead><tr><th>Sottorete</th><th>Host richiesti</th><th>Subnet (CIDR)</th><th>Maschera</th><th>1° utile</th><th>Ultimo utile</th><th>Broadcast</th><th>Gateway suggerito</th></tr></thead><tbody>';
+      for (const r of requests) {
+        const hb = hostBitsForN(r.hosts);
+        const cidr = 32 - hb;
+        const size = 1 << hb;
+        // Allinea
+        if (basePtr % size !== 0) basePtr = Math.ceil(basePtr / size) * size;
+        if (basePtr + size - 1 > baseEnd) throw new Error('Spazio insufficiente per ' + r.name + ': servono /'+cidr+' ma la rete è esaurita');
+        const netAddr = intToIp(basePtr);
+        const bcast = intToIp(basePtr + size - 1);
+        const first = intToIp(basePtr + 1);
+        const last = intToIp(basePtr + size - 2);
+        const gw = last;
+        const maskDot = intToIp(maskFromCidr(cidr));
+        html += `<tr><td><strong>${r.name}</strong></td><td>${r.hosts}</td><td>${netAddr}/${cidr}</td><td>${maskDot}</td><td>${first}</td><td>${last}</td><td>${bcast}</td><td>${gw}</td></tr>`;
+        basePtr += size;
+      }
+      const used = basePtr - (ipToInt(m[1]) & maskFromCidr(+m[2]));
+      const total = 1 << (32 - +m[2]);
+      const pct = ((used/total)*100).toFixed(1);
+      html += `</tbody></table><p style="margin-top:.6rem; color: var(--text-dim);">Utilizzati ${used}/${total} indirizzi (${pct}%). Spazio residuo: ${intToIp(basePtr)} → ${intToIp(baseEnd)}.</p>`;
+      out.innerHTML = html;
+    } catch (e) {
+      out.innerHTML = `<span class="badge-err">❌ ${e.message}</span>`;
+    }
+  });
+
+  // ==== BASE CONVERTER ====
+  document.getElementById('base-conv').addEventListener('click', () => {
+    const out = document.getElementById('base-out');
+    const v = document.getElementById('base-in').value.trim();
+    try {
+      let html = '';
+      // IPv4?
+      if (/^\d+\.\d+\.\d+\.\d+$/.test(v)) {
+        const parts = v.split('.').map(Number);
+        if (parts.some(p => p<0||p>255)) throw new Error('Ottetti devono essere 0-255');
+        html = `<strong>IPv4</strong>
+DEC :  ${parts.join('.')}
+BIN :  ${parts.map(p => toBin8(p)).join('.')}
+HEX :  ${parts.map(p => p.toString(16).toUpperCase().padStart(2,'0')).join('.')}
+INT :  ${ipToInt(v)}  (32 bit)`;
+      }
+      // MAC?
+      else if (/^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$/.test(v)) {
+        const bytes = v.replace(/-/g,':').split(':').map(b => parseInt(b,16));
+        html = `<strong>MAC address</strong>
+HEX :  ${bytes.map(b => b.toString(16).toUpperCase().padStart(2,'0')).join(':')}
+DEC :  ${bytes.join(':')}
+BIN :  ${bytes.map(b => toBin8(b)).join(':')}
+OUI :  ${bytes.slice(0,3).map(b => b.toString(16).toUpperCase().padStart(2,'0')).join(':')} (vendor)
+NIC :  ${bytes.slice(3).map(b => b.toString(16).toUpperCase().padStart(2,'0')).join(':')}`;
+      }
+      // Numero singolo
+      else if (/^\d+$/.test(v)) {
+        const n = parseInt(v, 10);
+        html = `<strong>Numero decimale ${n}</strong>
+DEC :  ${n}
+BIN :  ${n.toString(2)}
+OCT :  ${n.toString(8)}
+HEX :  ${n.toString(16).toUpperCase()}
+${n <= 255 ? `BYTE :  ${toBin8(n)}` : ''}`;
+      }
+      // Hex libero (0x...)
+      else if (/^0x[0-9a-fA-F]+$/i.test(v)) {
+        const n = parseInt(v, 16);
+        html = `<strong>Hex ${v}</strong>
+HEX :  ${v.toUpperCase()}
+DEC :  ${n}
+BIN :  ${n.toString(2)}`;
+      }
+      // Bin
+      else if (/^[01\s]+$/.test(v)) {
+        const cleaned = v.replace(/\s+/g,'');
+        const n = parseInt(cleaned, 2);
+        html = `<strong>Binario</strong>
+BIN :  ${cleaned}
+DEC :  ${n}
+HEX :  ${n.toString(16).toUpperCase()}`;
+      }
+      else throw new Error('Formato non riconosciuto');
+      out.textContent = html;
+    } catch (e) {
+      out.innerHTML = `<span class="badge-err">❌ ${e.message}</span>`;
+    }
+  });
+
+  // ==== EUI-64 ====
+  document.getElementById('eui-calc').addEventListener('click', () => {
+    const out = document.getElementById('eui-out');
+    try {
+      const mac = document.getElementById('eui-in').value.trim().replace(/-/g,':').toLowerCase();
+      if (!/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/.test(mac)) throw new Error('MAC deve avere formato AA:BB:CC:DD:EE:FF');
+      const prefix = (document.getElementById('eui-prefix').value.trim() || 'fe80::').replace(/::?$/, '');
+      const bytes = mac.split(':').map(b => parseInt(b,16));
+      // Insert FFFE
+      const eui = [bytes[0], bytes[1], bytes[2], 0xff, 0xfe, bytes[3], bytes[4], bytes[5]];
+      // Invert 7th bit (Universal/Local)
+      eui[0] = eui[0] ^ 0x02;
+      const ifaceParts = [];
+      for (let i = 0; i < 8; i += 2) {
+        ifaceParts.push(((eui[i]<<8) | eui[i+1]).toString(16).padStart(4,'0'));
+      }
+      const iface = ifaceParts.join(':');
+      const full = `${prefix || 'fe80'}::${iface.replace(/:0+/g,':').replace(/^:/,':').replace(/^::?/,'')}`;
+      const rawCompact = `${prefix || 'fe80'}::${ifaceParts.map(s => s.replace(/^0+/, '') || '0').join(':')}`;
+      out.textContent = `MAC originale:        ${mac.toUpperCase()}
+Split (24+24):       ${mac.slice(0,8).toUpperCase()} | ${mac.slice(9).toUpperCase()}
++ FFFE in mezzo:     ${bytes.slice(0,3).map(b=>b.toString(16).padStart(2,'0')).join(':')}:FF:FE:${bytes.slice(3).map(b=>b.toString(16).padStart(2,'0')).join(':')}
+Inverti 7° bit:      bit U/L flip → primo byte ${bytes[0].toString(2).padStart(8,'0')} → ${eui[0].toString(2).padStart(8,'0')} (${eui[0].toString(16).padStart(2,'0').toUpperCase()})
+Interface ID 64-bit: ${iface}
+Link-Local IPv6:     fe80::${ifaceParts.join(':')}
+Compresso:           fe80::${ifaceParts.map(s => s.replace(/^0+/, '') || '0').join(':')}`;
+    } catch (e) {
+      out.innerHTML = `<span class="badge-err">❌ ${e.message}</span>`;
+    }
+  });
+
+  // ==== WILDCARD ====
+  document.getElementById('wc-calc').addEventListener('click', () => {
+    const out = document.getElementById('wc-out');
+    try {
+      let mask, cidr;
+      const cidrStr = document.getElementById('wc-cidr').value.trim();
+      const maskStr = document.getElementById('wc-mask').value.trim();
+      if (cidrStr) { cidr = +cidrStr; if (cidr < 0 || cidr > 32) throw new Error('CIDR 0-32'); mask = maskFromCidr(cidr); }
+      else if (maskStr) { mask = ipToInt(maskStr); cidr = cidrFromMask(mask); }
+      else throw new Error('Inserisci subnet mask o CIDR');
+
+      const wildcard = (~mask) >>> 0;
+      const net = document.getElementById('wc-net').value.trim();
+      const netInt = net ? (ipToInt(net) & mask) : 0;
+
+      out.textContent = `Subnet mask:         ${intToIp(mask)}
+CIDR:                /${cidr}
+Wildcard (Cisco):    ${intToIp(wildcard)}
+Wildcard binaria:    ${ipToBin(intToIp(wildcard))}
+Hosts utilizzabili:  ${cidr === 32 ? 1 : (cidr === 31 ? 2 : (1 << (32-cidr)) - 2)}
+${net ? `
+Network address:     ${intToIp(netInt)}
+Broadcast:           ${intToIp(netInt + (1 << (32-cidr)) - 1)}
+Range usabile:       ${intToIp(netInt+1)} → ${intToIp(netInt + (1 << (32-cidr)) - 2)}
+
+ACL Cisco esempio:
+access-list 10 permit ${intToIp(netInt)} ${intToIp(wildcard)}` : ''}`;
+    } catch (e) {
+      out.innerHTML = `<span class="badge-err">❌ ${e.message}</span>`;
+    }
+  });
+
+  // ==== IP INFO ====
+  document.getElementById('ipi-calc').addEventListener('click', () => {
+    const out = document.getElementById('ipi-out');
+    try {
+      const v = document.getElementById('ipi-in').value.trim();
+      const m = v.match(/^([\d.]+)(?:\/(\d+))?$/);
+      if (!m) throw new Error('Formato non valido');
+      const ip = m[1];
+      const cidr = m[2] ? +m[2] : null;
+      const ipInt = ipToInt(ip);
+      const oct = ip.split('.').map(Number);
+      const a = oct[0];
+
+      // Class
+      let cls = 'D (multicast)';
+      if (a < 128) cls = 'A';
+      else if (a < 192) cls = 'B';
+      else if (a < 224) cls = 'C';
+      else if (a < 240) cls = 'D (multicast)';
+      else cls = 'E (riservata)';
+
+      // Type
+      const types = [];
+      if (a === 127) types.push('Loopback (127.0.0.0/8)');
+      else if (a === 10) types.push('Privato — RFC 1918 (10.0.0.0/8)');
+      else if (a === 172 && oct[1] >= 16 && oct[1] < 32) types.push('Privato — RFC 1918 (172.16.0.0/12)');
+      else if (a === 192 && oct[1] === 168) types.push('Privato — RFC 1918 (192.168.0.0/16)');
+      else if (a === 169 && oct[1] === 254) types.push('Link-Local APIPA (169.254.0.0/16)');
+      else if (a >= 224 && a < 240) types.push('Multicast (224.0.0.0/4)');
+      else if (ipInt === 0xFFFFFFFF) types.push('Broadcast limitato (255.255.255.255)');
+      else if (ipInt === 0) types.push('Default/non specificato (0.0.0.0)');
+      else types.push('Pubblico (instradabile su Internet)');
+
+      let extra = '';
+      if (cidr !== null) {
+        const mask = maskFromCidr(cidr);
+        const net = ipInt & mask;
+        const size = 1 << (32-cidr);
+        extra = `
+
+Subnet (con /${cidr}):
+  Network:           ${intToIp(net)}/${cidr}
+  Subnet mask:       ${intToIp(mask)}
+  Wildcard:          ${intToIp((~mask)>>>0)}
+  Broadcast:         ${intToIp(net + size - 1)}
+  Range usabile:     ${intToIp(net+1)} → ${intToIp(net + size - 2)}
+  Host totali:       ${cidr <= 30 ? size - 2 : (cidr === 31 ? 2 : 1)}`;
+      }
+
+      out.textContent = `Indirizzo:           ${ip}
+Classe (legacy):     ${cls}
+Categoria:           ${types.join(', ')}
+Decimale (32-bit):   ${ipInt}
+Esadecimale:         0x${ipInt.toString(16).toUpperCase().padStart(8,'0')}
+Binario:             ${ipToBin(ip)}${extra}`;
+    } catch (e) {
+      out.innerHTML = `<span class="badge-err">❌ ${e.message}</span>`;
+    }
+  });
+
+  // Auto-run defaults
+  document.getElementById('vlsm-calc').click();
+
+  // mobile nav
+  document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>

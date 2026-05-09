@@ -82,10 +82,15 @@
             <input type="checkbox" class="exam-mod" value="4" checked style="accent-color:#0a84ff; width:18px; height:18px;">
             <span style="color:var(--text);">🎓 Modulo 4 — Esame di Stato</span>
           </label>
+          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; padding:0.6rem; background:rgba(255,255,255,0.04); border-radius:10px;">
+            <input type="checkbox" class="exam-mod" value="5" checked style="accent-color:#b026ff; width:18px; height:18px;">
+            <span style="color:var(--text);">🧪 Modulo 5 — Casi di studio</span>
+          </label>
         </div>
       </div>
 
       <button class="btn btn-primary btn-lg" id="start-exam" style="width:100%;">🚀 Avvia esame</button>
+      <button class="btn btn-secondary btn-lg" id="start-exam-real" style="width:100%; margin-top:0.6rem; background: linear-gradient(135deg, #ff2a6d, #b026ff); color:#fff; border: 1px solid rgba(255,42,109,0.5); box-shadow: 0 0 20px rgba(255,42,109,0.4);">🚨 SIMULAZIONE REALE — 30 domande, 60 min</button>
       <p class="text-center mt-2" style="font-size:0.78rem; color:var(--text-muted);">Suggerimento: usa i tasti 1-4 per rispondere e Enter per la prossima.</p>
     </div>
 
@@ -113,10 +118,20 @@
 <script>
   document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
   ExamApp.setup();
+  // Preset "simulazione reale": 30 dom × 60 min × tutti i moduli
+  document.getElementById('start-exam-real').addEventListener('click', () => {
+    document.getElementById('exam-count').value = '30';
+    document.getElementById('exam-duration').value = '60';
+    document.querySelectorAll('.exam-mod').forEach(c => c.checked = true);
+    if (!confirm('🚨 Simulazione esame reale\n\n• 30 domande random da TUTTI i moduli (1-5)\n• Timer 60 minuti, allo scadere finisce\n• Niente possibilità di pausa\n\nPronto a iniziare?')) return;
+    document.getElementById('start-exam').click();
+  });
 </script>
 
   <script src="../assets/js/tts.js"></script>
   <script src="../assets/js/cyberpunk-fx.js"></script>
   <script src="../assets/js/customize.js"></script>
+  <script src="../assets/js/polish.js"></script>
+  <script src="../assets/js/sw-updates.js"></script>
 </body>
 </html>

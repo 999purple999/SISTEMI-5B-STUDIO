@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>🧠 Mind Map — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
+<style>
+  #mm-stage { width: 100%; height: 80vh; background: rgba(5,5,20,0.6); border-radius: 18px; border: 1px solid rgba(0,240,255,0.2); overflow: hidden; }
+  .markmap > svg { width: 100%; height: 100%; }
+  .mm-controls { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin: 1rem 0; }
+  .mm-legend { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-bottom: 1rem; font-size:0.85rem; color:var(--text-dim); }
+  .mm-legend span { display:inline-flex; align-items:center; gap:.4rem; }
+  .mm-legend i { width:12px; height:12px; border-radius:3px; display:inline-block; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-logo">S</span><span>Sistemi 5B</span></a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">M1</a></li><li><a href="m2.html">M2</a></li><li><a href="m3.html">M3</a></li><li><a href="m4.html">M4</a></li>
+      <li><a href="m5.html">🧪 Casi</a></li>
+      <li><a href="exam.html">📝</a></li><li><a href="flashcards.html">🎴</a></li>
+      <li><a href="cheatsheet.html">📋</a></li><li><a href="mindmap.html" class="active">🧠 Mind</a></li>
+      <li><a href="speed-read.html">⚡ Speed</a></li>
+      <li><a href="tools.html">🛠️ Tools</a></li>
+      <li><a href="glossario.html">📖 Glossario</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Mind Map</div>
+      <h1 class="chapter-title">🧠 Mind Map del programma</h1>
+      <p class="chapter-sub">Vista a colpo d'occhio di tutti gli argomenti dell'Esame di Stato. Clic sui nodi per aprire/chiudere rami, scroll per zoomare, drag per spostare.</p>
+    </div>
+
+    <div class="mm-legend">
+      <span><i style="background:#ff2a6d"></i> Modulo 1 — Crittografia</span>
+      <span><i style="background:#ffb800"></i> Modulo 2 — Filtraggio reti</span>
+      <span><i style="background:#00ff9c"></i> Modulo 3 — Datacenter & Cloud</span>
+      <span><i style="background:#00d9ff"></i> Modulo 4 — Esame</span>
+      <span><i style="background:#b026ff"></i> Modulo 5 — Casi di studio</span>
+    </div>
+
+    <div class="mm-controls">
+      <button class="btn btn-secondary btn-sm" id="mm-fit">🎯 Fit</button>
+      <button class="btn btn-secondary btn-sm" id="mm-expand">⤢ Espandi tutto</button>
+      <button class="btn btn-secondary btn-sm" id="mm-collapse">⤡ Collassa tutto</button>
+      <button class="btn btn-secondary btn-sm" id="mm-svg">💾 Esporta SVG</button>
+    </div>
+
+    <div id="mm-stage" class="markmap"><svg id="mm-svg-el"></svg></div>
+
+    <p style="text-align:center; margin-top: 1.5rem; color: var(--text-muted); font-size:0.85rem;">Tip: doppio-clic su un nodo apre il capitolo corrispondente.</p>
+  </div>
+</main>
+<footer><p>Sistemi 5B — Mind Map auto-generata dai moduli</p></footer>
+
+<script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/cyberpunk-fx.js"></script>
+<script src="../assets/js/customize.js"></script>
+  <script src="../assets/js/polish.js"></script>
+  <script src="../assets/js/sw-updates.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18"></script>
+
+<script>
+(function(){
+  const MOD_COLOR = { 1:'#ff2a6d', 2:'#ffb800', 3:'#00ff9c', 4:'#00d9ff', 5:'#b026ff' };
+
+  // Build markdown tree from MODULES + CHAPTERS
+  function buildMarkdown() {
+    const lines = ['# Sistemi e Reti — 5B'];
+    (window.MODULES || []).forEach(mod => {
+      lines.push(`## ${mod.icon} ${mod.num}: ${mod.title}`);
+      mod.chapters.forEach(ch => {
+        const data = (window.CHAPTERS||{})[ch.id];
+        const link = `${ch.slug}.html`;
+        lines.push(`### [${ch.icon||'•'} ${ch.title}](${link})`);
+        if (data && data.body) {
+          // Estrai gli h2 id come sottonodi
+          const h2s = (data.body.match(/<h2[^>]*>([^<]+)<\/h2>/g) || [])
+            .map(h => h.replace(/<[^>]+>/g,'').trim())
+            .slice(0, 6);
+          h2s.forEach(t => lines.push(`- ${t}`));
+        }
+      });
+    });
+    return lines.join('\n');
+  }
+
+  function init() {
+    if (!window.markmap) { setTimeout(init, 200); return; }
+    const { Transformer } = window.markmap;
+    const transformer = new Transformer();
+    const md = buildMarkdown();
+    const { root } = transformer.transform(md);
+    const svg = document.getElementById('mm-svg-el');
+    const mm = window.markmap.Markmap.create(svg, {
+      duration: 350,
+      maxWidth: 280,
+      color: (node) => {
+        // Color by module level: detect "Modulo X" in path
+        const txt = (node.content || '').toString();
+        const m = txt.match(/Modulo\s*(\d)/);
+        if (m) return MOD_COLOR[+m[1]] || '#00d9ff';
+        return null; // herit from parent
+      }
+    }, root);
+
+    document.getElementById('mm-fit').onclick = () => mm.fit();
+    document.getElementById('mm-expand').onclick = () => {
+      function walk(n){ if(n.payload) n.payload.fold = 0; (n.children||[]).forEach(walk); }
+      walk(mm.state.data); mm.renderData();
+    };
+    document.getElementById('mm-collapse').onclick = () => {
+      function walk(n, depth){ if(depth>=2 && n.payload) n.payload.fold = 1; (n.children||[]).forEach(c => walk(c, depth+1)); }
+      walk(mm.state.data, 0); mm.renderData(); mm.fit();
+    };
+    document.getElementById('mm-svg').onclick = () => {
+      const blob = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sistemi5b-mindmap.svg'; a.click();
+    };
+
+    // Double-click on node → open chapter
+    svg.addEventListener('dblclick', (e) => {
+      const t = e.target.closest('a');
+      if (t && t.getAttribute('href')) {
+        e.preventDefault(); window.location.href = t.getAttribute('href');
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', init);
+
+  // Mobile nav
+  document.getElementById('nav-toggle')?.addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>

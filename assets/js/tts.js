@@ -27,12 +27,33 @@ window.TTS = (function () {
     return text.replace(/\s+/g, ' ').trim();
   }
 
+  // 1) Pre-rendered MP3 (via scripts/generate-tts-audio.py)
+  async function tryLocalAudio(slug, rate) {
+    if (!slug) return false;
+    try {
+      const url = `../assets/audio/${slug}.mp3`;
+      const head = await fetch(url, { method: 'HEAD' });
+      if (!head.ok) return false;
+      currentAudio = new Audio(url);
+      currentAudio.playbackRate = rate;
+      currentAudio.onended = () => { active = false; };
+      active = true;
+      await currentAudio.play();
+      return true;
+    } catch { return false; }
+  }
+
   async function speak(text, opts = {}) {
     if (!text) return;
     stop();
     const endpoint = opts.endpoint || getEndpoint();
     const voice    = opts.voice    || getVoice();
     const rate     = opts.rate     || getRate();
+    // Slug del capitolo corrente (dal pathname, es. /chapters/icmp.html → "icmp")
+    const slug = (location.pathname.match(/chapters\/([^./]+)\.html$/) || [])[1];
+
+    // Priorità: audio pre-renderizzato locale → endpoint custom → Web Speech
+    if (await tryLocalAudio(slug, rate)) return;
 
     if (endpoint) {
       try {
