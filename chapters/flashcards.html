@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -7,6 +7,7 @@
 <title>🎴 Flashcards — Sistemi 5B</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
 <style>
 .fc-card {
   background: linear-gradient(180deg, #1c1c1e, #0a0a0c);
@@ -133,6 +134,8 @@
 <script src="../data/content-m3.js"></script>
 <script src="../data/content-m4.js"></script>
 <script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
 <script src="../assets/js/storage.js"></script>
 <script src="../assets/js/flashcards.js"></script>
 <script src="../assets/js/pomodoro.js"></script>
@@ -225,5 +228,9 @@ document.addEventListener('keydown', (e) => {
 refreshStats();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
 </script>
+
+  <script src="../assets/js/tts.js"></script>
+  <script src="../assets/js/cyberpunk-fx.js"></script>
+  <script src="../assets/js/customize.js"></script>
 </body>
 </html>

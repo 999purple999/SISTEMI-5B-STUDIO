@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>⚡ Speed Reading — Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
+<style>
+.sr-stage {
+  background: linear-gradient(180deg, #0a0a0c, #050505);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 4rem 1rem;
+  text-align: center; min-height: 320px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem;
+  position: relative;
+}
+.sr-word {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  min-height: 1.1em;
+}
+.sr-pivot { color: var(--m1); }
+.sr-progress { width: 100%; max-width: 600px; }
+.sr-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1.5rem; }
+.sr-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem; }
+.sr-row label { color: var(--text-dim); font-size: 0.9rem; }
+.sr-row input[type=range] { width: 200px; accent-color: var(--accent); }
+.sr-counter { font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 0.85rem; }
+.sr-source { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; max-height: 240px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6; color: var(--text-dim); }
+.sr-source mark { background: rgba(255,159,10,0.4); color: #fff; padding: 0 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-logo">S</span><span>Sistemi 5B</span></a>
+    <button class="nav-toggle" id="nav-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html">M1</a></li><li><a href="m2.html">M2</a></li><li><a href="m3.html">M3</a></li><li><a href="m4.html">M4</a></li>
+      <li><a href="exam.html">📝</a></li><li><a href="flashcards.html">🎴</a></li>
+      <li><a href="cheatsheet.html">📋</a></li><li><a href="mindmap.html">🧠</a></li>
+      <li><a href="speed-read.html" class="active">⚡ Speed</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Speed Reading</div>
+      <h1 class="chapter-title">⚡ Speed Reading (RSVP)</h1>
+      <p class="chapter-sub">Una parola alla volta a velocità regolabile. Tecnica RSVP usata per leggere fino a <strong>1000 parole/min</strong> senza retroessione visiva.</p>
+    </div>
+
+    <div class="quiz-card">
+      <label style="display:block; margin-bottom:0.5rem; font-weight:600; color:var(--text);">Scegli capitolo</label>
+      <select id="sr-chapter" class="search-input" style="padding-left:1rem; cursor:pointer; margin-bottom:1rem;"></select>
+
+      <div class="sr-stage">
+        <div class="sr-word" id="sr-word">▶</div>
+        <div class="sr-counter" id="sr-counter">0 / 0 parole</div>
+        <div class="sr-progress quiz-progress-bar"><div class="quiz-progress-fill" id="sr-prog" style="width:0%; background:linear-gradient(90deg, #ff453a, #ff9f0a);"></div></div>
+      </div>
+
+      <div class="sr-row">
+        <label>Velocità (WPM):</label>
+        <input type="range" id="sr-wpm" min="100" max="900" step="50" value="350">
+        <strong id="sr-wpm-val">350</strong>
+      </div>
+
+      <div class="sr-controls">
+        <button class="btn btn-primary" id="sr-play">▶ Play</button>
+        <button class="btn btn-secondary" id="sr-pause" style="display:none;">⏸ Pausa</button>
+        <button class="btn btn-secondary" id="sr-restart">⟲ Ricomincia</button>
+        <button class="btn btn-ghost" id="sr-skipb">⏪ -10</button>
+        <button class="btn btn-ghost" id="sr-skipf">⏩ +10</button>
+      </div>
+
+      <p style="text-align:center; font-size:0.78rem; color:var(--text-muted); margin-top:1rem;">
+        Spazio = Play/Pausa · ← → = -10/+10 parole · 1-9 = velocità (×100)
+      </p>
+
+      <div class="mt-3" id="sr-source-box" style="display:none;">
+        <h4 style="font-size:0.85rem; color:var(--text-dim); margin-bottom:0.5rem;">Testo originale (la parola corrente è evidenziata):</h4>
+        <div class="sr-source" id="sr-source"></div>
+      </div>
+      <p class="text-center mt-2"><label style="font-size:0.85rem; color:var(--text-dim);"><input type="checkbox" id="sr-show-source" style="margin-right:0.4rem;">Mostra testo originale</label></p>
+    </div>
+  </div>
+</main>
+<footer><p>Sistemi 5B — Study Hub</p></footer>
+
+<script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+
+const sel = document.getElementById('sr-chapter');
+window.MODULES.forEach(m => {
+  const og = document.createElement('optgroup');
+  og.label = `${m.icon} ${m.title}`;
+  m.chapters.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c.id; o.textContent = c.title;
+    og.appendChild(o);
+  });
+  sel.appendChild(og);
+});
+
+let words = [];
+let idx = 0;
+let timer = null;
+let wpm = 350;
+
+function textFromBody(html) {
+  return (html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function load() {
+  const id = sel.value;
+  const ch = window.CHAPTERS[id];
+  if (!ch) return;
+  const text = ch.title + '. ' + textFromBody(ch.body);
+  words = text.split(/\s+/).filter(w => w.length > 0);
+  idx = 0;
+  pause();
+  document.getElementById('sr-counter').textContent = `0 / ${words.length} parole`;
+  show();
+  renderSource();
+}
+function show() {
+  if (idx < words.length) {
+    const w = words[idx];
+    const piv = Math.max(0, Math.floor((w.length - 1) / 3));
+    const before = w.slice(0, piv);
+    const pivot = w[piv] || '';
+    const after = w.slice(piv + 1);
+    document.getElementById('sr-word').innerHTML = before + '<span class="sr-pivot">' + pivot + '</span>' + after;
+    document.getElementById('sr-counter').textContent = `${idx} / ${words.length} parole`;
+    const pct = (idx / words.length) * 100;
+    document.getElementById('sr-prog').style.width = pct + '%';
+    if (document.getElementById('sr-show-source').checked) renderSource();
+  } else {
+    document.getElementById('sr-word').textContent = '✅ Fine';
+    pause();
+  }
+}
+function play() {
+  if (idx >= words.length) idx = 0;
+  if (timer) clearInterval(timer);
+  const interval = 60000 / wpm;
+  timer = setInterval(() => { idx++; show(); }, interval);
+  document.getElementById('sr-play').style.display = 'none';
+  document.getElementById('sr-pause').style.display = '';
+}
+function pause() {
+  if (timer) { clearInterval(timer); timer = null; }
+  document.getElementById('sr-play').style.display = '';
+  document.getElementById('sr-pause').style.display = 'none';
+}
+function renderSource() {
+  if (!document.getElementById('sr-show-source').checked) return;
+  document.getElementById('sr-source-box').style.display = '';
+  const start = Math.max(0, idx - 50);
+  const end = Math.min(words.length, idx + 50);
+  const before = words.slice(start, idx).join(' ');
+  const cur = words[idx] || '';
+  const after = words.slice(idx + 1, end).join(' ');
+  document.getElementById('sr-source').innerHTML = `${before} <mark>${cur}</mark> ${after}`;
+}
+
+document.getElementById('sr-show-source').addEventListener('change', e => {
+  document.getElementById('sr-source-box').style.display = e.target.checked ? '' : 'none';
+  if (e.target.checked) renderSource();
+});
+
+sel.addEventListener('change', load);
+document.getElementById('sr-wpm').addEventListener('input', e => {
+  wpm = parseInt(e.target.value);
+  document.getElementById('sr-wpm-val').textContent = wpm;
+  if (timer) play();
+});
+document.getElementById('sr-play').addEventListener('click', play);
+document.getElementById('sr-pause').addEventListener('click', pause);
+document.getElementById('sr-restart').addEventListener('click', () => { idx = 0; show(); });
+document.getElementById('sr-skipb').addEventListener('click', () => { idx = Math.max(0, idx - 10); show(); });
+document.getElementById('sr-skipf').addEventListener('click', () => { idx = Math.min(words.length, idx + 10); show(); });
+
+document.addEventListener('keydown', (e) => {
+  if (['INPUT','TEXTAREA','SELECT'].includes((document.activeElement||{}).tagName)) return;
+  if (e.key === ' ') { e.preventDefault(); timer ? pause() : play(); }
+  else if (e.key === 'ArrowLeft') { idx = Math.max(0, idx - 10); show(); }
+  else if (e.key === 'ArrowRight') { idx = Math.min(words.length, idx + 10); show(); }
+  else if (e.key >= '1' && e.key <= '9') {
+    wpm = parseInt(e.key) * 100;
+    document.getElementById('sr-wpm').value = wpm;
+    document.getElementById('sr-wpm-val').textContent = wpm;
+    if (timer) play();
+  }
+});
+
+load();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+
+  <script src="../assets/js/tts.js"></script>
+  <script src="../assets/js/cyberpunk-fx.js"></script>
+  <script src="../assets/js/customize.js"></script>
+</body>
+</html>

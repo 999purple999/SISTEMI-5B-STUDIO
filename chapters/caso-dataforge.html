@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Sistemi 5B</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-logo">S</span>
+      <span>Sistemi 5B</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="m1.html" class="active">Modulo 1</a></li>
+      <li><a href="m2.html">Modulo 2</a></li>
+      <li><a href="m3.html">Modulo 3</a></li>
+      <li><a href="m4.html">Modulo 4</a></li>
+      <li><a href="m5.html">🧪 Casi</a></li>
+      <li><a href="exam.html">📝 Esame</a></li>
+      <li><a href="flashcards.html">🎴 Cards</a></li>
+      <li><a href="cheatsheet.html">📋 Cheat</a></li>
+      <li><a href="mistakes.html">❌ Errori</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="container">
+    <div class="chapter-header" id="chapter-header"></div>
+    <div class="chapter-layout">
+      <aside class="toc" id="toc"></aside>
+      <article class="chapter-content" id="chapter-content"></article>
+    </div>
+    <section class="quiz-section">
+      <h2 class="text-center">🎯 Quiz del capitolo</h2>
+      <p class="text-center" style="color:var(--text-dim); margin-top:0.5rem;">Verifica quanto hai imparato. Punteggio ≥ 80% per completare il capitolo.</p>
+      <div id="quiz" class="mt-3"></div>
+    </section>
+    <div class="quiz-actions mt-4" id="prev-next" style="justify-content:space-between;"></div>
+  </div>
+</main>
+<footer>
+  <p>Sistemi 5B — Study Hub</p>
+</footer>
+<script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/exam.js"></script>
+<script src="../assets/js/quiz.js"></script>
+<script src="../assets/js/chapter.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+
+  <script src="../assets/js/tts.js"></script>
+  <script src="../assets/js/cyberpunk-fx.js"></script>
+  <script src="../assets/js/customize.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  ChapterApp.setupNav();
+  ChapterApp.renderChapter('m5c2');
+  if (window.mermaid) mermaid.initialize({ startOnLoad: false, theme: 'dark', themeVariables: { background: '#0a0a0a', primaryColor: '#1c1c1e', primaryTextColor: '#f5f5f7', primaryBorderColor: '#3a3a3c', lineColor: '#a1a1a6', secondaryColor: '#2a2a2c', tertiaryColor: '#1c1c1e' } });
+  setTimeout(() => { if (window.mermaid) mermaid.run({ querySelector: '.mermaid' }); }, 50);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+</body>
+</html>

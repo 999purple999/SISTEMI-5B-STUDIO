@@ -1,4 +1,5 @@
 DOCS/
+docs_extracted/
 *.pdf
 .DS_Store
 Thumbs.db

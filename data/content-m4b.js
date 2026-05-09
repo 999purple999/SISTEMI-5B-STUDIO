@@ -35,8 +35,59 @@ window.CHAPTERS.m4c7 = {
     <h3 id="ds-def">DS (Distribution System)</h3>
     <p>Sistema di distribuzione (tipicamente cablato Ethernet) che collega gli access point tra loro e li fa apparire come una <strong>singola rete logica</strong>.</p>
 
-    <h2 id="ssid">SSID</h2>
-    <p>Il <strong>Service Set Identifier</strong> è il "nome della rete Wi-Fi" (es. "CasaWiFi"). Tutti gli AP dello stesso ESS hanno lo stesso SSID.</p>
+    <h2 id="ssid">SSID, ESSID e roaming</h2>
+    <p>Il <strong>Service Set Identifier</strong> è il "nome della rete Wi-Fi" (es. "CasaWiFi"). Tutti gli AP dello stesso ESS hanno lo stesso SSID, chiamato <span class="term">ESSID</span> (Extended SSID). Quando un dispositivo si sposta tra zone coperte da AP diversi dello stesso ESSID, fa <strong>roaming</strong> automatico senza dover digitare di nuovo la password.</p>
+
+    <h2 id="bande">Bande di frequenza: 2.4 GHz vs 5 GHz</h2>
+    <table>
+      <thead><tr><th>Banda</th><th>Range</th><th>Canali</th><th>Caratteristiche</th></tr></thead>
+      <tbody>
+        <tr><td>2.4 GHz</td><td>2400-2483.5 MHz</td><td>13 canali sovrapposti, larghi 22 MHz</td><td>Maggior copertura ma molta interferenza (Bluetooth, microonde, vicini di casa)</td></tr>
+        <tr><td>5 GHz</td><td>5170-5835 MHz</td><td>19 canali non sovrapposti, larghi 20 MHz</td><td>Banda più larga (40/80/160 MHz aggregabili), meno interferenze, copertura minore</td></tr>
+        <tr><td>6 GHz</td><td>5925-7125 MHz</td><td>59 canali (Wi-Fi 6E/7)</td><td>Massima banda libera, solo dispositivi recenti</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Formula frequenza centrale 2.4 GHz</strong>: <code class="formula">fc = 2407 + 5·NumeroCanale  [MHz]</code></p>
+    <p>Esempio: canale 6 → fc = 2407 + 5·6 = <strong>2437 MHz</strong>.</p>
+    <div class="info-box key">
+      <h4>🔑 Scelta canali 2.4 GHz: solo 1, 6, 11</h4>
+      <p>I canali 2.4 GHz si sovrappongono. Solo le combinazioni <strong>1-6-11</strong> (oppure 2-7-12 o 3-8-13) sono <strong>realmente non sovrapposte</strong>. Tutti gli altri canali interferiscono con i vicini → mai usarli in ambienti densi.</p>
+    </div>
+
+    <h2 id="mimo">MIMO — Multiple Input Multiple Output</h2>
+    <p><span class="term">MIMO</span> sfrutta più antenne in trasmissione e ricezione per aumentare velocità (multiplexing spaziale) e affidabilità (diversity).</p>
+    <table>
+      <thead><tr><th>Configurazione</th><th>Antenne TX × RX</th><th>Dispositivi tipici</th></tr></thead>
+      <tbody>
+        <tr><td>1×1 (SISO)</td><td>1 TX, 1 RX</td><td>IoT, smartphone economici</td></tr>
+        <tr><td>2×2</td><td>2 TX, 2 RX</td><td>Smartphone moderni, tablet</td></tr>
+        <tr><td>3×3 / 4×4</td><td>3-4 TX, 3-4 RX</td><td>Notebook, AP enterprise</td></tr>
+        <tr><td>8×8</td><td>8 TX, 8 RX</td><td>AP Wi-Fi 6/6E top di gamma</td></tr>
+      </tbody>
+    </table>
+    <p><strong>MU-MIMO</strong> (Multi-User MIMO): l'AP comunica con più dispositivi simultaneamente sfruttando flussi spaziali diversi, fondamentale in scenari ad alta densità (aeroporti, scuole).</p>
+
+    <h2 id="associazione">Sequenza di associazione a un AP</h2>
+    <pre class="mermaid">
+sequenceDiagram
+  participant ST as Stazione (Client)
+  participant AP as Access Point
+  participant RAD as RADIUS Server
+  Note over AP: Beacon broadcast (SSID, capabilities)
+  AP-->>ST: Beacon ogni 100 ms
+  ST->>AP: Probe Request (cerca AP)
+  AP-->>ST: Probe Response (capabilities)
+  ST->>AP: Authentication Request
+  AP-->>ST: Authentication Response
+  ST->>AP: Association Request
+  AP-->>ST: Association Response
+  Note over ST,RAD: Solo se WPA2-Enterprise
+  ST->>AP: EAPoL Start
+  AP->>RAD: Access-Request (credenziali utente)
+  RAD-->>AP: Access-Accept (con chiave)
+  AP-->>ST: 4-Way Handshake (PMK derivata)
+  Note over ST,AP: Connessione cifrata stabilita
+    </pre>
 
     <h2 id="csma-ca">CSMA/CA</h2>
     <p>Il protocollo di accesso al canale è <strong>CSMA/CA</strong> (Collision Avoidance), diverso da CSMA/CD di Ethernet. Per ridurre le collisioni:</p>

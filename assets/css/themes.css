@@ -1,0 +1,330 @@
+/* ============================================
+   THEMES — multi-palette cyberpunk
+   Active via <html data-theme="..."> on <html>
+   Default tema = "cyber-tokyo" (set in customize.js)
+   ============================================ */
+
+/* ====== Google Fonts (caricamento condizionale via @import) ====== */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&family=Major+Mono+Display&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+/* ============ CYBER TOKYO (default new) ============ */
+html[data-theme="cyber-tokyo"] {
+  --bg: #050514;
+  --bg-elev: #08081f;
+  --bg-card: rgba(12, 14, 40, 0.62);
+  --bg-card-solid: #0c0e28;
+  --bg-glass: rgba(0, 240, 255, 0.04);
+  --border: rgba(0, 240, 255, 0.16);
+  --border-strong: rgba(0, 240, 255, 0.42);
+  --text: #e7faff;
+  --text-dim: #95b3c4;
+  --text-muted: #5a7a8e;
+
+  --m1: #ff2a6d;       /* magenta neon — crittografia */
+  --m2: #ffb800;       /* amber — filtraggio */
+  --m3: #00ff9c;       /* mint neon — datacenter */
+  --m4: #00d9ff;       /* cyan — esame */
+
+  --accent: #00d9ff;
+  --accent-hover: #5fefff;
+  --accent-deep: #007aff;
+  --neon-pink: #ff2a6d;
+  --neon-cyan: #00f0ff;
+  --neon-violet: #b026ff;
+  --neon-amber: #ffb800;
+
+  --success: #00ff9c;
+  --warning: #ffb800;
+  --error: #ff2a6d;
+  --purple: #b026ff;
+  --pink: #ff2a6d;
+  --teal: #00d9ff;
+
+  --grid-color: rgba(0, 240, 255, 0.07);
+  --scanline-color: rgba(0, 240, 255, 0.02);
+
+  --font-display: 'Chakra Petch', 'Orbitron', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+}
+
+html[data-theme="cyber-tokyo"] body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+}
+
+html[data-theme="cyber-tokyo"] body::before {
+  background:
+    linear-gradient(var(--grid-color) 1px, transparent 1px) 0 0 / 60px 60px,
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px) 0 0 / 60px 60px,
+    radial-gradient(70% 60% at 20% 10%, rgba(0, 217, 255, 0.10), transparent 65%),
+    radial-gradient(60% 50% at 90% 90%, rgba(255, 42, 109, 0.10), transparent 65%),
+    radial-gradient(40% 50% at 50% 100%, rgba(176, 38, 255, 0.08), transparent 65%);
+  animation: cyberGridScroll 60s linear infinite, gradientShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes cyberGridScroll {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 0 60px, 60px 0, 0 0, 0 0, 0 0; }
+}
+
+html[data-theme="cyber-tokyo"] h1,
+html[data-theme="cyber-tokyo"] h2,
+html[data-theme="cyber-tokyo"] h3,
+html[data-theme="cyber-tokyo"] h4,
+html[data-theme="cyber-tokyo"] h5,
+html[data-theme="cyber-tokyo"] .chapter-title,
+html[data-theme="cyber-tokyo"] .brand,
+html[data-theme="cyber-tokyo"] .stat-num,
+html[data-theme="cyber-tokyo"] .module-num {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+html[data-theme="cyber-tokyo"] .hero h1 {
+  background: linear-gradient(180deg, #00f0ff 0%, #ff2a6d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(0, 240, 255, 0.45);
+  letter-spacing: 0.04em;
+}
+
+html[data-theme="cyber-tokyo"] code,
+html[data-theme="cyber-tokyo"] pre,
+html[data-theme="cyber-tokyo"] .formula {
+  font-family: var(--font-mono);
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.14);
+  color: #6bf0ff;
+}
+
+html[data-theme="cyber-tokyo"] .navbar {
+  background: rgba(5, 5, 20, 0.78);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.22);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+html[data-theme="cyber-tokyo"] .nav-links a {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+html[data-theme="cyber-tokyo"] .nav-links a:hover {
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.10);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4) inset;
+}
+html[data-theme="cyber-tokyo"] .nav-links a.active {
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.14);
+  border: 1px solid rgba(0, 240, 255, 0.30);
+}
+
+html[data-theme="cyber-tokyo"] .module-card,
+html[data-theme="cyber-tokyo"] .stat-card,
+html[data-theme="cyber-tokyo"] .info-box,
+html[data-theme="cyber-tokyo"] .callout {
+  background: rgba(8, 10, 30, 0.70);
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(0, 240, 255, 0.04);
+}
+html[data-theme="cyber-tokyo"] .module-card:hover {
+  border-color: rgba(0, 240, 255, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(0, 240, 255, 0.4),
+    0 12px 40px rgba(0, 240, 255, 0.25),
+    inset 0 0 60px rgba(0, 240, 255, 0.03);
+}
+
+html[data-theme="cyber-tokyo"] .btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--accent-deep));
+  color: #001018;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.45);
+  border: 1px solid rgba(0, 240, 255, 0.6);
+}
+html[data-theme="cyber-tokyo"] .btn-primary:hover {
+  box-shadow: 0 0 32px rgba(0, 240, 255, 0.7), 0 0 60px rgba(255, 42, 109, 0.3);
+  transform: translateY(-1px);
+}
+html[data-theme="cyber-tokyo"] .btn-secondary {
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.30);
+  color: var(--neon-cyan);
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="cyber-tokyo"] .btn-secondary:hover {
+  background: rgba(0, 240, 255, 0.18);
+  border-color: var(--neon-cyan);
+}
+
+html[data-theme="cyber-tokyo"] .term {
+  color: var(--neon-pink);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 42, 109, 0.5);
+}
+
+html[data-theme="cyber-tokyo"] .brand-logo {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+  position: relative;
+}
+
+/* Mermaid override per cyber tokyo */
+html[data-theme="cyber-tokyo"] .mermaid {
+  background: rgba(0, 240, 255, 0.03) !important;
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+/* ============ ANIME SUNSET (rosa/viola/arancio) ============ */
+html[data-theme="anime-sunset"] {
+  --bg: #1a0a2e;
+  --bg-elev: #261140;
+  --bg-card: rgba(40, 18, 70, 0.65);
+  --bg-card-solid: #2c1144;
+  --bg-glass: rgba(255, 113, 206, 0.04);
+  --border: rgba(255, 113, 206, 0.18);
+  --border-strong: rgba(255, 113, 206, 0.42);
+  --text: #fff5fa;
+  --text-dim: #d4b3cf;
+  --text-muted: #8d6a8c;
+
+  --m1: #ff6ec7;
+  --m2: #ffba35;
+  --m3: #75ff97;
+  --m4: #b266ff;
+
+  --accent: #ff71ce;
+  --accent-hover: #ff95e0;
+  --neon-cyan: #01cdfe;
+  --neon-pink: #ff71ce;
+  --neon-violet: #b266ff;
+  --neon-amber: #ffba35;
+
+  --grid-color: rgba(255, 113, 206, 0.06);
+  --font-display: 'Orbitron', 'Chakra Petch', sans-serif;
+  --font-body: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+html[data-theme="anime-sunset"] body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+html[data-theme="anime-sunset"] body::before {
+  background:
+    radial-gradient(70% 60% at 20% 10%, rgba(255, 113, 206, 0.18), transparent 65%),
+    radial-gradient(60% 50% at 90% 90%, rgba(178, 102, 255, 0.18), transparent 65%),
+    radial-gradient(40% 50% at 50% 100%, rgba(1, 205, 254, 0.10), transparent 65%);
+}
+html[data-theme="anime-sunset"] .hero h1 {
+  background: linear-gradient(180deg, #ff71ce 0%, #b266ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(255, 113, 206, 0.45);
+}
+html[data-theme="anime-sunset"] .navbar { background: rgba(26, 10, 46, 0.78); border-bottom: 1px solid rgba(255, 113, 206, 0.22); }
+html[data-theme="anime-sunset"] .term { color: var(--neon-pink); text-shadow: 0 0 8px rgba(255, 113, 206, 0.5); }
+
+/* ============ HACKER GREEN (matrix) ============ */
+html[data-theme="hacker-green"] {
+  --bg: #000;
+  --bg-elev: #050a05;
+  --bg-card: rgba(0, 20, 0, 0.65);
+  --bg-card-solid: #061206;
+  --bg-glass: rgba(0, 255, 65, 0.04);
+  --border: rgba(0, 255, 65, 0.18);
+  --border-strong: rgba(0, 255, 65, 0.42);
+  --text: #d3ffd3;
+  --text-dim: #7fbf7f;
+  --text-muted: #4a6a4a;
+
+  --m1: #ff5555;
+  --m2: #ffaa00;
+  --m3: #00ff41;
+  --m4: #00ddff;
+
+  --accent: #00ff41;
+  --accent-hover: #4cff7a;
+  --neon-pink: #ff5555;
+  --neon-cyan: #00ddff;
+  --neon-amber: #ffaa00;
+
+  --grid-color: rgba(0, 255, 65, 0.06);
+  --font-display: 'JetBrains Mono', monospace;
+  --font-body: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+html[data-theme="hacker-green"] body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+html[data-theme="hacker-green"] body::before {
+  background:
+    linear-gradient(rgba(0, 255, 65, 0.04) 1px, transparent 1px) 0 0 / 30px 30px,
+    radial-gradient(60% 50% at 50% 0%, rgba(0, 255, 65, 0.12), transparent 65%);
+}
+html[data-theme="hacker-green"] .hero h1 {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.7);
+  -webkit-text-fill-color: var(--accent);
+}
+html[data-theme="hacker-green"] .term { color: var(--accent); text-shadow: 0 0 8px rgba(0, 255, 65, 0.5); }
+
+/* ============ APPLE CLASSIC (default) ============ */
+/* Lascia il fallback originale di style.css */
+
+/* ============ Common cyberpunk effects (apply only when data-theme has cyber/anime/hacker prefix) ============ */
+html[data-theme="cyber-tokyo"] .hero h1::after,
+html[data-theme="anime-sunset"] .hero h1::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  margin: 1rem auto 0;
+  box-shadow: 0 0 12px var(--neon-cyan);
+}
+
+/* Glitch text utility */
+.glitch {
+  position: relative;
+  color: var(--text);
+}
+html[data-theme="cyber-tokyo"] .glitch::before,
+html[data-theme="cyber-tokyo"] .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+html[data-theme="cyber-tokyo"] .glitch::before {
+  color: var(--neon-pink);
+  animation: glitch1 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  transform: translate(-1px, 0);
+}
+html[data-theme="cyber-tokyo"] .glitch::after {
+  color: var(--neon-cyan);
+  animation: glitch2 2s infinite linear alternate-reverse;
+  clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  transform: translate(1px, 0);
+}
+@keyframes glitch1 { 0%, 92% { transform: translate(0); } 93% { transform: translate(-2px, 1px); } 100% { transform: translate(0); } }
+@keyframes glitch2 { 0%, 95% { transform: translate(0); } 96% { transform: translate(2px, -1px); } 100% { transform: translate(0); } }
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body::before,
+  html[data-theme] .hero h1,
+  .glitch::before, .glitch::after {
+    animation: none !important;
+  }
+}

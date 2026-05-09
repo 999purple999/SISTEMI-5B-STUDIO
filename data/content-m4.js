@@ -387,8 +387,55 @@ window.CHAPTERS.m4c6 = {
     <h2 id="header">Header IPv6</h2>
     <p>Header <strong>fissato a 40 byte</strong>, semplificato rispetto a IPv4 (niente checksum, fragment offset, ...). Eventuali opzioni nei <strong>extension headers</strong>.</p>
 
-    <h2 id="autoconfigurazione">Autoconfigurazione</h2>
+    <h2 id="autoconfigurazione">Autoconfigurazione e calcolo Link-Local da MAC</h2>
     <p>IPv6 supporta <strong>SLAAC</strong> (Stateless Address Autoconfiguration): l'host si configura un IP a partire dal prefisso annunciato dal router (Router Advertisement).</p>
+
+    <div class="info-box key">
+      <h4>🔑 Calcolo dell'indirizzo Link-Local dal MAC (EUI-64)</h4>
+      <p>Ogni interfaccia ha automaticamente un IP <code>fe80::/64</code> generato così:</p>
+      <ol>
+        <li>Prendi il MAC a 48 bit, dividilo in due metà da 24 bit</li>
+        <li>Inserisci <code>FFFE</code> in mezzo (16 bit) → ottieni un Interface ID a 64 bit (EUI-64)</li>
+        <li><strong>Inverti il 7° bit</strong> della prima metà (Universal/Local bit)</li>
+        <li>Anteponi il prefisso <code>fe80::</code></li>
+      </ol>
+    </div>
+
+    <p><strong>Esempio</strong>: MAC <code>00:0D:BD:44:6E:2B</code></p>
+    <pre class="formula">
+MAC:                 00:0D:BD : 44:6E:2B
+Splitting:           00:0D:BD     44:6E:2B
+Inserting FFFE:      00:0D:BD:FF:FE:44:6E:2B
+Invert 7th bit:      00 = 0000 0000  →  0000 0010 = 02
+Result EUI-64:       02:0D:BD:FF:FE:44:6E:2B
+Link-Local:          fe80::020d:bdff:fe44:6e2b</pre>
+
+    <pre class="mermaid">
+flowchart LR
+  M[MAC 48 bit<br/>00:0D:BD:44:6E:2B] --> S[Split 24+24]
+  S --> F[Inserisci FFFE<br/>00:0D:BD:FF:FE:44:6E:2B]
+  F --> B[Inverti 7° bit<br/>02:0D:BD:FF:FE:44:6E:2B]
+  B --> L[Aggiungi prefix fe80::<br/>fe80::020d:bdff:fe44:6e2b]
+    </pre>
+
+    <h2 id="anycast">Anycast in dettaglio</h2>
+    <p>L'<span class="term">anycast</span> assegna lo <strong>stesso indirizzo</strong> a più nodi. Il routing inoltra il pacchetto al nodo "<strong>più vicino</strong>" (in termini di metrica BGP/OSPF). Uso tipico:</p>
+    <ul>
+      <li><strong>DNS root server</strong>: i 13 root server logici sono in realtà centinaia di server fisici sparsi nel mondo, tutti rispondono allo stesso IP</li>
+      <li><strong>CDN</strong> (Cloudflare, Google): l'utente raggiunge il nodo geograficamente più vicino senza saperlo</li>
+      <li><strong>Bilanciamento del carico geografico</strong></li>
+    </ul>
+
+    <h2 id="struttura-llu-ulu-gu">Struttura LLU / ULU / GU</h2>
+    <table>
+      <thead><tr><th>Tipo</th><th>Prefix</th><th>Network prefix (bit)</th><th>Interface ID (bit)</th></tr></thead>
+      <tbody>
+        <tr><td>Link-Local Unicast (LLU)</td><td>fe80::/10</td><td>64 (10 fissi + 54 zero)</td><td>64 (EUI-64)</td></tr>
+        <tr><td>Unique Local Unicast (ULU)</td><td>fc00::/7</td><td>64 (7 fissi + 1 L flag + 40 Global ID + 16 Subnet)</td><td>64</td></tr>
+        <tr><td>Global Unicast (GU)</td><td>2000::/3</td><td>48-64 (assegnato dall'ISP)</td><td>64</td></tr>
+      </tbody>
+    </table>
+    <p>Il <strong>Global ID</strong> della ULU è statisticamente unico → niente collisioni anche se due reti private si fondono per merge aziendale.</p>
 
     <h2 id="transizione">Transizione IPv4 → IPv6</h2>
     <ul>

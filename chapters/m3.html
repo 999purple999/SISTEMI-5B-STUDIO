@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -7,6 +7,7 @@
 <title>Modulo 3 — Datacenter e Cloud</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/themes.css">
 </head>
 <body>
 <nav class="navbar">
@@ -24,6 +25,7 @@
       <li><a href="m2.html">Modulo 2</a></li>
       <li><a href="m3.html" class="active">Modulo 3</a></li>
       <li><a href="m4.html">Modulo 4</a></li>
+      <li><a href="m5.html">🧪 Casi</a></li>
       <li><a href="exam.html">📝 Esame</a></li>
       <li><a href="flashcards.html">🎴 Cards</a></li>
       <li><a href="cheatsheet.html">📋 Cheat</a></li>
@@ -49,6 +51,8 @@
 <script src="../data/content-m3.js"></script>
 <script src="../data/content-m4.js"></script>
 <script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
 <script src="../assets/js/storage.js"></script>
 <script src="../assets/js/study-tools.js"></script>
 <script src="../assets/js/chapter.js"></script>
@@ -58,5 +62,9 @@
   ChapterApp.renderModuleIndex(3);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
 </script>
+
+  <script src="../assets/js/tts.js"></script>
+  <script src="../assets/js/cyberpunk-fx.js"></script>
+  <script src="../assets/js/customize.js"></script>
 </body>
 </html>

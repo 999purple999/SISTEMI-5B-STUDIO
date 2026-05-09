@@ -77,7 +77,24 @@ window.MODULES = [
       { id: "m4c8", slug: "vlan",                title: "Virtual LAN (VLAN)",            icon: "🏷️" },
       { id: "m4c9", slug: "dhcp",                title: "DHCP",                          icon: "🔢" },
       { id: "m4c10", slug: "dns",                title: "DNS",                           icon: "📖" },
-      { id: "m4c11", slug: "http",               title: "HTTP",                          icon: "🌐" }
+      { id: "m4c11", slug: "http",               title: "HTTP",                          icon: "🌐" },
+      { id: "m4c12", slug: "hardware-router",    title: "Hardware switch e router",      icon: "⚙️" },
+      { id: "m4c13", slug: "accesso-internet",   title: "Accesso alla rete Internet",    icon: "🛰️" },
+      { id: "m4c14", slug: "icmp",               title: "ICMP, ping e traceroute",       icon: "📡" }
+    ]
+  },
+  {
+    id: 5,
+    num: "Casi di studio",
+    color: "#b026ff",
+    icon: "🧪",
+    title: "Esercitazioni d'esame",
+    desc: "Tracce reali tipo Esame di Stato con soluzione commentata: LogiPack, DataForge e esercizi DMZ.",
+    chapters: [
+      { id: "m5c1", slug: "caso-logipack",       title: "Caso LogiPack — 2 edifici, fibra OM3", icon: "🏭" },
+      { id: "m5c2", slug: "caso-dataforge",      title: "Caso DataForge — Subnetting + ACL",   icon: "💾" },
+      { id: "m5c3", slug: "esercizi-dmz",        title: "Esercizi DMZ con ACL Cisco",          icon: "🏰" },
+      { id: "m5c4", slug: "esercizi-rsa",        title: "Esercizi numerici RSA e DH",          icon: "🧮" }
     ]
   }
 ];
