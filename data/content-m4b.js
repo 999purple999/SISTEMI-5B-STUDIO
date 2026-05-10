@@ -413,10 +413,10 @@ sequenceDiagram
     <p>DNS gira su porta <strong>53</strong>, tipicamente UDP per query brevi e TCP per zone transfer o risposte grandi (es. DNSSEC).</p>
   `,
   quiz: [
-    {q: "DNS serve per:", a: ["Cifrare il traffico","Tradurre nomi simbolici in indirizzi IP","Routing","Filtraggio firewall"], correct: 1, explain: "Il DNS è la 'rubrica' che traduce nomi in IP."},
+    {q: "Cosa fa il DNS in più rispetto al solo file hosts (es. /etc/hosts) per risolvere i nomi simbolici?", a: ["Niente, sono equivalenti","Permette risoluzione gerarchica e distribuita: nessun host ha la lista completa di Internet, le query sono delegate a root → TLD → autoritativi","Cifra le risposte","Sostituisce il routing"], correct: 1, explain: "Il file hosts era la soluzione pre-1983: ogni host aveva la lista di tutti i nomi Internet. Insostenibile con la crescita. DNS distribuisce la responsabilità: root (.) → TLD (.com, .it) → autoritativi del dominio, con caching nei resolver per performance."},
     {q: "Su quale porta gira DNS?", a: ["25","53","80","443"], correct: 1, explain: "DNS usa la porta 53 (UDP/TCP)."},
     {q: "Come si leggono i nomi DNS?", a: ["Da sinistra a destra","Da destra a sinistra (gerarchia)","In ordine alfabetico","In ordine casuale"], correct: 1, explain: "I nomi DNS sono gerarchici: TLD a destra, host a sinistra."},
-    {q: "Cos'è un TLD?", a: ["Top-Level Domain (es. .com, .it)","The Long Distance","Tunnel Layer Device","Total Length Datagram"], correct: 0, explain: "Top-Level Domain è il livello più alto della gerarchia DNS."},
+    {q: "Nel nome FQDN 'www.scuola.istruzione.it', qual è il TLD (Top-Level Domain)?", a: ["www","scuola","istruzione","it"], correct: 3, explain: "La gerarchia DNS si legge da DESTRA a SINISTRA: TLD (.it) → secondo livello (istruzione) → terzo livello (scuola) → host (www). I TLD si dividono in generici (.com .org .net) e country-code (.it .de .uk)."},
     {q: "Quanti root server cluster esistono?", a: ["1","13","100","1000"], correct: 1, explain: "13 cluster di root server (replicati via anycast in tutto il mondo)."},
     {q: "Cos'è un server autoritativo?", a: ["Un firewall","Il server che conosce ufficialmente i record DNS di un dominio","Un router","Un proxy"], correct: 1, explain: "Il server autoritativo detiene la 'verità' sui record di un dominio."},
     {q: "Risoluzione ricorsiva:", a: ["Il client fa una richiesta alla volta","Il resolver fa tutto il lavoro e restituisce la risposta finale al client","Non si usa","Solo per IPv6"], correct: 1, explain: "Nella risoluzione ricorsiva il resolver naviga tutta la gerarchia e dà la risposta finale."},
@@ -535,7 +535,7 @@ Content-Length: 1234
     </ul>
   `,
   quiz: [
-    {q: "HTTP serve per:", a: ["Email","Web browsing (scambio di risorse tra browser e web server)","DNS","File transfer"], correct: 1, explain: "HTTP è il protocollo del web."},
+    {q: "Quale di queste è una caratteristica fondamentale di HTTP?", a: ["È stateful: ogni richiesta dipende dalle precedenti","È stateless: ogni richiesta è indipendente; lo stato si gestisce con cookie/sessioni","Cifra automaticamente i dati senza bisogno di TLS","Funziona solo su UDP"], correct: 1, explain: "HTTP è stateless per design: il server NON ricorda nulla della richiesta precedente. Per mantenere stato (login, carrello) si usano cookie inviati in ogni richiesta. HTTPS = HTTP + TLS che cifra ma non cambia la natura stateless. HTTP/1 e HTTP/2 usano TCP; HTTP/3 usa QUIC su UDP."},
     {q: "Su quale porta gira HTTP?", a: ["21","53","80","443"], correct: 2, explain: "HTTP gira su porta 80; HTTPS su 443."},
     {q: "HTTP è stateless: cosa significa?", a: ["È sempre cifrato","Ogni richiesta è indipendente, il server non ricorda le precedenti","Funziona solo se loggati","Solo TCP"], correct: 1, explain: "HTTP è stateless: per mantenere stato si usano cookie/sessioni."},
     {q: "Quale protocollo di trasporto usa HTTP?", a: ["UDP","TCP","ICMP","ARP"], correct: 1, explain: "HTTP gira tipicamente sopra TCP. HTTP/3 usa QUIC su UDP."},

@@ -75,7 +75,7 @@ sequenceDiagram
     {q: "Perché PAT cambia il numero di porta del mittente?", a: ["Per cifrare il traffico","Perché processi su host diversi possono avere la stessa porta","Per velocità","Per ridurre il payload"], correct: 1, explain: "Senza il cambio, il router non saprebbe a quale host instradare il pacchetto di ritorno."},
     {q: "Cosa è SNAT (Static NAT)?", a: ["Un firewall","Associa permanentemente a ciascun IP privato un IP pubblico","Un protocollo di routing","Un cifrario"], correct: 1, explain: "SNAT crea associazioni statiche, utili per i server pubblici raggiungibili sempre dallo stesso IP pubblico."},
     {q: "Quale tecnica si usa per esporre un singolo servizio (es. web server) di un host privato?", a: ["NAT","Solo PAT","Port Forwarding","DHCP"], correct: 2, explain: "Il Port Forwarding inoltra il traffico ricevuto su una specifica porta del router a un host interno."},
-    {q: "Dove vengono memorizzate le associazioni del PAT?", a: ["Nella PAT Table","Nella NAT Table","Nel CRL","In ARP"], correct: 0, explain: "Le associazioni (IP_priv:porta_orig ↔ IP_pub:porta_nuova) sono memorizzate nella PAT Table."}
+    {q: "Cosa contiene la tabella di traduzione di PAT (NAT Overload)?", a: ["Solo l'associazione IP_priv ↔ IP_pub (basta uno)","Le associazioni (IP_priv:porta_orig) ↔ (IP_pub:porta_nuova): la PORTA è la chiave per disambiguare host diversi che condividono lo stesso IP pubblico","Solo i timeout di sessione","Le ACL applicate"], correct: 1, explain: "Diversamente da NAT (solo IP), PAT distingue host diversi DELLO STESSO IP pubblico variando la PORTA sorgente. Es. 10.0.0.1:5000 → 138.76.29.7:65000 e 10.0.0.2:5000 → 138.76.29.7:65001. Per questo basta UN solo IP pubblico per migliaia di host."}
   ]
 };
 

@@ -32,6 +32,46 @@
   .rm-skip-list span { display: inline-block; padding: 2px 8px; background: rgba(255,42,109,0.15); border-radius: 99px; margin: 2px; color: #ff2a6d; }
   .rm-priority { background: rgba(0,255,156,0.06); border-color: rgba(0,255,156,0.4); }
   .rm-priority h3 { color: #00ff9c; }
+  .rm-drill {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #00d9ff, #007aff);
+    color: #001018 !important; font-weight: 700;
+    padding: 3px 10px; border-radius: 99px;
+    font-family: 'Chakra Petch', sans-serif; font-size: .76rem;
+    text-decoration: none; letter-spacing: .04em;
+    margin-left: .5rem; vertical-align: middle;
+    border: 1px solid rgba(0,240,255,0.6); cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .rm-drill:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0,240,255,0.5); text-decoration: none; }
+  .rm-block .rm-drill-all {
+    float: right; background: linear-gradient(135deg, #ff2a6d, #b026ff);
+    color: #fff !important; padding: 4px 12px;
+  }
+  /* Drill modal */
+  #drill-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.78); backdrop-filter: blur(8px);
+    display: none; align-items: flex-start; justify-content: center;
+    overflow-y: auto; padding: 4vh 1rem;
+  }
+  #drill-overlay.open { display: flex; }
+  #drill-panel {
+    width: min(720px, 100%); background: linear-gradient(180deg, rgba(8,10,30,0.98), rgba(5,5,20,0.98));
+    border: 1px solid rgba(0,240,255,0.4); border-radius: 16px;
+    box-shadow: 0 0 40px rgba(0,240,255,0.30);
+    padding: 1.5rem 1.25rem; min-height: 320px;
+  }
+  #drill-panel h3 {
+    font-family: 'Chakra Petch', sans-serif; color: #00f0ff;
+    text-transform: uppercase; letter-spacing: .04em;
+    margin-bottom: .8rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  #drill-panel h3 button {
+    background: rgba(255,255,255,0.06); color: #95b3c4; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 4px 10px; cursor: pointer; font-family: inherit; font-size: .8rem;
+  }
+  #drill-panel h3 button:hover { color: #fff; }
 </style>
 </head>
 <body>
@@ -99,9 +139,30 @@
 </main>
 <footer><p>Sistemi 5B — Crash Course personale</p></footer>
 
+<div id="drill-overlay">
+  <div id="drill-panel">
+    <h3>
+      <span id="drill-title">Drill capitolo</span>
+      <button id="drill-close">CHIUDI ✕</button>
+    </h3>
+    <div id="drill-stage"></div>
+  </div>
+</div>
+
 <script src="../data/modules.js"></script>
+<script src="../data/content-m1.js"></script>
+<script src="../data/content-m1b.js"></script>
+<script src="../data/content-m1c.js"></script>
+<script src="../data/content-m2.js"></script>
+<script src="../data/content-m2b.js"></script>
+<script src="../data/content-m3.js"></script>
+<script src="../data/content-m4.js"></script>
+<script src="../data/content-m4b.js"></script>
+<script src="../data/content-m4c.js"></script>
+<script src="../data/content-m5.js"></script>
 <script src="../assets/js/storage.js"></script>
 <script src="../assets/js/study-tools.js"></script>
+<script src="../assets/js/quiz.js"></script>
 <script src="../assets/js/pomodoro.js"></script>
 <script src="../assets/js/tts.js"></script>
 <script src="../assets/js/cyberpunk-fx.js"></script>
@@ -184,20 +245,44 @@
   function saveDone(s) { try { localStorage.setItem(KEY, JSON.stringify([...s])); } catch {} }
   let done = loadDone();
 
+  // Slug → chapterId reverse map (per il drill mode)
+  const SLUG_TO_ID = {};
+  (window.MODULES || []).forEach(m => m.chapters.forEach(c => { SLUG_TO_ID[c.slug] = c.id; }));
+
+  function extractSlugsFromHtml(html) {
+    const slugs = [];
+    const re = /href="([^"#]+)\.html"/g;
+    let m;
+    while ((m = re.exec(html))) {
+      const slug = m[1];
+      if (SLUG_TO_ID[slug] && !slugs.includes(slug)) slugs.push(slug);
+    }
+    return slugs;
+  }
+
   function render() {
     const el = document.getElementById('rm-content');
     let html = '';
     let idx = 0;
     let total = 0;
     PLAN.forEach(b => total += b.steps.length);
-    PLAN.forEach(block => {
-      html += `<div class="rm-block ${block.priority?'rm-priority':''}"><h3><span>${block.block}</span><span class="rm-time">⏱ ${block.time}</span></h3>`;
+    PLAN.forEach((block, bi) => {
+      const allSlugsInBlock = [];
+      block.steps.forEach(s => extractSlugsFromHtml(s.t).forEach(sl => { if (!allSlugsInBlock.includes(sl)) allSlugsInBlock.push(sl); }));
+      const blockDrillBtn = allSlugsInBlock.length > 0
+        ? `<a class="rm-drill rm-drill-all" data-block="${bi}">🎯 Drill tutto il blocco (${allSlugsInBlock.length} cap.)</a>`
+        : '';
+      html += `<div class="rm-block ${block.priority?'rm-priority':''}"><h3><span>${block.block}${blockDrillBtn}</span><span class="rm-time">⏱ ${block.time}</span></h3>`;
       block.steps.forEach(s => {
         const id = 's-' + idx++;
         const isDone = done.has(id);
+        const slugs = extractSlugsFromHtml(s.t);
+        const drillBtn = slugs.length > 0
+          ? `<a class="rm-drill" data-slugs="${slugs.join(',')}">🎯 Drill (${slugs.length})</a>`
+          : '';
         html += `<label class="rm-step ${isDone?'done':''}" for="${id}">
           <input type="checkbox" id="${id}" data-id="${id}" ${isDone?'checked':''}>
-          <span class="rm-task">${s.t} <span style="color:var(--text-muted); font-size:.78rem; margin-left:.4rem;">[${s.time}]</span></span>
+          <span class="rm-task">${s.t} <span style="color:var(--text-muted); font-size:.78rem; margin-left:.4rem;">[${s.time}]</span>${drillBtn}</span>
         </label>`;
       });
       html += '</div>';
@@ -213,8 +298,72 @@
         updateStats();
       });
     });
+    el.querySelectorAll('.rm-drill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if (btn.dataset.slugs) {
+          openDrill(btn.dataset.slugs.split(','));
+        } else if (btn.dataset.block) {
+          const bi = +btn.dataset.block;
+          const slugs = [];
+          PLAN[bi].steps.forEach(s => extractSlugsFromHtml(s.t).forEach(sl => { if (!slugs.includes(sl)) slugs.push(sl); }));
+          openDrill(slugs);
+        }
+      });
+    });
     updateStats();
   }
+
+  // ============ DRILL MODE ============
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+    return a;
+  }
+  function openDrill(slugs) {
+    const overlay = document.getElementById('drill-overlay');
+    const stage = document.getElementById('drill-stage');
+    const titleEl = document.getElementById('drill-title');
+    const titles = slugs.map(s => {
+      const id = SLUG_TO_ID[s];
+      const ch = (window.CHAPTERS||{})[id];
+      return ch ? ch.title : s;
+    });
+    titleEl.textContent = '🎯 Drill: ' + titles.join(' · ');
+    // Aggrega tutti i quiz dei capitoli, mantenendo riferimento al capitolo
+    const all = [];
+    slugs.forEach(slug => {
+      const id = SLUG_TO_ID[slug];
+      const ch = (window.CHAPTERS||{})[id];
+      if (ch && ch.quiz) {
+        ch.quiz.forEach(q => all.push(Object.assign({}, q, { _slug: slug, _chapterTitle: ch.title })));
+      }
+    });
+    if (all.length === 0) {
+      stage.innerHTML = '<p style="color:#ff2a6d; padding:2rem; text-align:center;">Nessun quiz trovato per i capitoli selezionati.</p>';
+    } else {
+      const questions = shuffle(all);
+      // Render via Quiz engine — passo un chapterId fittizio "drill" e le domande
+      stage.innerHTML = '<div id="drill-quiz-container"></div><div style="margin-top:1rem; text-align:center; font-size:.78rem; color:#95b3c4;">' + all.length + ' domande estratte da ' + slugs.length + ' capitoli — risposte mescolate</div>';
+      const container = document.getElementById('drill-quiz-container');
+      // Quiz.render aggiorna lo storage; usiamo un id placeholder che non collide
+      Quiz.render(container, '__drill__', questions);
+    }
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrill() {
+    document.getElementById('drill-overlay').classList.remove('open');
+    document.getElementById('drill-stage').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('drill-close').addEventListener('click', closeDrill);
+  document.getElementById('drill-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'drill-overlay') closeDrill();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('drill-overlay').classList.contains('open')) closeDrill();
+  });
   function updateStats() {
     let total = 0;
     PLAN.forEach(b => total += b.steps.length);
