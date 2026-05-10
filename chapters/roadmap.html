@@ -4,51 +4,91 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<title>🚨 Verifica DOMANI — Crash Course 24h</title>
+<title>📖 Ripasso totale — Verifica DOMANI</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/themes.css">
 <style>
-  .rm-block { background: rgba(8,10,30,0.55); border: 1px solid rgba(0,240,255,0.18); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
-  .rm-block h3 { font-family: var(--font-display, 'Chakra Petch', sans-serif); color: var(--neon-cyan,#00d9ff); font-size: 1.05rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom: .8rem; display:flex; justify-content:space-between; align-items:center; }
-  .rm-block h3 .rm-time { font-size: 0.78rem; color: var(--neon-pink,#ff2a6d); font-family: 'JetBrains Mono', monospace; }
-  .rm-step { display: flex; gap: .6rem; padding: .55rem .7rem; border-radius: 8px; align-items: flex-start; transition: background .15s; cursor: pointer; }
-  .rm-step:hover { background: rgba(0,240,255,0.04); }
-  .rm-step input[type="checkbox"] { margin-top: 4px; accent-color: var(--neon-cyan,#00d9ff); width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
-  .rm-step .rm-task { color: var(--text); font-size: .95rem; line-height: 1.5; flex: 1; }
-  .rm-step.done .rm-task { color: var(--text-muted); text-decoration: line-through; }
-  .rm-step a { color: var(--neon-cyan,#00d9ff); text-decoration: none; font-weight: 600; }
-  .rm-step a:hover { text-decoration: underline; }
-  .rm-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin: 1.5rem 0; }
-  .rm-stat { background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.18); border-radius: 12px; padding: 1rem; text-align: center; }
-  .rm-stat .num { font-family: var(--font-display,'Chakra Petch',sans-serif); font-size: 1.7rem; color: var(--neon-cyan,#00d9ff); font-weight: 700; }
-  .rm-stat .lbl { color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; margin-top: .2rem; }
-  .rm-progress { height: 8px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; margin: 1rem 0; }
-  .rm-progress-bar { height: 100%; background: linear-gradient(90deg, var(--neon-cyan,#00d9ff), var(--neon-pink,#ff2a6d)); transition: width .4s; }
-  .rm-warn { background: rgba(255,42,109,0.10); border: 1px solid rgba(255,42,109,0.40); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; color: var(--text); }
-  .rm-warn h2 { font-family: var(--font-display, 'Chakra Petch', sans-serif); color: #ff2a6d; font-size: 1.3rem; margin-bottom: .5rem; }
-  .rm-block.skip { opacity: 0.55; border-style: dashed; }
-  .rm-skip-list { font-size: .82rem; color: var(--text-muted); }
-  .rm-skip-list span { display: inline-block; padding: 2px 8px; background: rgba(255,42,109,0.15); border-radius: 99px; margin: 2px; color: #ff2a6d; }
-  .rm-priority { background: rgba(0,255,156,0.06); border-color: rgba(0,255,156,0.4); }
-  .rm-priority h3 { color: #00ff9c; }
-  .rm-drill {
-    display: inline-flex; align-items: center; gap: 4px;
+  .rs-section { margin-bottom: 2.5rem; }
+  .rs-section h2 {
+    font-family: var(--font-display, 'Chakra Petch', sans-serif);
+    font-size: 1.4rem; letter-spacing: .04em; text-transform: uppercase;
+    padding: .8rem 1rem; border-radius: 12px;
+    margin-bottom: 1.2rem;
+  }
+  .rs-section.fast h2 { background: rgba(0,255,156,0.10); border: 1px solid rgba(0,255,156,0.4); color: #00ff9c; }
+  .rs-section.deep h2 { background: rgba(255,42,109,0.10); border: 1px solid rgba(255,42,109,0.45); color: #ff2a6d; }
+  .rs-section.drill h2 { background: rgba(0,217,255,0.10); border: 1px solid rgba(0,217,255,0.45); color: #00d9ff; }
+  .rs-block {
+    background: rgba(8,10,30,0.55); border: 1px solid rgba(0,240,255,0.18);
+    border-radius: 14px; padding: 1.2rem 1.4rem; margin-bottom: 1.2rem;
+  }
+  .rs-block.deep { border-color: rgba(255,42,109,0.30); background: rgba(40,8,20,0.4); }
+  .rs-block h3 {
+    font-family: var(--font-display, 'Chakra Petch', sans-serif);
+    color: var(--neon-cyan, #00d9ff); font-size: 1.1rem; margin-bottom: .8rem;
+    letter-spacing: .03em; padding-bottom: .4rem;
+    border-bottom: 1px solid rgba(0,240,255,0.18);
+  }
+  .rs-block.deep h3 { color: #ff5588; border-bottom-color: rgba(255,42,109,0.25); }
+  .rs-block h4 {
+    font-family: 'Chakra Petch', sans-serif;
+    color: #6bf0ff; font-size: .95rem; margin: 1rem 0 .4rem;
+    letter-spacing: .02em;
+  }
+  .rs-block.deep h4 { color: #ffba35; }
+  .rs-block p, .rs-block li { color: var(--text); line-height: 1.6; font-size: .95rem; }
+  .rs-block ul, .rs-block ol { padding-left: 1.4rem; margin: .4rem 0 .8rem; }
+  .rs-block li { margin: .2rem 0; }
+  .rs-block strong { color: #fff; }
+  .rs-block code, .rs-block .formula {
+    background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.14);
+    color: #6bf0ff; padding: 1px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: .85em;
+  }
+  .rs-block .formula {
+    display: block; padding: .7rem 1rem; margin: .5rem 0;
+    white-space: pre-wrap; line-height: 1.5;
+  }
+  .rs-key {
+    background: rgba(255,184,0,0.06); border-left: 3px solid #ffb800;
+    padding: .7rem 1rem; margin: .8rem 0; border-radius: 0 8px 8px 0;
+    color: #ffd06b; font-size: .92rem;
+  }
+  .rs-key strong { color: #ffba35; }
+  .rs-table { width: 100%; border-collapse: collapse; margin: .6rem 0; font-size: .87rem; }
+  .rs-table th, .rs-table td { border: 1px solid rgba(0,240,255,0.18); padding: .4rem .7rem; text-align: left; }
+  .rs-table th { background: rgba(0,240,255,0.08); color: #6bf0ff; font-family: 'Chakra Petch', sans-serif; }
+  .rs-block .step {
+    counter-reset: step;
+    padding-left: 0;
+    list-style: none;
+  }
+  .rs-block .step li {
+    position: relative; padding-left: 2.2rem; margin: .5rem 0;
+    counter-increment: step;
+  }
+  .rs-block .step li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 1.6rem; height: 1.6rem;
+    background: rgba(0,240,255,0.15); border: 1px solid rgba(0,240,255,0.4);
+    border-radius: 50%; text-align: center; line-height: 1.5rem;
+    font-family: 'Chakra Petch', sans-serif; font-weight: 700; color: #00f0ff;
+    font-size: .8rem;
+  }
+  .rs-block.deep .step li::before { background: rgba(255,42,109,0.15); border-color: rgba(255,42,109,0.4); color: #ff5588; }
+  .rs-drill-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  .rs-drill-btn {
     background: linear-gradient(135deg, #00d9ff, #007aff);
-    color: #001018 !important; font-weight: 700;
-    padding: 3px 10px; border-radius: 99px;
-    font-family: 'Chakra Petch', sans-serif; font-size: .76rem;
-    text-decoration: none; letter-spacing: .04em;
-    margin-left: .5rem; vertical-align: middle;
-    border: 1px solid rgba(0,240,255,0.6); cursor: pointer;
-    transition: transform .15s, box-shadow .15s;
+    color: #001018 !important; font-family: 'Chakra Petch', sans-serif;
+    padding: .5rem 1rem; border-radius: 99px; text-decoration: none;
+    font-size: .85rem; font-weight: 700; letter-spacing: .03em;
+    border: 1px solid rgba(0,240,255,0.5); cursor: pointer;
+    transition: all .15s;
   }
-  .rm-drill:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0,240,255,0.5); text-decoration: none; }
-  .rm-block .rm-drill-all {
-    float: right; background: linear-gradient(135deg, #ff2a6d, #b026ff);
-    color: #fff !important; padding: 4px 12px;
-  }
-  /* Drill modal */
+  .rs-drill-btn:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0,240,255,0.5); text-decoration: none; }
+  /* drill modal copia da roadmap precedente */
   #drill-overlay {
     position: fixed; inset: 0; z-index: 300;
     background: rgba(0,0,0,0.78); backdrop-filter: blur(8px);
@@ -65,13 +105,26 @@
   #drill-panel h3 {
     font-family: 'Chakra Petch', sans-serif; color: #00f0ff;
     text-transform: uppercase; letter-spacing: .04em;
-    margin-bottom: .8rem; display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: .8rem; display: flex; justify-content: space-between; align-items: center; gap: .5rem;
   }
   #drill-panel h3 button {
     background: rgba(255,255,255,0.06); color: #95b3c4; border: 1px solid rgba(255,255,255,0.1);
     border-radius: 8px; padding: 4px 10px; cursor: pointer; font-family: inherit; font-size: .8rem;
   }
-  #drill-panel h3 button:hover { color: #fff; }
+  .rs-tldr {
+    background: rgba(0,255,156,0.06); border: 1px solid rgba(0,255,156,0.3);
+    border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 2rem;
+    color: var(--text); font-size: .95rem;
+  }
+  .rs-tldr strong { color: #00ff9c; }
+  .rs-checklist { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+  .rs-checklist label {
+    background: rgba(0,240,255,0.04); border: 1px solid rgba(0,240,255,0.18);
+    padding: .35rem .7rem; border-radius: 99px; cursor: pointer;
+    font-size: .8rem; display: inline-flex; gap: .4rem; align-items: center;
+  }
+  .rs-checklist label.done { background: rgba(0,255,156,0.10); border-color: rgba(0,255,156,0.5); color: #00ff9c; }
+  .rs-checklist input { accent-color: #00f0ff; }
 </style>
 </head>
 <body>
@@ -86,68 +139,551 @@
       <li><a href="m5.html">🧪</a></li>
       <li><a href="exam.html">📝</a></li><li><a href="flashcards.html">🎴</a></li>
       <li><a href="cheatsheet.html">📋</a></li>
-      <li><a href="mindmap.html">🧠</a></li><li><a href="tools.html">🛠️</a></li>
-      <li><a href="glossario.html">📖</a></li>
-      <li><a href="roadmap.html" class="active">🚨 Roadmap</a></li>
+      <li><a href="roadmap.html" class="active">📖 Ripasso</a></li>
     </ul>
   </div>
 </nav>
+
 <main>
   <div class="container">
     <div class="chapter-header">
-      <div class="breadcrumb"><a href="../index.html">Home</a> / Crash Course</div>
-      <h1 class="chapter-title">🚨 Verifica DOMANI — Crash Course 24h</h1>
-      <p class="chapter-sub">Programma intensivo per coprire <strong>43 capitoli</strong> in <strong>~7 ore</strong> di studio attivo + 8 ore di sonno + ripasso flash al mattino. Tutto cronometrato, tutto persistente.</p>
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Ripasso totale</div>
+      <h1 class="chapter-title">📖 Ripasso totale — tutto in un posto</h1>
+      <p class="chapter-sub">Verifica completa di domani. Stampa o scrolla, leggi e rileggi. Le 3 sezioni sono: 🟢 ripasso veloce (cose che già sai), 🔴 studio serio (le cose che non sai per niente), 🎯 drill quiz mirato.</p>
     </div>
 
-    <div class="rm-warn">
-      <h2>⚠️ Strategia anti-panico</h2>
-      <p style="color:var(--text-dim);">Non rileggere tutta la teoria — non c'è tempo. <strong>Drilling sui quiz</strong> di ogni capitolo (10× più efficiente per memorizzare) + <strong>cheatsheet</strong> + <strong>flashcards</strong>. Le 43 caselle sotto coprono il 100% del programma del prof <em>esclusi</em> i 4 argomenti che lui ha tolto:</p>
-      <p class="rm-skip-list" style="margin-top:.5rem;">SALTA → <span>Categorie firewall</span> <span>TLS</span> <span>Wireless 802.11</span> <span>VLAN</span></p>
+    <div class="rs-tldr">
+      <strong>Strategia consigliata:</strong> leggi prima la sezione 🔴 (le 3 aree che non sai: <em>certificati/CA</em>, <em>IPSec</em>, <em>VPN/DMZ</em>) — sono il 70% del tuo voto se vengono chieste. Poi un giro veloce sulla 🟢 per confermare. Chiudi col drill 🎯 sui quiz delle parti deboli.
     </div>
 
-    <div class="rm-summary">
-      <div class="rm-stat"><div class="num" id="rm-done">0</div><div class="lbl">step completati</div></div>
-      <div class="rm-stat"><div class="num" id="rm-total">0</div><div class="lbl">step totali</div></div>
-      <div class="rm-stat"><div class="num" id="rm-pct">0%</div><div class="lbl">progresso</div></div>
-      <div class="rm-stat"><div class="num">~7h</div><div class="lbl">studio attivo</div></div>
-    </div>
-    <div class="rm-progress"><div class="rm-progress-bar" id="rm-bar" style="width:0%"></div></div>
+    <!-- ============ SEZIONE 🔴 STUDIO SERIO (FIRST!) ============ -->
+    <section class="rs-section deep">
+      <h2>🔴 1 · Da studiare seriamente — i 3 buchi</h2>
 
-    <div id="rm-content"></div>
+      <!-- ===== CA / Certificati ===== -->
+      <div class="rs-block deep">
+        <h3>🔐 Certificati digitali, CA, CRL/OCSP, TSA, busta crittografica</h3>
 
-    <div class="rm-block rm-priority">
-      <h3>💪 Linee guida d'oro</h3>
-      <ul style="color:var(--text-dim); line-height: 1.8; padding-left: 1.2rem;">
-        <li><strong>Non leggere lentamente</strong>: scorri il capitolo, vai al quiz. Il quiz ti dice cosa sai e cosa no.</li>
-        <li><strong>Quando sbagli un quiz</strong>: leggi la spiegazione, NON tornare indietro a rileggere tutto.</li>
-        <li><strong>Cheatsheet sempre aperto</strong> in altra scheda — è il tuo "specchietto" al volo.</li>
-        <li><strong>Sonno è studio</strong>: la memoria si consolida nel sonno profondo. Dormire 7-8 ore ≫ studiare 2 ore extra.</li>
-        <li><strong>Mattina della verifica</strong>: NIENTE roba nuova. Solo ripasso veloce di cheatsheet + top 20 flashcards.</li>
-        <li><strong>Pomodoro</strong>: usa il timer 25/5 dal pulsante 🍅 in basso a destra. Pausa OBBLIGATORIA ogni 25 min.</li>
-        <li><strong>Acqua e snack</strong>: zucchero rapido (frutta, mandorle), niente caffè dopo le 21.</li>
-      </ul>
-    </div>
+        <h4>Il problema che risolve la CA</h4>
+        <p>Hai una chiave pubblica di "Mario Rossi". <strong>Come fai a essere sicuro che sia davvero la sua e non di Trudy che si finge Mario?</strong> Risposta: ti fidi di un <strong>terzo</strong> che lo certifica. Quel terzo è la <strong>CA</strong>.</p>
 
-    <div style="margin-top: 2rem; display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center;">
-      <button class="btn btn-secondary btn-sm" id="rm-reset">🔄 Reset progresso</button>
-      <a class="btn btn-primary btn-sm" href="cheatsheet.html">📋 Apri cheatsheet</a>
-      <a class="btn btn-primary btn-sm" href="flashcards.html">🎴 Apri flashcards</a>
-      <a class="btn btn-primary btn-sm" href="exam.html">📝 Avvia simulazione</a>
-    </div>
+        <h4>CA — Certification Authority</h4>
+        <ul>
+          <li><strong>Cos'è</strong>: ente terzo affidabile che certifica l'appartenenza di una chiave pubblica a una persona o a un server.</li>
+          <li><strong>Esempi reali</strong>: Aruba, InfoCert, Poste, DigiCert, Let's Encrypt (gratuito).</li>
+          <li><strong>Come fa</strong>: emette un <strong>certificato X.509</strong> firmato con la propria chiave privata.</li>
+          <li><strong>Come ti fidi della CA</strong>: la chiave pubblica delle <strong>root CA</strong> è preinstallata in browser e sistemi operativi.</li>
+          <li><strong>Catena di certificazione</strong>: root CA → CA intermedia → certificato server. Il browser verifica fino alla radice.</li>
+        </ul>
+
+        <h4>Certificato X.509 v3 — cosa contiene (a memoria!)</h4>
+        <table class="rs-table">
+          <tr><th>Campo</th><th>Significato</th></tr>
+          <tr><td><strong>Numero di serie</strong></td><td>Univoco per la CA, serve per CRL/OCSP</td></tr>
+          <tr><td><strong>Algoritmo firma</strong></td><td>Es. SHA256withRSA</td></tr>
+          <tr><td><strong>Nome CA emittente</strong></td><td>Issuer (es. "DigiCert SHA2 CA")</td></tr>
+          <tr><td><strong>Validità</strong></td><td>Data inizio + data fine (oggi tipicamente 1 anno)</td></tr>
+          <tr><td><strong>Nome intestatario</strong></td><td>Subject (es. "Mario Rossi" o "www.miosito.it")</td></tr>
+          <tr><td><strong>Chiave pubblica intestatario</strong></td><td>La chiave da garantire</td></tr>
+          <tr><td><strong>Estensioni v3</strong></td><td>KeyUsage, SAN, Basic Constraints</td></tr>
+          <tr><td><strong>Firma della CA</strong></td><td>Firma digitale di tutti i campi precedenti</td></tr>
+        </table>
+
+        <h4>Validità temporale e revoca</h4>
+        <p>Un certificato è valido <strong>solo</strong> tra le 2 date dichiarate. Scaduto = invalido (browser blocca con avviso).</p>
+        <p>Ma può capitare che la chiave privata venga <strong>compromessa</strong> prima della scadenza → bisogna invalidarlo subito. Esistono due meccanismi:</p>
+
+        <h4>📋 CRL — Certificate Revocation List</h4>
+        <ul>
+          <li>Elenco <strong>pubblico</strong> pubblicato dalla CA</li>
+          <li>Contiene i <strong>numeri di serie</strong> dei certificati REVOCATI ma <strong>non ancora scaduti</strong></li>
+          <li>Il client scarica la CRL e cerca dentro</li>
+          <li><strong>Limite</strong>: la CRL può essere lunghissima e va aggiornata periodicamente</li>
+        </ul>
+
+        <h4>🔍 OCSP — Online Certificate Status Protocol (RFC 6960)</h4>
+        <ul>
+          <li>Protocollo <strong>in tempo reale</strong></li>
+          <li>Il client manda al server OCSP della CA: "il certificato con serial X è valido?"</li>
+          <li>Risposta: <code>good</code> / <code>revoked</code> / <code>unknown</code></li>
+          <li>Più efficiente della CRL: chiedi solo per il certificato che ti serve</li>
+          <li>HTTP POST con Content-Type <code>application/ocsp-request</code></li>
+        </ul>
+
+        <h4>🕐 TSA — Time-Stamping Authority (marca temporale)</h4>
+        <p>Serve a dimostrare che <strong>quel documento esisteva e era firmato a una certa data/ora</strong>. Importante per: contratti con scadenze, brevetti, contestazioni legali.</p>
+        <p><strong>Processo</strong>:</p>
+        <ol class="step">
+          <li>Il client calcola <code>hash(documento + firma)</code></li>
+          <li>Manda l'hash alla TSA</li>
+          <li>La TSA prepara la struttura <code>TSTInfo</code> (hash + timestamp + numero serie + dati TSA)</li>
+          <li>La TSA <strong>firma</strong> TSTInfo con la propria chiave privata → ottiene il <strong>TST</strong> (Time-Stamp Token)</li>
+          <li>Il TST viene allegato al documento firmato</li>
+        </ol>
+
+        <h4>📦 Busta crittografica .p7m</h4>
+        <ul>
+          <li>Formato standard <strong>PKCS#7</strong> (RFC 5652)</li>
+          <li>File con estensione <code>.p7m</code></li>
+          <li>Contiene <strong>tutto in un solo file</strong>:
+            <ul>
+              <li>Documento originale (in chiaro al suo interno)</li>
+              <li>Firma digitale del mittente</li>
+              <li>Certificato X.509 del firmatario</li>
+              <li>(eventuale) Marca temporale TST</li>
+            </ul>
+          </li>
+          <li>Verificabile da qualsiasi software conforme PKCS#7 (es. Dike, ArubaSign)</li>
+        </ul>
+
+        <div class="rs-key">
+          <strong>🎯 Il processo COMPLETO di validazione di un certificato (potrebbe chiederlo!)</strong>
+          <ol class="step" style="margin-top: .6rem;">
+            <li><strong>Verifica integrità + autenticazione del documento</strong>: hash(doc) deve coincidere con decifra(firma, chiave_pub_dal_cert).</li>
+            <li><strong>Verifica validità temporale del certificato</strong>: data attuale tra inizio e fine.</li>
+            <li><strong>Verifica firma della CA sul certificato</strong>: la chiave pubblica della CA root è nel browser. Se è una CA intermedia, ricostruisci la catena fino alla root.</li>
+            <li><strong>Verifica stato di revoca</strong>: query CRL o OCSP → certificato non revocato.</li>
+            <li>Se tutti i passi OK → <strong>documento autentico e integro</strong>, autore confermato.</li>
+            <li>(Eventuale) Verifica del TST se c'è marca temporale.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ===== IPSec ===== -->
+      <div class="rs-block deep">
+        <h3>🔒 Architettura IPSec — completa</h3>
+
+        <h4>Cos'è IPSec</h4>
+        <ul>
+          <li>Architettura di sicurezza a <strong>livello 3 (rete)</strong> — RFC 4301</li>
+          <li>Protegge il pacchetto IP → <strong>trasparente alle applicazioni</strong> (non serve modificare app)</li>
+          <li>Garantisce: <strong>riservatezza, integrità, autenticazione</strong></li>
+          <li>Usato per: <strong>VPN site-to-site</strong> (gateway-to-gateway) e <strong>remote access</strong> (client-to-gateway)</li>
+        </ul>
+
+        <h4>HMAC — algoritmo di hash con chiave</h4>
+        <ul>
+          <li><strong>HMAC</strong> = Hash-based Message Authentication Code</li>
+          <li>Prende: messaggio + <strong>chiave segreta condivisa</strong> → produce un MAC</li>
+          <li>Garantisce integrità + autenticazione (chi non ha la chiave non può ricalcolare il MAC)</li>
+          <li>Esempi: <strong>HMAC-SHA256</strong>, HMAC-SHA1 (deprecato)</li>
+        </ul>
+
+        <h4>I due protocolli: ESP e AH</h4>
+        <table class="rs-table">
+          <tr><th></th><th>ESP (Encapsulating Security Payload)</th><th>AH (Authentication Header)</th></tr>
+          <tr><td><strong>Cifratura</strong></td><td>✅ Sì</td><td>❌ No</td></tr>
+          <tr><td><strong>Integrità</strong></td><td>✅ Sì</td><td>✅ Sì</td></tr>
+          <tr><td><strong>Autenticazione</strong></td><td>✅ Sì</td><td>✅ Sì</td></tr>
+          <tr><td><strong>Header</strong></td><td>ESP header + ESP trailer</td><td>AH header</td></tr>
+          <tr><td><strong>Uso pratico</strong></td><td>Quasi sempre questo</td><td>Raramente (ESP fa di più)</td></tr>
+        </table>
+
+        <h4>Le due modalità: Transport e Tunnel</h4>
+        <table class="rs-table">
+          <tr><th></th><th>Transport</th><th>Tunnel</th></tr>
+          <tr><td><strong>Cosa protegge</strong></td><td>Solo il payload del pacchetto IP</td><td>L'INTERO pacchetto IP (header + payload)</td></tr>
+          <tr><td><strong>Header IP esterno</strong></td><td>Quello originale rimane visibile</td><td>Aggiunto un nuovo header IP</td></tr>
+          <tr><td><strong>Uso tipico</strong></td><td>Host-to-host (es. due server diretti)</td><td>Gateway-to-gateway (VPN site-to-site) e client→gateway (remote access)</td></tr>
+        </table>
+
+        <h4>SA — Security Association</h4>
+        <ul>
+          <li>Connessione logica <strong>UNIDIREZIONALE</strong> tra due endpoint</li>
+          <li>Definisce: protocollo (ESP/AH), modalità (transport/tunnel), algoritmi, chiavi</li>
+          <li>Identificata da: <strong>SPI</strong> (Security Parameter Index) + IP destinazione + protocollo</li>
+          <li>Per una <strong>comunicazione bidirezionale servono 2 SA</strong> (una per direzione, perché unidirezionale!)</li>
+        </ul>
+
+        <h4>SPD vs SAD</h4>
+        <table class="rs-table">
+          <tr><th>Database</th><th>Cosa contiene</th><th>Quando viene consultato</th></tr>
+          <tr><td><strong>SPD</strong> (Security <em>Policy</em> DB)</td><td>Le <strong>policy</strong>: per ogni traffico (filtrato per IP src/dst, porta, protocollo) decide: <code>bypass</code> (passa in chiaro), <code>drop</code> (scarta), <code>apply IPSec</code> (cifra/autentica)</td><td>SEMPRE per primo, sia in ingresso che in uscita</td></tr>
+          <tr><td><strong>SAD</strong> (Security <em>Association</em> DB)</td><td>Le <strong>SA attive</strong> con relative chiavi e parametri. Indicizzato per SPI</td><td>DOPO l'SPD se la policy dice "apply IPSec": serve a recuperare le chiavi della SA da usare</td></tr>
+        </table>
+
+        <h4>🎯 Flusso interfaccia IPSec — IN INGRESSO</h4>
+        <ol class="step">
+          <li>Arriva un pacchetto: ha header IPSec (ESP/AH)? → consulta <strong>SAD</strong> via SPI → recupera la SA con chiavi e algoritmi.</li>
+          <li>Decifra/verifica usando le chiavi della SA.</li>
+          <li>Verifica con <strong>SPD</strong>: la policy richiedeva davvero quella protezione? (anti-spoofing).</li>
+          <li>Pacchetto in chiaro consegnato all'host destinatario.</li>
+        </ol>
+
+        <h4>🎯 Flusso interfaccia IPSec — IN USCITA</h4>
+        <ol class="step">
+          <li>Pacchetto in uscita: consulta <strong>SPD</strong> in base ai selectors (IP/porta/protocollo) → ottiene la policy.</li>
+          <li>Se policy = <code>bypass</code> → esce in chiaro. Se <code>drop</code> → scartato. Se <code>apply IPSec</code> → continua.</li>
+          <li>Cerca la SA giusta nel <strong>SAD</strong> (o ne crea una nuova via IKE se non esiste).</li>
+          <li>Applica ESP/AH usando le chiavi della SA → pacchetto cifrato/autenticato in uscita.</li>
+        </ol>
+
+        <div class="rs-key">
+          <strong>💡 Trucco mnemonico:</strong> SPD = <em>P</em>olicy = <em>P</em>rima decide cosa fare. SAD = <em>A</em>ssociation = <em>A</em>ttive (con chiavi).
+        </div>
+      </div>
+
+      <!-- ===== VPN ===== -->
+      <div class="rs-block deep">
+        <h3>🛰️ VPN — Virtual Private Network</h3>
+
+        <h4>Definizione</h4>
+        <ul>
+          <li>Rete <strong>privata virtuale</strong> che usa Internet pubblico come trasporto</li>
+          <li><strong>Tunnel cifrato</strong> tra due endpoint → traffico illeggibile per chi intercetta</li>
+          <li>Risparmio rispetto a linee dedicate (MPLS, frame relay) che costavano migliaia di € al mese</li>
+          <li>Usata da aziende per connettere sedi distanti o dipendenti remoti alla LAN</li>
+        </ul>
+
+        <h4>Due tipi principali</h4>
+        <table class="rs-table">
+          <tr><th></th><th>Site-to-Site</th><th>Remote Access</th></tr>
+          <tr><td><strong>Cosa collega</strong></td><td>Due reti aziendali (es. Roma ↔ Milano)</td><td>Singolo client → LAN aziendale</td></tr>
+          <tr><td><strong>Endpoint</strong></td><td>Due gateway (router/firewall)</td><td>Client (laptop, smartphone) ↔ gateway</td></tr>
+          <tr><td><strong>Modalità IPSec</strong></td><td>Tunnel mode</td><td>Tunnel mode</td></tr>
+          <tr><td><strong>Uso tipico</strong></td><td>Filiali aziendali sempre connesse</td><td>Smart working, dipendenti in trasferta</td></tr>
+          <tr><td><strong>Software client</strong></td><td>Configurato nel router (trasparente per gli host)</td><td>Cisco AnyConnect, OpenVPN, WireGuard</td></tr>
+        </table>
+
+        <h4>Tecnologie alternative a IPSec</h4>
+        <ul>
+          <li><strong>SSL/TLS VPN</strong> (es. OpenVPN): livello 7, traversa NAT più facilmente</li>
+          <li><strong>WireGuard</strong>: moderno (2018), più semplice, più veloce, codice piccolo (4000 righe)</li>
+          <li><strong>L2TP</strong>, <strong>PPTP</strong>: vecchi, oggi sconsigliati</li>
+        </ul>
+      </div>
+
+      <!-- ===== DMZ ===== -->
+      <div class="rs-block deep">
+        <h3>🏰 DMZ — Demilitarized Zone</h3>
+
+        <h4>Cos'è e perché esiste</h4>
+        <ul>
+          <li><strong>Sottorete intermedia</strong> tra LAN interna e Internet</li>
+          <li>Ospita i <strong>server pubblici</strong> dell'azienda: web, mail (SMTP/IMAP), DNS, FTP</li>
+          <li><strong>Filosofia</strong>: se un server pubblico viene compromesso (è esposto a Internet, è il bersaglio più probabile), l'attaccante è dentro la DMZ ma <strong>NON</strong> nella LAN interna dove ci sono i dati sensibili (contabilità, gestionale, ecc.).</li>
+        </ul>
+
+        <h4>Due architetture</h4>
+        <table class="rs-table">
+          <tr><th></th><th>1. Single Firewall a 3 leg</th><th>2. Dual Firewall back-to-back</th></tr>
+          <tr><td><strong>Schema</strong></td><td>1 firewall con 3 interfacce: WAN, DMZ, LAN</td><td>2 firewall in serie: esterno (WAN→DMZ) + interno (DMZ→LAN)</td></tr>
+          <tr><td><strong>Costo</strong></td><td>Più economico</td><td>Più costoso</td></tr>
+          <tr><td><strong>Sicurezza</strong></td><td>Singolo punto di guasto</td><td>Più sicuro: anche se cade il primo, il secondo regge</td></tr>
+          <tr><td><strong>Best practice</strong></td><td>Piccole aziende</td><td>Grandi aziende, banche, telco</td></tr>
+        </table>
+
+        <h4>Tre modi di assegnare IP alla DMZ</h4>
+        <ol class="step">
+          <li><strong>IP pubblico diretto</strong>: i server in DMZ hanno direttamente IP pubblici. Costoso (servono blocchi IP pubblici, es. /29) e teoricamente più rischioso (server esposti diretti).</li>
+          <li><strong>IP privato + SNAT</strong>: i server hanno IP privato; il firewall fa <strong>Static NAT</strong> (mapping permanente) verso un IP pubblico per ogni server. <strong>Soluzione più diffusa</strong>.</li>
+          <li><strong>IP privato + Port Forwarding</strong>: tutti i server condividono UN solo IP pubblico, la disambiguazione è per <strong>porta</strong>. Tipico per setup piccoli o quando hai pochi IP pubblici.</li>
+        </ol>
+
+        <h4>Politiche di filtraggio classiche con ACL</h4>
+        <table class="rs-table">
+          <tr><th>Da</th><th>Verso</th><th>Politica</th></tr>
+          <tr><td>Internet</td><td>DMZ</td><td><strong>permit</strong> solo porte specifiche dei servizi (80, 443, 25, 53)</td></tr>
+          <tr><td>Internet</td><td>LAN</td><td><strong>deny</strong> tutto, eccetto risposte (TCP <code>established</code>)</td></tr>
+          <tr><td>DMZ</td><td>LAN</td><td><strong>deny</strong> per default (tranne connessioni essenziali, es. DB se serve)</td></tr>
+          <tr><td>LAN</td><td>DMZ</td><td><strong>permit</strong> selettivo (solo HTTP/HTTPS al web server, ad es.)</td></tr>
+          <tr><td>LAN</td><td>Internet</td><td><strong>permit</strong> con NAT/PAT per accesso web dei dipendenti</td></tr>
+        </table>
+
+        <div class="rs-key">
+          <strong>🎯 Esempio classico (potrebbe chiederlo):</strong>
+          <ul style="margin-top: .4rem;">
+            <li>Web server in DMZ con IP privato 192.168.2.10 e SNAT a IP pubblico 198.51.100.50</li>
+            <li>ACL su interfaccia esterna: <code>permit tcp any host 198.51.100.50 eq 80</code> + <code>permit tcp any host 198.51.100.50 eq 443</code></li>
+            <li>+ <code>permit tcp any 192.168.1.0 0.0.0.255 established</code> per le risposte alla LAN</li>
+            <li>+ <code>deny ip any any</code> implicita finale</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rs-drill-row">
+        <a class="rs-drill-btn" data-slugs="ca-certificati">🎯 Drill quiz: CA / X.509 / OCSP / TSA</a>
+        <a class="rs-drill-btn" data-slugs="ipsec">🎯 Drill quiz: IPSec</a>
+        <a class="rs-drill-btn" data-slugs="vpn">🎯 Drill quiz: VPN</a>
+        <a class="rs-drill-btn" data-slugs="dmz">🎯 Drill quiz: DMZ</a>
+        <a class="rs-drill-btn" data-slugs="ca-certificati,ipsec,vpn,dmz" style="background: linear-gradient(135deg, #ff2a6d, #b026ff); color: #fff !important;">🚨 Drill MIX delle 4 aree deboli</a>
+      </div>
+    </section>
+
+    <!-- ============ SEZIONE 🟢 RIPASSO VELOCE ============ -->
+    <section class="rs-section fast">
+      <h2>🟢 2 · Ripasso veloce — cose che già sai</h2>
+
+      <!-- Fondamenti -->
+      <div class="rs-block">
+        <h3>📐 Fondamenti (sai tutto, qui solo schema)</h3>
+        <ul>
+          <li><strong>CIA</strong>: Confidentiality (riservatezza) + Integrity (integrità) + Authentication (autenticazione)</li>
+          <li><strong>Alice</strong> mittente, <strong>Bob</strong> destinatario, <strong>Trudy</strong> attaccante. Canale insicuro tra A e B.</li>
+          <li>Sistema crittografico = algoritmo cifratura + algoritmo decifratura. Operazioni: <strong>sostituzione</strong> + <strong>trasposizione</strong>.</li>
+          <li><strong>Kerckhoffs (1883)</strong>: l'algoritmo è pubblico, la sicurezza dipende SOLO dalla segretezza della chiave.</li>
+        </ul>
+      </div>
+
+      <!-- Crittografia simmetrica -->
+      <div class="rs-block">
+        <h3>🔁 Crittografia simmetrica — DES / 3-DES / DH (ripasso mirato)</h3>
+
+        <h4>Concetti generali</h4>
+        <ul>
+          <li>1 sola chiave segreta condivisa</li>
+          <li>Veloce (XOR, sostituzioni, trasposizioni)</li>
+          <li>Problemi: scambio sicuro chiave, <strong>N(N-1)/2</strong> chiavi totali, gestione difficile</li>
+          <li>Cesare = sostituzione mono-alfabetica → vulnerabile a frequenze. Vernam (One-Time Pad) = XOR + chiave casuale lunga quanto msg + monouso → <strong>unico INVIOLABILE</strong></li>
+        </ul>
+
+        <h4>DES — Data Encryption Standard (1975, IBM)</h4>
+        <ul>
+          <li><strong>Chiave 56 bit</strong> (memorizzata in 64 bit con bit di parità)</li>
+          <li><strong>Blocchi 64 bit</strong></li>
+          <li><strong>Rotto dal 2001</strong>: forza bruta su 56 bit è fattibile</li>
+        </ul>
+
+        <h4>3-DES — Triple DES (rinforzo del DES)</h4>
+        <ul>
+          <li><strong>3-DES a 2 chiavi</strong>: <code>cifra(K1) → decifra(K2) → cifra(K1)</code> — chiave effettiva ~112 bit</li>
+          <li><strong>3-DES a 3 chiavi</strong>: <code>cifra(K1) → decifra(K2) → cifra(K3)</code> — chiave effettiva ~168 bit</li>
+          <li><strong>Perché lo schema E-D-E</strong>: retro-compatibilità. Se K1=K2=K3 → equivale a un singolo DES</li>
+          <li><strong>Obsoleto</strong>: lento (3 op DES per blocco) e blocco 64 bit vulnerabile a <strong>birthday attack</strong> su sessioni lunghe</li>
+          <li>Sostituito da <strong>AES</strong> (Advanced Encryption Standard, 2001, blocchi 128 bit, chiavi 128/192/256)</li>
+        </ul>
+
+        <h4>Diffie-Hellman — scambio chiave su canale insicuro</h4>
+        <p>Problema: Alice e Bob vogliono una chiave segreta condivisa, ma il canale è intercettabile. Soluzione DH (1976):</p>
+        <ol class="step">
+          <li><strong>Pubblici</strong> (in chiaro su canale insicuro): N (numero primo grande), g (radice primitiva di N)</li>
+          <li><strong>Alice</strong>: sceglie x segreto, calcola <code>A = g^x mod N</code>, manda A a Bob</li>
+          <li><strong>Bob</strong>: sceglie y segreto, calcola <code>B = g^y mod N</code>, manda B ad Alice</li>
+          <li><strong>Alice</strong>: <code>K = B^x mod N</code></li>
+          <li><strong>Bob</strong>: <code>K = A^y mod N</code></li>
+          <li>I due K coincidono perché <code>(g^x)^y = (g^y)^x mod N</code></li>
+        </ol>
+
+        <pre class="formula">Esempio numerico:
+N = 23, g = 5
+Alice: x = 6  → A = 5^6 mod 23 = 15625 mod 23 = 8
+Bob:   y = 15 → B = 5^15 mod 23 = ... mod 23 = 19
+Alice: K = 19^6 mod 23 = 2
+Bob:   K = 8^15 mod 23 = 2  ✓</pre>
+
+        <ul>
+          <li><strong>Sicurezza</strong>: difficoltà del <strong>logaritmo discreto</strong> (ricavare x da g^x mod N). Con N grande (≥2048 bit) intrattabile.</li>
+          <li><strong>Vulnerabile a MitM</strong>: Trudy si interpone, fa due DH (uno con Alice, uno con Bob), ottiene 2 chiavi distinte, decifra/ricifra tutto.</li>
+          <li><strong>Soluzione MitM</strong>: <strong>firma digitale</strong> dei valori scambiati (A e B firmati con certificato X.509 verificabile).</li>
+        </ul>
+      </div>
+
+      <!-- Crittografia asimmetrica + RSA -->
+      <div class="rs-block">
+        <h3>🗝️ Crittografia asimmetrica + RSA (ripasso veloce)</h3>
+        <ul>
+          <li>2 chiavi: <strong>pubblica</strong> (cifra) + <strong>privata</strong> (decifra). Solo 2N chiavi totali per N persone.</li>
+          <li><strong>RSA</strong> (Rivest, Shamir, Adleman 1978):
+            <ul>
+              <li>p, q primi grandi → <code>N = p·q</code></li>
+              <li><code>φ(N) = (p-1)(q-1)</code></li>
+              <li>e (esponente pubblico) coprimo con φ(N) → <strong>K_pub = [N, e]</strong></li>
+              <li>d tale che <code>(e·d) mod φ(N) = 1</code> → <strong>K_priv = [N, d]</strong></li>
+              <li>Cifra: <code>m' = m^e mod N</code></li>
+              <li>Decifra: <code>m = m'^d mod N</code></li>
+            </ul>
+          </li>
+          <li><strong>Sicurezza</strong>: difficoltà di fattorizzare N = p·q. Chiave 2048 bit oggi sicura.</li>
+        </ul>
+        <pre class="formula">Esempio: p=5, q=11, N=55, φ(N)=40, e=13
+13·d ≡ 1 mod 40 → d=37
+Cifra m=7: m' = 7^13 mod 55 = 2
+Decifra: m = 2^37 mod 55 = 7 ✓</pre>
+      </div>
+
+      <!-- Firma digitale + hash -->
+      <div class="rs-block">
+        <h3>✍️ Firma digitale + Hash (ripasso processo completo)</h3>
+
+        <h4>Hash — proprietà</h4>
+        <ul>
+          <li>Algoritmo che produce un <strong>digest a lunghezza fissa</strong> (128/160/256 bit)</li>
+          <li><strong>Irreversibile</strong>: dal digest non si torna al messaggio</li>
+          <li><strong>Effetto valanga</strong>: cambiando 1 bit dell'input, il digest cambia drasticamente</li>
+          <li><strong>NON univoco</strong>: esistono collisioni (input diversi con stesso digest)</li>
+          <li>Algoritmi: <strong>MD5</strong>, <strong>SHA-1</strong> oggi rotti — <strong>SHA-256, SHA-3</strong> sicuri</li>
+        </ul>
+
+        <h4>Firma digitale vs autografa</h4>
+        <ul>
+          <li>La firma digitale <strong>dipende dal contenuto del documento</strong>: cambia se cambia il documento (la autografa no)</li>
+          <li>Garantisce <strong>integrità + autenticazione</strong> ma <strong>NON</strong> riservatezza (il documento è in chiaro!)</li>
+        </ul>
+
+        <h4>🎯 Il processo COMPLETO (importante!)</h4>
+        <p><strong>Firma — lato mittente:</strong></p>
+        <ol class="step">
+          <li>Calcola il digest del documento: <code>digest = hash(documento)</code></li>
+          <li>Cifra il digest con la PROPRIA chiave PRIVATA: <code>firma = cifra(digest, K_priv_mittente)</code></li>
+          <li>Invia al destinatario: documento (in chiaro) + firma + certificato X.509</li>
+        </ol>
+
+        <p><strong>Verifica — lato destinatario:</strong></p>
+        <ol class="step">
+          <li>Estrae la chiave pubblica del mittente dal certificato X.509 ricevuto</li>
+          <li>Calcola il digest del documento ricevuto: <code>digest_calc = hash(documento_ricevuto)</code></li>
+          <li>Decifra la firma: <code>digest_orig = decifra(firma, K_pub_mittente)</code></li>
+          <li><strong>Confronta</strong>: <code>digest_calc == digest_orig</code>?
+            <ul>
+              <li>SI → integrità + autenticazione OK</li>
+              <li>NO → documento alterato o firma fasulla</li>
+            </ul>
+          </li>
+          <li>Verifica anche che il certificato sia valido (vedi sezione 🔴 sopra: validità, CRL/OCSP, catena CA)</li>
+        </ol>
+
+        <div class="rs-key">
+          <strong>💡 Perché si firma il digest e non il documento?</strong> Cifrare un digest (~256 bit) con RSA è veloce; cifrare l'intero documento (potenzialmente megabyte) sarebbe troppo lento. Questo "trucco" è fondamentale.
+        </div>
+      </div>
+
+      <!-- M2: ACL, NAT, Proxy -->
+      <div class="rs-block">
+        <h3>🛡️ Modulo 2 — ACL / NAT / PAT / SNAT / Proxy / Firewall (ripasso veloce)</h3>
+
+        <h4>Network firewall vs Personal firewall (1 minuto!)</h4>
+        <ul>
+          <li><strong>Network firewall</strong>: dispositivo con 2+ interfacce, protegge un'intera LAN, posizionato al perimetro</li>
+          <li><strong>Personal firewall</strong>: software installato su singolo host (es. Windows Defender Firewall)</li>
+        </ul>
+
+        <h4>ACL (1 minuto)</h4>
+        <ul>
+          <li>Standard (1-99): filtra solo IP sorgente, applicate vicino alla DESTINAZIONE</li>
+          <li>Estese (100-199): filtra IP+porta+protocollo, applicate vicino alla SORGENTE</li>
+          <li>Logica <strong>first-match wins</strong> + <strong>deny ip any any</strong> implicita finale (Cisco)</li>
+          <li>Wildcard mask = inverso bit-a-bit della subnet mask. Es. /24 → mask 255.255.255.0 → wildcard 0.0.0.255</li>
+        </ul>
+
+        <h4>NAT / PAT / SNAT / Port Forwarding</h4>
+        <table class="rs-table">
+          <tr><th>Tecnica</th><th>Cosa fa</th><th>Quando si usa</th></tr>
+          <tr><td><strong>NAT</strong></td><td>Sostituisce IP_priv del mittente con un IP_pub dal pool del router</td><td>Pool di IP pubblici (raro)</td></tr>
+          <tr><td><strong>PAT</strong> (NAT Overload)</td><td>UN solo IP_pub per tutti, disambigua via PORTA sorgente</td><td>Default residenziale e PMI</td></tr>
+          <tr><td><strong>SNAT</strong> (Static NAT)</td><td>Mapping permanente IP_priv ↔ IP_pub</td><td>Server pubblici in DMZ</td></tr>
+          <tr><td><strong>Port Forwarding</strong></td><td>Inoltra IP_pub:porta → IP_priv:porta</td><td>Esporre 1 porta di un host privato</td></tr>
+        </table>
+
+        <h4>Proxy</h4>
+        <ul>
+          <li>Server <strong>applicativo</strong> (livello 7) che si interpone tra client e server di uno specifico protocollo (HTTP, FTP, ...)</li>
+          <li>Vantaggi <strong>privati</strong> (azienda): logging, caching locale, filtering URL</li>
+          <li>Vantaggi <strong>pubblici</strong>: anonimato (l'origine è il proxy, non il client)</li>
+          <li>Topologie: <strong>Single</strong> (un solo proxy), <strong>Horizontal</strong> (più proxy in parallelo + load balancer), <strong>Vertical</strong> (proxy in cascata)</li>
+        </ul>
+      </div>
+
+      <!-- Modulo 3 -->
+      <div class="rs-block">
+        <h3>☁️ Modulo 3 — Datacenter & Cloud (parti più ostiche)</h3>
+
+        <h4>Tier I-IV (Uptime Institute) — questi numeri valgono memorizzarli</h4>
+        <table class="rs-table">
+          <tr><th>Tier</th><th>Caratteristiche</th><th>Disponibilità</th><th>Downtime annuo</th></tr>
+          <tr><td><strong>I</strong></td><td>Singolo path, no ridondanza</td><td>99.671%</td><td>~28.8 ore</td></tr>
+          <tr><td><strong>II</strong></td><td>Componenti ridondati</td><td>99.741%</td><td>~22 ore</td></tr>
+          <tr><td><strong>III</strong></td><td>Manutenibile senza shutdown</td><td>99.982%</td><td>~1.6 ore</td></tr>
+          <tr><td><strong>IV</strong></td><td>Fault-tolerant, doppia ridondanza attiva</td><td>99.995%</td><td>~26 minuti</td></tr>
+        </table>
+
+        <h4>PUE — Power Usage Effectiveness</h4>
+        <ul>
+          <li><strong>PUE = Energia totale del data center / Energia consumata dall'IT</strong></li>
+          <li>Ideale = 1.0 (impossibile in pratica). Tipico = 1.5-2.0. Iperscalari = 1.1-1.2.</li>
+          <li>PUE 1.5 significa: per ogni 1 W usato dai server, in totale il datacenter consuma 1.5 W (0.5 W per raffreddamento, illuminazione, perdite)</li>
+        </ul>
+
+        <h4>Hypervisor 1 vs 2 (la cosa più ostica del modulo)</h4>
+        <table class="rs-table">
+          <tr><th></th><th>Tipo 1 (bare-metal)</th><th>Tipo 2 (hosted)</th></tr>
+          <tr><td><strong>Cosa è</strong></td><td>Sistema operativo specializzato che gira direttamente sull'hardware</td><td>Software che gira sopra un OS host</td></tr>
+          <tr><td><strong>Performance</strong></td><td>Eccellente (vicino al nativo)</td><td>Più lenta (overhead OS host)</td></tr>
+          <tr><td><strong>Esempi</strong></td><td>VMware ESXi, Microsoft Hyper-V, KVM, Xen</td><td>VirtualBox, VMware Workstation, Parallels</td></tr>
+          <tr><td><strong>Uso tipico</strong></td><td>Datacenter, server di produzione</td><td>PC desktop, dev/test</td></tr>
+        </table>
+
+        <h4>SaaS / PaaS / IaaS (memorizza ESEMPI!)</h4>
+        <ul>
+          <li><strong>SaaS</strong> (Software as a Service): l'utente usa un'app pronta. Es. <strong>Gmail, Office 365, Salesforce, Dropbox</strong></li>
+          <li><strong>PaaS</strong> (Platform as a Service): lo sviluppatore deploya il proprio codice su una piattaforma. Es. <strong>Google App Engine, Heroku, Azure App Service</strong></li>
+          <li><strong>IaaS</strong> (Infrastructure as a Service): hai VM/storage/rete virtualizzati, ci installi tu OS e tutto. Es. <strong>AWS EC2, Azure VM, Google Compute Engine</strong></li>
+        </ul>
+
+        <div class="rs-key">
+          <strong>💡 Trucco mnemonico:</strong> dal basso verso l'alto, sempre meno gestione del cliente: IaaS (gestisci OS+app) → PaaS (gestisci solo app) → SaaS (gestisci niente).
+        </div>
+
+        <h4>Cloud privata vs pubblica</h4>
+        <ul>
+          <li><strong>Pubblica</strong>: multi-tenant, condivisa (AWS, Azure, GCP). Economica, scalabile, meno controllo.</li>
+          <li><strong>Privata</strong>: dedicata a una sola organizzazione (on-premise o ospitata da provider). Costosa, controllata, conforme a normative.</li>
+          <li><strong>Ibrida</strong>: mix (es. dati sensibili in privata, carichi variabili in pubblica)</li>
+        </ul>
+      </div>
+
+      <div class="rs-drill-row">
+        <a class="rs-drill-btn" data-slugs="des,diffie-hellman">🎯 Drill DES + Diffie-Hellman</a>
+        <a class="rs-drill-btn" data-slugs="firma-digitale,hash">🎯 Drill firma + hash</a>
+        <a class="rs-drill-btn" data-slugs="acl,nat-pat,proxy">🎯 Drill ACL / NAT / Proxy</a>
+        <a class="rs-drill-btn" data-slugs="datacenter,virtualizzazione,cloud,cloud-deploy">🎯 Drill Datacenter & Cloud</a>
+      </div>
+    </section>
+
+    <!-- ============ SEZIONE 🎯 DRILL FINALE ============ -->
+    <section class="rs-section drill">
+      <h2>🎯 3 · Drill finale — verifica simulata</h2>
+
+      <div class="rs-block">
+        <h3>Quiz combinato di TUTTO ciò che ti serve</h3>
+        <p>Quando hai letto tutto, premi questo bottone: il sistema mescola quiz da tutti gli argomenti studiati e li propone in ordine random. Se sbagli, leggi la spiegazione e torna indietro.</p>
+        <div class="rs-drill-row">
+          <a class="rs-drill-btn" style="background: linear-gradient(135deg, #ff2a6d, #b026ff); color: #fff !important; font-size: 1rem; padding: .7rem 1.4rem;" data-slugs="introduzione,kerckhoffs,simmetrica,diffie-hellman,cesare-vernam,des,asimmetrica,rsa,attacchi,firma-digitale,hash,ca-certificati,firewall,acl,proxy,ip-pubblici-privati,nat-pat,ipsec,vpn,dmz,datacenter,classificazione,interni-esterni,colocation,virtualizzazione,cloud,cloud-deploy">🚨 DRILL FINALE — TUTTI I CAPITOLI CHE TI SERVONO</a>
+          <a class="rs-drill-btn" href="exam.html" style="text-decoration:none;">📝 Simulazione esame cronometrata</a>
+        </div>
+
+        <h4>📋 Checklist finale — spunta quando hai letto/capito</h4>
+        <div class="rs-checklist">
+          <label><input type="checkbox" data-key="ca"> CA / X.509 / CRL / OCSP / TSA / Busta</label>
+          <label><input type="checkbox" data-key="ipsec"> IPSec (ESP/AH, Transport/Tunnel, SA, SPD/SAD)</label>
+          <label><input type="checkbox" data-key="vpn"> VPN site-to-site vs remote access</label>
+          <label><input type="checkbox" data-key="dmz"> DMZ (architetture, ACL, SNAT)</label>
+          <label><input type="checkbox" data-key="des"> DES / 3-DES E-D-E</label>
+          <label><input type="checkbox" data-key="dh"> Diffie-Hellman (esempio numerico)</label>
+          <label><input type="checkbox" data-key="firma"> Firma digitale (processo completo)</label>
+          <label><input type="checkbox" data-key="hash"> Hash (proprietà, MD5/SHA)</label>
+          <label><input type="checkbox" data-key="acl"> ACL standard vs estese</label>
+          <label><input type="checkbox" data-key="nat"> NAT / PAT / SNAT / Port Fwd</label>
+          <label><input type="checkbox" data-key="proxy"> Proxy (topologie)</label>
+          <label><input type="checkbox" data-key="m3"> Tier I-IV + PUE + Hypervisor</label>
+          <label><input type="checkbox" data-key="cloud"> SaaS / PaaS / IaaS con esempi</label>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
-<footer><p>Sistemi 5B — Crash Course personale</p></footer>
 
 <div id="drill-overlay">
   <div id="drill-panel">
     <h3>
-      <span id="drill-title">Drill capitolo</span>
+      <span id="drill-title">Drill</span>
       <button id="drill-close">CHIUDI ✕</button>
     </h3>
     <div id="drill-stage"></div>
   </div>
 </div>
+
+<footer><p>Sistemi 5B — Ripasso totale per la verifica</p></footer>
 
 <script src="../data/modules.js"></script>
 <script src="../data/content-m1.js"></script>
@@ -171,183 +707,37 @@
 <script src="../assets/js/sw-updates.js"></script>
 <script>
 (function(){
-  // Crash course 24h — sequence ottimizzata per la verifica completa di domani
-  // Mira: drillare i quiz per fissare i concetti, NON leggere a fondo
-  const PLAN = [
-    { block: '🌆 OGGI 17:00 — 18:30 · Modulo 1 sprint', time: '90 min', priority: false, steps: [
-      { t: 'Cap. M1 1-3: <a href="introduzione.html">Introduzione</a> + <a href="kerckhoffs.html">Kerckhoffs</a> + <a href="simmetrica.html">Simmetrica</a> — leggi TL;DR + fai i quiz', time: '20 min' },
-      { t: 'Cap. M1 4-5: <a href="diffie-hellman.html">DH</a> + <a href="cesare-vernam.html">Cesare/Vernam</a> — quiz', time: '15 min' },
-      { t: 'Cap. M1 6-8: <a href="des.html">DES/3-DES</a> + <a href="asimmetrica.html">Asimmetrica</a> + <a href="rsa.html">RSA</a> — quiz', time: '20 min' },
-      { t: 'Cap. M1 9-12: <a href="attacchi.html">Attacchi</a> + <a href="firma-digitale.html">Firma</a> + <a href="hash.html">Hash</a> + <a href="ca-certificati.html">CA</a> — quiz', time: '25 min' },
-      { t: '🧮 <a href="esercizi-rsa.html">Esercizio RSA</a> p=5 q=11 e DH N=23 — fai i conti su carta', time: '10 min' }
-    ]},
-
-    { block: '🌆 18:30 — 19:00 · Pausa cena ☕', time: '30 min', priority: false, steps: [
-      { t: 'Mangia bene (carboidrati + proteine, niente pesante). Lontano dallo schermo.', time: '30 min' }
-    ]},
-
-    { block: '🌃 19:00 — 20:30 · Modulo 2 sprint', time: '90 min', priority: false, steps: [
-      { t: 'Cap. M2: <a href="firewall.html">Firewall</a> + <a href="acl.html">ACL standard/estese</a> — quiz <em>(salta categorie-firewall: il prof l\'ha tolto)</em>', time: '20 min' },
-      { t: 'Cap. M2: <a href="proxy.html">Proxy</a> + <a href="ip-pubblici-privati.html">IP pubblici/privati</a> — quiz', time: '15 min' },
-      { t: 'Cap. M2: <a href="nat-pat.html">NAT/PAT/SNAT/Port Forwarding</a> — quiz, esempio numerico', time: '15 min' },
-      { t: 'Cap. M2: <a href="ipsec.html">IPSec</a> (ESP/AH, transport/tunnel, SA, SPD/SAD) + <a href="vpn.html">VPN</a> — quiz', time: '25 min' },
-      { t: 'Cap. M2: <a href="dmz.html">DMZ</a> — quiz <em>(salta TLS)</em>', time: '15 min' }
-    ]},
-
-    { block: '🌃 20:30 — 21:00 · Tools pratici da verifica', time: '30 min', priority: true, steps: [
-      { t: '🛠️ <a href="tools.html">Apri Tools</a> → fai 2 esercizi VLSM (es. /24 con 4 reparti)', time: '15 min' },
-      { t: '🛠️ Tools → 1 EUI-64 (qualsiasi MAC) + 1 wildcard ACL (subnet /27)', time: '15 min' }
-    ]},
-
-    { block: '🌃 21:00 — 22:00 · Modulo 3 sprint', time: '60 min', priority: false, steps: [
-      { t: 'Cap. M3: <a href="datacenter.html">Datacenter</a> + <a href="classificazione.html">Classificazione Tier I-IV</a> — quiz', time: '15 min' },
-      { t: 'Cap. M3: <a href="interni-esterni.html">Interni/Esterni</a> + <a href="colocation.html">Colocation</a> — quiz', time: '10 min' },
-      { t: 'Cap. M3: <a href="virtualizzazione.html">Virtualizzazione</a> (Hypervisor 1 vs 2) — quiz', time: '15 min' },
-      { t: 'Cap. M3: <a href="cloud.html">Cloud SaaS/PaaS/IaaS</a> + <a href="cloud-deploy.html">Privata/Pubblica</a> — quiz', time: '20 min' }
-    ]},
-
-    { block: '🌃 22:00 — 23:00 · Modulo 4 sprint (parte 1)', time: '60 min', priority: false, steps: [
-      { t: 'Cap. M4: <a href="cablaggio.html">Cablaggio strutturato</a> — quiz', time: '10 min' },
-      { t: 'Cap. M4: <a href="ip-struttura.html">Struttura IP</a> + <a href="ip-speciali.html">IP speciali</a> — quiz', time: '15 min' },
-      { t: 'Cap. M4: <a href="flsm-vlsm.html">FLSM/VLSM</a> — quiz + 1 esercizio veloce su <a href="tools.html">tools</a>', time: '20 min' },
-      { t: 'Cap. M4: <a href="routing.html">Routing statico/dinamico</a> + <a href="ipv6.html">IPv6</a> — quiz <em>(salta wireless e VLAN)</em>', time: '15 min' }
-    ]},
-
-    { block: '🌃 23:00 — 23:30 · Modulo 4 sprint (parte 2)', time: '30 min', priority: false, steps: [
-      { t: 'Cap. M4: <a href="dhcp.html">DHCP (4 fasi DORA)</a> + <a href="dns.html">DNS</a> + <a href="http.html">HTTP</a> — quiz', time: '20 min' },
-      { t: 'Cap. M4 extra: <a href="hardware-router.html">Hardware</a> + <a href="accesso-internet.html">Accesso Internet</a> + <a href="icmp.html">ICMP/ping</a> — quiz veloci', time: '10 min' }
-    ]},
-
-    { block: '🌃 23:30 — 00:00 · Casi di studio (i più probabili)', time: '30 min', priority: true, steps: [
-      { t: '🏭 <a href="caso-logipack.html">Caso LogiPack</a> — leggi soluzione, fissa: fibra OM3 a 300m, PoE per VoIP, PoE+ per AP, VLSM su /24', time: '15 min' },
-      { t: '💾 <a href="caso-dataforge.html">Caso DataForge</a> — fissa: subnetting 192.168.50.0/24 con VLSM, DHCP per reparto, ACL established', time: '15 min' }
-    ]},
-
-    { block: '🌃 00:00 — 00:30 · Simulazione finale', time: '30 min', priority: true, steps: [
-      { t: '📝 <a href="exam.html">Esame</a> → 20 domande × 25 min × tutti moduli (1+2+3+4+5)', time: '25 min' },
-      { t: '❌ <a href="mistakes.html">Errori</a> → ripassa quelli sbagliati', time: '5 min' }
-    ]},
-
-    { block: '😴 00:30 — 07:30 · Sonno (NON saltare)', time: '7 ore', priority: true, steps: [
-      { t: '<strong style="color:#ff2a6d">DORMI ALMENO 7 ORE.</strong> Il sonno consolida la memoria meglio di qualsiasi ripasso. Niente schermo gli ultimi 30 min, niente caffè.', time: '7 h' }
-    ]},
-
-    { block: '🌅 07:30 — 08:15 · Ripasso flash mattina', time: '45 min', priority: true, steps: [
-      { t: '📋 <a href="cheatsheet.html">Cheatsheet</a> — leggi tutto velocemente, è il tuo specchietto', time: '15 min' },
-      { t: '🎴 <a href="flashcards.html">Flashcards</a> — solo le carte SRS che ti propone (top errori dei giorni scorsi)', time: '15 min' },
-      { t: '🧠 <a href="mindmap.html">Mind map</a> — vista d\'insieme, fissa la struttura dei moduli', time: '10 min' },
-      { t: '🚿 Pronto, vai a scuola con calma.', time: '5 min' }
-    ]}
-  ];
-
-  const KEY = 'sistemi5b.crash24h.v1';
-  function loadDone() { try { return new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch { return new Set(); } }
-  function saveDone(s) { try { localStorage.setItem(KEY, JSON.stringify([...s])); } catch {} }
-  let done = loadDone();
-
-  // Slug → chapterId reverse map (per il drill mode)
   const SLUG_TO_ID = {};
   (window.MODULES || []).forEach(m => m.chapters.forEach(c => { SLUG_TO_ID[c.slug] = c.id; }));
 
-  function extractSlugsFromHtml(html) {
-    const slugs = [];
-    const re = /href="([^"#]+)\.html"/g;
-    let m;
-    while ((m = re.exec(html))) {
-      const slug = m[1];
-      if (SLUG_TO_ID[slug] && !slugs.includes(slug)) slugs.push(slug);
-    }
-    return slugs;
-  }
-
-  function render() {
-    const el = document.getElementById('rm-content');
-    let html = '';
-    let idx = 0;
-    let total = 0;
-    PLAN.forEach(b => total += b.steps.length);
-    PLAN.forEach((block, bi) => {
-      const allSlugsInBlock = [];
-      block.steps.forEach(s => extractSlugsFromHtml(s.t).forEach(sl => { if (!allSlugsInBlock.includes(sl)) allSlugsInBlock.push(sl); }));
-      const blockDrillBtn = allSlugsInBlock.length > 0
-        ? `<a class="rm-drill rm-drill-all" data-block="${bi}">🎯 Drill tutto il blocco (${allSlugsInBlock.length} cap.)</a>`
-        : '';
-      html += `<div class="rm-block ${block.priority?'rm-priority':''}"><h3><span>${block.block}${blockDrillBtn}</span><span class="rm-time">⏱ ${block.time}</span></h3>`;
-      block.steps.forEach(s => {
-        const id = 's-' + idx++;
-        const isDone = done.has(id);
-        const slugs = extractSlugsFromHtml(s.t);
-        const drillBtn = slugs.length > 0
-          ? `<a class="rm-drill" data-slugs="${slugs.join(',')}">🎯 Drill (${slugs.length})</a>`
-          : '';
-        html += `<label class="rm-step ${isDone?'done':''}" for="${id}">
-          <input type="checkbox" id="${id}" data-id="${id}" ${isDone?'checked':''}>
-          <span class="rm-task">${s.t} <span style="color:var(--text-muted); font-size:.78rem; margin-left:.4rem;">[${s.time}]</span>${drillBtn}</span>
-        </label>`;
-      });
-      html += '</div>';
-    });
-    el.innerHTML = html;
-    document.getElementById('rm-total').textContent = total;
-    el.querySelectorAll('input[type=checkbox]').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const id = cb.dataset.id;
-        if (cb.checked) done.add(id); else done.delete(id);
-        saveDone(done);
-        cb.closest('.rm-step').classList.toggle('done', cb.checked);
-        updateStats();
-      });
-    });
-    el.querySelectorAll('.rm-drill').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        if (btn.dataset.slugs) {
-          openDrill(btn.dataset.slugs.split(','));
-        } else if (btn.dataset.block) {
-          const bi = +btn.dataset.block;
-          const slugs = [];
-          PLAN[bi].steps.forEach(s => extractSlugsFromHtml(s.t).forEach(sl => { if (!slugs.includes(sl)) slugs.push(sl); }));
-          openDrill(slugs);
-        }
-      });
-    });
-    updateStats();
-  }
-
-  // ============ DRILL MODE ============
   function shuffle(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
     return a;
   }
+
   function openDrill(slugs) {
     const overlay = document.getElementById('drill-overlay');
     const stage = document.getElementById('drill-stage');
-    const titleEl = document.getElementById('drill-title');
+    const title = document.getElementById('drill-title');
     const titles = slugs.map(s => {
       const id = SLUG_TO_ID[s];
       const ch = (window.CHAPTERS||{})[id];
       return ch ? ch.title : s;
     });
-    titleEl.textContent = '🎯 Drill: ' + titles.join(' · ');
-    // Aggrega tutti i quiz dei capitoli, mantenendo riferimento al capitolo
+    title.textContent = '🎯 ' + (titles.length > 3 ? titles.length + ' capitoli' : titles.join(' · '));
     const all = [];
     slugs.forEach(slug => {
       const id = SLUG_TO_ID[slug];
       const ch = (window.CHAPTERS||{})[id];
-      if (ch && ch.quiz) {
-        ch.quiz.forEach(q => all.push(Object.assign({}, q, { _slug: slug, _chapterTitle: ch.title })));
-      }
+      if (ch && ch.quiz) ch.quiz.forEach(q => all.push(Object.assign({}, q)));
     });
     if (all.length === 0) {
-      stage.innerHTML = '<p style="color:#ff2a6d; padding:2rem; text-align:center;">Nessun quiz trovato per i capitoli selezionati.</p>';
+      stage.innerHTML = '<p style="color:#ff2a6d; padding:2rem; text-align:center;">Nessun quiz trovato.</p>';
     } else {
       const questions = shuffle(all);
-      // Render via Quiz engine — passo un chapterId fittizio "drill" e le domande
-      stage.innerHTML = '<div id="drill-quiz-container"></div><div style="margin-top:1rem; text-align:center; font-size:.78rem; color:#95b3c4;">' + all.length + ' domande estratte da ' + slugs.length + ' capitoli — risposte mescolate</div>';
-      const container = document.getElementById('drill-quiz-container');
-      // Quiz.render aggiorna lo storage; usiamo un id placeholder che non collide
-      Quiz.render(container, '__drill__', questions);
+      stage.innerHTML = '<div id="drill-quiz-container"></div><div style="margin-top:1rem; text-align:center; font-size:.78rem; color:#95b3c4;">' + all.length + ' domande × ' + slugs.length + ' capitoli (mescolate)</div>';
+      Quiz.render(document.getElementById('drill-quiz-container'), '__drill__', questions);
     }
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -364,23 +754,28 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.getElementById('drill-overlay').classList.contains('open')) closeDrill();
   });
-  function updateStats() {
-    let total = 0;
-    PLAN.forEach(b => total += b.steps.length);
-    const d = done.size;
-    document.getElementById('rm-done').textContent = d;
-    const pct = total ? Math.round(d / total * 100) : 0;
-    document.getElementById('rm-pct').textContent = pct + '%';
-    document.getElementById('rm-bar').style.width = pct + '%';
-  }
-  document.getElementById('rm-reset').addEventListener('click', () => {
-    if (confirm('Sicuro di voler resettare il progresso?')) {
-      done = new Set(); saveDone(done); render();
-    }
+  document.querySelectorAll('.rs-drill-btn[data-slugs]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDrill(btn.dataset.slugs.split(','));
+    });
   });
+
+  // Checklist persistente
+  const KEY = 'sistemi5b.ripasso-check.v1';
+  const done = new Set(JSON.parse(localStorage.getItem(KEY) || '[]'));
+  document.querySelectorAll('.rs-checklist input').forEach(inp => {
+    if (done.has(inp.dataset.key)) { inp.checked = true; inp.closest('label').classList.add('done'); }
+    inp.addEventListener('change', () => {
+      const k = inp.dataset.key;
+      if (inp.checked) done.add(k); else done.delete(k);
+      localStorage.setItem(KEY, JSON.stringify([...done]));
+      inp.closest('label').classList.toggle('done', inp.checked);
+    });
+  });
+
   document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
-  render();
 })();
 </script>
 </body>
